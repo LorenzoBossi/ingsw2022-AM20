@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model;
+<<<<<<< HEAD
 import java.util.*;
 
 public class Player {
@@ -25,12 +26,22 @@ public class Player {
         this.selectedColors = new ArrayList<>();
         this.selectedIsland = 0;
         this.playerChoice = new PlayerChoice();
+=======
+
+import java.util.Objects;
+
+public class Player {
+    private String nickname;
+    Player(String nickname){
+        this.nickname = nickname;
+>>>>>>> origin/master
     }
 
     public String getNickname() {
         return nickname;
     }
 
+<<<<<<< HEAD
     /*
     public boolean playAssistant(Assistant assistant){
         int index = hand.indexOf(assistant);
@@ -93,4 +104,22 @@ public class Player {
         return playerChoice;
     }
 
+=======
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return Objects.equals(nickname, player.nickname);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nickname);
+    }
+>>>>>>> origin/master
 }
