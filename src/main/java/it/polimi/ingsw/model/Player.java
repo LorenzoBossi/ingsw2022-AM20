@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
-<<<<<<< HEAD
 import java.util.*;
+import java.util.Objects;
 
 public class Player {
 
@@ -18,30 +18,22 @@ public class Player {
     public Player(String nickname) {
         this.nickname = nickname;
         this.hand = new ArrayList<>();
-        this.playerPriority=0;
-        this.motherNatureMaxMove=0;
-        this.coins=0;
-        this.playerHand = new PlayerHand();
+        this.playerPriority = 0;
+        this.motherNatureMaxMove = 0;
+        this.coins = 0;
+        this.playerHand = new PlayerHand(hand);
         this.playerBoard = new PlayerBoard();
         this.selectedColors = new ArrayList<>();
         this.selectedIsland = 0;
         this.playerChoice = new PlayerChoice();
-=======
-
-import java.util.Objects;
-
-public class Player {
-    private String nickname;
-    Player(String nickname){
-        this.nickname = nickname;
->>>>>>> origin/master
     }
+
+
 
     public String getNickname() {
         return nickname;
     }
 
-<<<<<<< HEAD
     /*
     public boolean playAssistant(Assistant assistant){
         int index = hand.indexOf(assistant);
@@ -104,10 +96,6 @@ public class Player {
         return playerChoice;
     }
 
-=======
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -121,5 +109,5 @@ public class Player {
     public int hashCode() {
         return Objects.hash(nickname);
     }
->>>>>>> origin/master
+
 }
