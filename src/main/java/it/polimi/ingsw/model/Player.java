@@ -11,8 +11,6 @@ public class Player {
     private int coins;
     private final PlayerHand playerHand;
     private final PlayerBoard playerBoard;
-    private List<Color> selectedColors;
-    private int selectedIsland;
     private PlayerChoice playerChoice;
 
     public Player(String nickname) {
@@ -23,8 +21,6 @@ public class Player {
         this.coins = 0;
         this.playerHand = new PlayerHand(hand);
         this.playerBoard = new PlayerBoard();
-        this.selectedColors = new ArrayList<>();
-        this.selectedIsland = 0;
         this.playerChoice = new PlayerChoice();
     }
 
@@ -53,8 +49,8 @@ public class Player {
         return this.playerPriority;
     }
 
-    public void setMotherNatureMaxMove(int MNMM ){
-        this.motherNatureMaxMove= MNMM;
+    public void setMotherNatureMaxMove(int MOtherNatureMaxMove ){
+        this.motherNatureMaxMove= MOtherNatureMaxMove ;
     }
     public int getMotherNatureMaxMove() {
         return this.motherNatureMaxMove;
@@ -63,6 +59,7 @@ public class Player {
     public PlayerBoard getPlayerBoard(){
         return this.playerBoard;
     }
+
 
     public void setCoins(int amount) {
         this.coins=amount;
@@ -80,17 +77,24 @@ public class Player {
         else
             System.out.println("impossibile fare operazione");
     }
+
     private boolean isEnoughCoin(int coinRequired){
         return this.coins >= coinRequired;
     }
-    /*
-    public void isMotherNatureMoveLegit(int selectedMotherNatureMove){
-        IslandsManager arch;
-        if(selectedMotherNatureMove <= motherNatureMaxMove)
-            arch = Game.getArchipelago();
-            arch.moveMotherNature(selectedMotherNatureMove);
+
+
+    /**
+     * Method isMotherNatureMoveLegit checks if the player can move Mother Nature how much he wants
+     * @param selectedMotherNatureMove how much the player wants to move Mother Nature
+     * @return {@code true} if the selected Mother Nature move is legit,
+     *         {@code false} if the selected Mother Nature move is  illicit
+     */
+    public boolean isMotherNatureMoveLegit(int selectedMotherNatureMove){
+        if(selectedMotherNatureMove <= motherNatureMaxMove && selectedMotherNatureMove > 0)
+            return true;
+        return false;
     }
-    */
+
 
     public PlayerChoice getPlayerChoice(){
         return playerChoice;

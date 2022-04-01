@@ -34,9 +34,9 @@ public class Assistant {
         isPlayable=playability;
     }
 
-
-
-
+    public AssistantName getAssistant() {
+        return assistant;
+    }
 
     public int getValue(){
         return assistant.getValue();

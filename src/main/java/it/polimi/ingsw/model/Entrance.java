@@ -13,6 +13,7 @@ public class Entrance {
         int indexColor = student.ordinal();
         students.set(indexColor, students.get(indexColor) - 1);
     }
+
     public int getNumberOfStudent(Color color){
         int indexColor = color.ordinal();
         return this.students.get(indexColor);
@@ -29,25 +30,30 @@ public class Entrance {
         }
 
     }
+
     public void addStudent(Color stud){
         int indexColor = stud.ordinal();
         students.set(indexColor,students.get(indexColor) +1);
     }
+
     public void moveStudentToIsland(Island selectedIsland, Color selectedColor){
         if(isPresent(selectedColor)) {
             this.removeStudent(selectedColor);
             selectedIsland.addStudent(selectedColor);
         }
     }
+
     public boolean isPresent(Color cstudent){
         int indexColor = cstudent.ordinal();
         return students.get(indexColor) >= 1;
     }
+
     public void refillEntrance(List<Color> student){
         while(!student.isEmpty()){
             addStudent(student.remove(0));
         }
     }
+
     public List<Integer> getStudents() {
         return students;
     }

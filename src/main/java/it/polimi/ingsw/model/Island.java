@@ -8,6 +8,10 @@ public class Island {
     private int numberOfTowers;
     private int banCards;
 
+
+    /**
+     * Constructor
+     */
     public Island() {
         students = new ArrayList<Integer>(Collections.nCopies(COLOR_NUMBER, 0));
         owner = null;

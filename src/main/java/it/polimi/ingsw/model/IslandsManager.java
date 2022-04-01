@@ -6,6 +6,10 @@ public class IslandsManager {
     private int motherNature;
     private Island currIsland;
 
+
+    /**
+     * Constructor
+     */
     public IslandsManager(){
         islands = new ArrayList<Island>();
         for(int i = 0; i < 12; i++)
@@ -44,6 +48,7 @@ public class IslandsManager {
         return islands.get(islandPosition);
     }
 
+
     /**
      * Method getNeighbouringIslands returns the neighbouring islands of the checked island
      *
@@ -67,8 +72,9 @@ public class IslandsManager {
         return nearIslands;
     }
 
+
     /**
-     * Method mergeIslands checks the islands near the chosen island and merge them if they have the same owner.
+     * Method mergeIslands checks the neighbouring islands of the chosen island and merge them if they have the same owner.
      *
      * @param island the island that I want to check
      */
@@ -86,6 +92,7 @@ public class IslandsManager {
             }
         }
     }
+
 
     /**
      * Returns the number of the remaining islands

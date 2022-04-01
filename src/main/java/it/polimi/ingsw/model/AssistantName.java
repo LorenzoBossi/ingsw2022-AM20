@@ -25,7 +25,6 @@ public enum AssistantName {
     }
 
 
-
     /**
      * gets the value of the assistant to determine the order of the next turn
      * @return
@@ -34,6 +33,7 @@ public enum AssistantName {
     public int getValue(){
         return value;
     }
+
 
     /**
      * gets the maximum number of moves of the assistant
