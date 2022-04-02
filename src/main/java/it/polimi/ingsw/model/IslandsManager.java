@@ -22,6 +22,10 @@ public class IslandsManager {
         this.currIsland = currIsland;
     }
 
+    public Island getCurrIsland() {
+        return currIsland;
+    }
+
     /**
      * Method moveMotherNature moves MotherNature on the right island
      *
@@ -56,7 +60,7 @@ public class IslandsManager {
      * @return the List of the neighbouring islands
      */
     public List<Island> getNeighbouringIslands(Island island){
-        List<Island> nearIslands = new ArrayList<Island>();
+        List<Island> nearIslands = new ArrayList<>();
         if(islands.indexOf(island) == 0){
             nearIslands.add(getIsland(islands.size() - 1));
             nearIslands.add(getIsland(1));

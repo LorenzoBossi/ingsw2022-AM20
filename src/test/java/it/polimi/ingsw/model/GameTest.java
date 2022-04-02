@@ -43,4 +43,5 @@ public class GameTest {
         Assistant assistant = game.getAssistantByName(AssistantName.ASSISTANT1);
         assertEquals(AssistantName.ASSISTANT1, assistant.getAssistant());
     }
+
 }

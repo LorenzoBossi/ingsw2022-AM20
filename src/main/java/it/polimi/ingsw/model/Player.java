@@ -39,19 +39,20 @@ public class Player {
             this.setPlayerPriority(assistant.getValue());
         }
     }
-
-     */
+    */
 
     public void setPlayerPriority(int newPriority){
         this.playerPriority = newPriority;
     }
+
     public int getPlayerPriority() {
         return this.playerPriority;
     }
 
-    public void setMotherNatureMaxMove(int MOtherNatureMaxMove ){
-        this.motherNatureMaxMove= MOtherNatureMaxMove ;
+    public void setMotherNatureMaxMove(int MotherNatureMaxMove ){
+        this.motherNatureMaxMove= MotherNatureMaxMove ;
     }
+
     public int getMotherNatureMaxMove() {
         return this.motherNatureMaxMove;
     }
@@ -60,10 +61,10 @@ public class Player {
         return this.playerBoard;
     }
 
-
     public void setCoins(int amount) {
         this.coins=amount;
     }
+
     public int getCoins() {
         return this.coins;
     }
@@ -71,6 +72,7 @@ public class Player {
     public void addCoin(){
         this.coins++;
     }
+
     public void useCoins(int payment){
         if(isEnoughCoin(payment))
             this.coins=this.coins-payment;
@@ -90,16 +92,12 @@ public class Player {
      *         {@code false} if the selected Mother Nature move is  illicit
      */
     public boolean isMotherNatureMoveLegit(int selectedMotherNatureMove){
-        if(selectedMotherNatureMove <= motherNatureMaxMove && selectedMotherNatureMove > 0)
-            return true;
-        return false;
+        return selectedMotherNatureMove <= motherNatureMaxMove && selectedMotherNatureMove > 0;
     }
-
 
     public PlayerChoice getPlayerChoice(){
         return playerChoice;
     }
-
 
     @Override
     public boolean equals(Object o) {

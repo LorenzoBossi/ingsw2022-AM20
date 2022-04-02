@@ -6,10 +6,12 @@ import java.util.List;
 public class Game {
     private List<Cloud> clouds;
     private final IslandsManager archipelago;
+    private ProfessorManager professorManager;
     private List<Player> players;
     private final List<Assistant> assistants;
     private final Bag bag;
     private Player currPlayer;
+    private InfluenceStrategy influenceStrategy;
 
     /**
      * Constructor
@@ -17,12 +19,14 @@ public class Game {
     public Game() {
         clouds = new ArrayList<Cloud>();
         archipelago = new IslandsManager();
+        professorManager = new ProfessorManager();
         players = new ArrayList<Player>();
         assistants = new ArrayList<Assistant>();
         for(AssistantName assistant : AssistantName.values())
             assistants.add(new Assistant(assistant));
         bag = new Bag();
         currPlayer = null;
+        influenceStrategy = new StandardInfluence();
     }
 
     public Bag getBag() {
@@ -37,6 +41,10 @@ public class Game {
         return archipelago;
     }
 
+    public ProfessorManager getProfessorManager() {
+        return professorManager;
+    }
+
     public List<Player> getPlayers() {
         return players;
     }
@@ -49,6 +57,10 @@ public class Game {
         this.currPlayer = currPlayer;
     }
 
+    public void setInfluenceStrategy(InfluenceStrategy influenceStrategy) {
+        this.influenceStrategy = influenceStrategy;
+    }
+
 
     /**
      * Method isSameNickname checks if already exists a player with the chosen nickname
@@ -59,9 +71,7 @@ public class Game {
      */
     public boolean isSameNickname(String nickname) {
         Player player = getPlayerByNickname(nickname);
-        if(player == null)
-            return false;
-        return true;
+        return player != null;
     }
 
 
@@ -83,7 +93,7 @@ public class Game {
     /**
      * Method removePlayer removes the player with the selected nickname
      *
-     * @param nickname the player that i wanted to remove
+     * @param nickname the player that I wanted to remove
      */
     public void removePlayer(String nickname){
         players.remove(getPlayerByNickname(nickname));
@@ -129,6 +139,45 @@ public class Game {
                 ast = assistant;
         }
         return ast;
+    }
+
+
+    /**
+     * Method updateInfluence checks per each player the influence on the specified island, change the island's owner
+     * if necessary and moves the towers consequently
+     *
+     * @param island the island on which I want to update influence
+     */
+    public void updateInfluence(Island island){
+        Player currentOwner = null;
+        int maxInfluence = 0;
+        int influence = 0;
+        for(Player player : players){
+            influence = influenceStrategy.calculateInfluence(player, island, professorManager);
+            if(influence > maxInfluence){
+                maxInfluence = influence;
+                currentOwner = player;
+            }
+            else if(influence == maxInfluence)
+                currentOwner = null;
+        }
+        if(island.getOwner() == null){
+            if(currentOwner != null){
+                island.setOwner(currentOwner);
+                currentOwner.getPlayerBoard().removeTowers(1);
+                island.setNumberOfTowers(1);
+                archipelago.mergeIslands(island);
+            }
+        }
+        else{
+            if(currentOwner != null && !currentOwner.equals(island.getOwner())){
+                island.getOwner().getPlayerBoard().addTowers(island.getNumberOfTowers());
+                currentOwner.getPlayerBoard().removeTowers(island.getNumberOfTowers());
+                island.setOwner(currentOwner);
+                archipelago.mergeIslands(island);
+            }
+        }
+        this.setInfluenceStrategy(new StandardInfluence());
     }
 
 }

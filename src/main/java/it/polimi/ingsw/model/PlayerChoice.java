@@ -17,6 +17,7 @@ public class PlayerChoice {
     public int getIslandSelection(){
         return islandPosition;
     }
+
     public Color getSelectedColor(){
         return selectedColor;
     }
@@ -24,11 +25,6 @@ public class PlayerChoice {
     public List<Color> getSelectedStudentFromEntrance(){
         return selectedStudentFromEntrance;
     }
-
-
-
-
-
 
     public void selectStudents(List<Color> selectedStudents) {
         this.selectedStudents = selectedStudents;
