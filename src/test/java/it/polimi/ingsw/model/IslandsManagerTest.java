@@ -97,4 +97,12 @@ public class IslandsManagerTest {
         assertEquals(12, mng.getNumberOfIslands());
     }
 
+    @Test
+    public void getTotalBanCardsTest(){
+        mng.getIsland(5).addBanCard();
+        mng.getIsland(10).addBanCard();
+        mng.getIsland(3).setBanCards(3);
+        assertEquals(5, mng.getNumberOfBanCards());
+    }
+
 }

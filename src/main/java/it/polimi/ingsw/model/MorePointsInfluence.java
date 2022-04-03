@@ -8,10 +8,14 @@ public class MorePointsInfluence implements InfluenceStrategy {
 
     /**
      * Constructor
-     * @param currPlayer the player that activates the effect
      */
-    public MorePointsInfluence(Player currPlayer){
+    public MorePointsInfluence(){
         super();
+        this.currPlayer = null;
+    }
+
+    @Override
+    public void setCurrPlayer(Player currPlayer) {
         this.currPlayer = currPlayer;
     }
 

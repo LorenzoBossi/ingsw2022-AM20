@@ -26,6 +26,7 @@ public class IslandsManager {
         return currIsland;
     }
 
+
     /**
      * Method moveMotherNature moves MotherNature on the right island
      *
@@ -46,7 +47,6 @@ public class IslandsManager {
     public int getMotherNature() {
         return motherNature;
     }
-
 
     public Island getIsland(int islandPosition){
         return islands.get(islandPosition);
@@ -105,6 +105,13 @@ public class IslandsManager {
      */
     public int getNumberOfIslands(){
         return islands.size();
+    }
+
+    public int getNumberOfBanCards() {
+        int banCards = 0;
+        for(Island isl : islands)
+            banCards += isl.getBanCards();
+        return banCards;
     }
 
 }

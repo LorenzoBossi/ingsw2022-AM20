@@ -3,6 +3,21 @@ package it.polimi.ingsw.model;
 import java.util.List;
 
 public class NoTowerInfluence implements InfluenceStrategy {
+    Player currPlayer;
+
+
+    /**
+     * Constructor
+     */
+    public NoTowerInfluence(){
+        super();
+        this.currPlayer = null;
+    }
+
+    @Override
+    public void setCurrPlayer(Player currPlayer) {
+        this.currPlayer = currPlayer;
+    }
 
     /**
      * Method calculateInfluence calculates the player's influence on the specified island
@@ -20,4 +35,5 @@ public class NoTowerInfluence implements InfluenceStrategy {
             influence += island.getSelectedStudents(c);
         return influence;
     }
+
 }

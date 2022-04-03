@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * This class tests the methods to calculate influence
  */
@@ -55,8 +56,8 @@ public class InfluenceTest {
 
     @Test
     public void TwoMorePointsInfluenceTest() {
-        InfluenceStrategy influenceStrategy = new MorePointsInfluence(player3);
-
+        InfluenceStrategy influenceStrategy = new MorePointsInfluence();
+        influenceStrategy.setCurrPlayer(player3);
         professorManager.takeProfessor(player3, Color.BLUE);
         professorManager.takeProfessor(player3, Color.PINK);
         assertEquals(5, influenceStrategy.calculateInfluence(player3, island, professorManager));
@@ -65,7 +66,8 @@ public class InfluenceTest {
 
     @Test
     public void NoColorInfluenceTest() {
-        InfluenceStrategy influenceStrategy = new NoColorInfluence(player1);
+        InfluenceStrategy influenceStrategy = new NoColorInfluence();
+        influenceStrategy.setCurrPlayer(player1);
         player1.getPlayerChoice().selectColor(Color.GREEN);
 
         assertEquals(6, influenceStrategy.calculateInfluence(player1, island, professorManager));

@@ -4,6 +4,18 @@ import java.util.List;
 
 
 public class StandardInfluence implements InfluenceStrategy{
+    Player currPlayer;
+
+    public StandardInfluence(){
+        super();
+        currPlayer = null;
+    }
+
+    @Override
+    public void setCurrPlayer(Player currPlayer) {
+        this.currPlayer = currPlayer;
+    }
+
 
     /**
      * Method calculateInfluence calculates the player's influence on the specified island

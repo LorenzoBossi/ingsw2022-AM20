@@ -20,7 +20,7 @@ public class UpdateInfluenceTest {
     Player player3;
 
     @BeforeEach
-    public void init(){
+    public void init() {
         game = new Game();
         game.addPlayer("Federico");
         game.addPlayer("Giacomo");
@@ -38,7 +38,7 @@ public class UpdateInfluenceTest {
     }
 
     @Test
-    public void normalUpdateInfluenceTest(){
+    public void normalUpdateInfluenceTest() {
         Island island = archipelago.getIsland(0);
         island.setOwner(player2);
         island.addStudents(Color.YELLOW, 5);
@@ -48,7 +48,7 @@ public class UpdateInfluenceTest {
     }
 
     @Test
-    public void sameInfluenceUpdateTest(){
+    public void sameInfluenceUpdateTest() {
         Island island = archipelago.getIsland(0);
         island.setOwner(player2);
         island.addStudents(Color.YELLOW, 5);
@@ -58,7 +58,7 @@ public class UpdateInfluenceTest {
     }
 
     @Test
-    public void sameInfluenceUpdate3PlayersTest(){
+    public void sameInfluenceUpdate3PlayersTest() {
         Island island = archipelago.getIsland(0);
         island.setOwner(player2);
         island.addStudents(Color.YELLOW, 5);
@@ -69,7 +69,7 @@ public class UpdateInfluenceTest {
     }
 
     @Test
-    public void IslandWithNoOwnerTest(){
+    public void IslandWithNoOwnerTest() {
         Island island = archipelago.getIsland(0);
         island.addStudents(Color.YELLOW, 5);
         island.addStudents(Color.PINK, 6);
@@ -78,7 +78,7 @@ public class UpdateInfluenceTest {
     }
 
     @Test
-    public void IslandWithNoOwnerSameInfluenceTest(){
+    public void IslandWithNoOwnerSameInfluenceTest() {
         Island island = archipelago.getIsland(0);
         island.addStudents(Color.YELLOW, 5);
         island.addStudents(Color.PINK, 5);
@@ -88,12 +88,41 @@ public class UpdateInfluenceTest {
     }
 
     @Test
-    public void IslandNoOwnerTowerTest(){
+    public void IslandNoOwnerTowerTest() {
         Island island = archipelago.getIsland(0);
         island.addStudents(Color.YELLOW, 5);
         island.addStudents(Color.PINK, 6);
         game.updateInfluence(island);
         assertEquals(7, player2.getPlayerBoard().getNumberTower());
+    }
+
+    @Test
+    public void MoveTowersTest() {
+        Island island = archipelago.getIsland(0);
+        island.setOwner(player2);
+        island.setNumberOfTowers(3);
+        island.addStudents(Color.PINK, 6);
+        island.addStudents(Color.YELLOW, 10);
+        game.updateInfluence(island);
+        assertEquals(11, player2.getPlayerBoard().getNumberTower());
+        assertEquals(5, player1.getPlayerBoard().getNumberTower());
+    }
+
+    @Test void MergeUpdateInfluenceTest() {
+        Island island = archipelago.getIsland(0);
+        Island island1 = archipelago.getIsland(11);
+        Island island2 = archipelago.getIsland(1);
+        island2.addStudents(Color.GREEN, 10);
+        island2.setOwner(player1);
+        island1.setOwner(player1);
+        island.setOwner(player2);
+        island.setNumberOfTowers(3);
+        island.addStudents(Color.PINK, 6);
+        island.addStudents(Color.YELLOW, 10);
+        game.updateInfluence(island);
+        assertEquals(10, archipelago.getNumberOfIslands());
+        assertEquals(3, island.getNumberOfTowers());
+        assertEquals(10, island.getSelectedStudents(Color.GREEN));
     }
 
 }

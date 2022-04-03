@@ -11,4 +11,7 @@ public interface InfluenceStrategy {
      * @return the player's influence on the specified island
      */
     int calculateInfluence(Player player, Island island, ProfessorManager professorManager);
+
+    void setCurrPlayer(Player currPlayer);
+
 }

@@ -8,13 +8,16 @@ public class NoColorInfluence implements InfluenceStrategy{
 
     /**
      * Constructor
-     * @param currPlayer the player that activates the effect
      */
-    public NoColorInfluence(Player currPlayer){
+    public NoColorInfluence(){
         super();
-        this.currPlayer = currPlayer;
+        this.currPlayer = null;
     }
 
+    @Override
+    public void setCurrPlayer(Player currPlayer) {
+        this.currPlayer = currPlayer;
+    }
 
     /**
      * Method calculateInfluence calculates the player's influence on the specified island
@@ -36,4 +39,5 @@ public class NoColorInfluence implements InfluenceStrategy{
             influence += island.getNumberOfTowers();
         return influence;
     }
+
 }
