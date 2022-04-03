@@ -1,11 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.characterCards.MorePointsInfluence;
+import it.polimi.ingsw.model.characterCards.NoColorInfluence;
+import it.polimi.ingsw.model.characterCards.NoTowerInfluence;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

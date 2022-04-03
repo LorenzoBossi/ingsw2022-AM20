@@ -1,6 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.characterCards;
 
-public class BanCharacter extends CharacterCard{
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Island;
+
+public class BanCharacter extends CharacterCard {
     private int banCards;
     private final int INITIAL_BANCARDS = 4;
 
@@ -15,6 +18,7 @@ public class BanCharacter extends CharacterCard{
     }
 
 
+
     /**
      * Method activateEffect adds a banCard on the player's selected island
      *
@@ -24,8 +28,8 @@ public class BanCharacter extends CharacterCard{
     public void activateEffect(Game game) {
         int removedBanCards = INITIAL_BANCARDS - game.getArchipelago().getNumberOfBanCards() - banCards;
         banCards = removedBanCards + banCards;
-        int islandIndex = game.getCurrPlayer().getPlayerChoice().getIslandSelection();
-        game.getArchipelago().getIsland(islandIndex).addBanCard();
+        Island island= game.getCurrPlayer().getPlayerChoice().getSelectedIsland();
+        island.addBanCard();
         banCards--;
         endActivation();
     }

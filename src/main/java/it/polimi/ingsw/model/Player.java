@@ -5,41 +5,74 @@ import java.util.Objects;
 public class Player {
 
     private final String nickname;
-    private List<Assistant> hand;
     private int playerPriority;
     private int motherNatureMaxMove;
     private int coins;
-    private final PlayerHand playerHand;
+    private PlayerHand playerHand;
     private final PlayerBoard playerBoard;
     private PlayerChoice playerChoice;
 
+    /**
+     * Constructor
+     * @param nickname nickname of the player
+     */
+
     public Player(String nickname) {
         this.nickname = nickname;
-        this.hand = new ArrayList<>();
         this.playerPriority = 0;
         this.motherNatureMaxMove = 0;
-        this.coins = 0;
-        this.playerHand = new PlayerHand(hand);
+        this.coins = 1;
+        this.playerHand = new PlayerHand(null);
         this.playerBoard = new PlayerBoard();
         this.playerChoice = new PlayerChoice();
     }
 
+    /**
+     * gives the player all the references to the assistants shared by every player in the game
+     * @param assistants a list of Assistant created by the game and given to every player
+     */
+    public void setAssistants(List<Assistant> assistants){
+        playerHand=new PlayerHand(assistants);
+    }
+
+    /**
+     * Constructor
+     * @param nickname nickname of the player
+     * @param assistants a list of Assistant created by the game and given to every player
+     */
+    public Player(String nickname, List<Assistant> assistants){
+        this.nickname = nickname;
+        this.playerPriority = 0;
+        this.motherNatureMaxMove = 0;
+        this.coins = 1;
+        this.playerHand = new PlayerHand(assistants);
+        this.playerBoard = new PlayerBoard();
+        this.playerChoice = new PlayerChoice();
+    }
 
 
     public String getNickname() {
         return nickname;
     }
 
-    /*
+    /**
+     * If the specified assistant is playable in the current turn this method sets the priority and the max mother nature moves of the player
+     * and removes the assistant from the player hand.
+     * @param assistant the assistant to play
+     * @return {@code true} if the assistant is playable
+     *         {@code false} if the assistant is not playable
+     */
     public boolean playAssistant(Assistant assistant){
-        int index = hand.indexOf(assistant);
-        Assistant card = hand.get(index);
-        if(card.isAlreadyPlayed(assistant) && this.playerHand.isPresent(assistant)){
-            this.setMotherNatureMaxMove(assistant.getMotherNatureMove());
-            this.setPlayerPriority(assistant.getValue());
+        if(playerHand.getPlayableAssistants().contains(assistant))
+        {
+            playerPriority=assistant.getValue();
+            motherNatureMaxMove=assistant.getMotherNatureMove();
+            playerHand.remove(assistant);
+            return true;
         }
+        return false;
     }
-    */
+
 
     public void setPlayerPriority(int newPriority){
         this.playerPriority = newPriority;

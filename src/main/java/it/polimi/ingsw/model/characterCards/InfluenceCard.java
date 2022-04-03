@@ -1,6 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.characterCards;
 
-public class InfluenceCard extends CharacterCard{
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.InfluenceStrategy;
+
+public class InfluenceCard extends CharacterCard {
     private InfluenceStrategy influenceStrategy;
 
     /**

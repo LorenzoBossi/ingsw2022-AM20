@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import java.util.*;
+import it.polimi.ingsw.model.characterCards.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -23,7 +23,7 @@ public class CharacterCardTest {
         player1 = game.getPlayers().get(0);
         player2 = game.getPlayers().get(1);
         player1.getPlayerChoice().selectColor(Color.YELLOW);
-        player1.getPlayerChoice().selectIslandPosition(0);
+        player1.getPlayerChoice().selectIsland(game.getArchipelago().getIsland(0));
         island = game.getArchipelago().getIsland(0);
         island.addStudents(Color.YELLOW, 5);
         professorManager = game.getProfessorManager();

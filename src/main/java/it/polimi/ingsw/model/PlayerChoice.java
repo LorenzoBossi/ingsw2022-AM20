@@ -6,7 +6,7 @@ public class PlayerChoice {
 
     private List<Color> selectedStudents;
     private List<Color>selectedStudentFromEntrance;
-    private int islandPosition;
+    private Island selectedIsland;
     private Color selectedColor;
 
 
@@ -14,8 +14,8 @@ public class PlayerChoice {
         return selectedStudents;
     }
 
-    public int getIslandSelection(){
-        return islandPosition;
+    public Island getSelectedIsland(){
+        return selectedIsland;
     }
 
     public Color getSelectedColor(){
@@ -34,8 +34,8 @@ public class PlayerChoice {
         this.selectedStudentFromEntrance = selectedStudentFromEntrance;
     }
 
-    public void selectIslandPosition(int islandPosition) {
-        this.islandPosition = islandPosition;
+    public void selectIsland(Island island) {
+        this.selectedIsland = island;
     }
 
     public void selectColor(Color selectedColor) {

@@ -1,4 +1,9 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.characterCards;
+
+import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.Game;
+
+import java.util.List;
 
 public abstract class CharacterCard {
     private int coinsRequired;
@@ -38,6 +43,8 @@ public abstract class CharacterCard {
             firstTimePlayed = false;
         }
     }
+
+    public List<Color> getStudents(){return null;}
 
     public abstract void activateEffect(Game game);
 

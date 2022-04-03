@@ -31,4 +31,16 @@ public class DiningRoom {
     private boolean isAddCoin(int numOfStudents){
         return numOfStudents % 3 == 0;
     }
+
+
+    /**
+     * removes a student of the specified color if present in the dining room
+     * If there are not students of the specified color the dining room doesn't change
+     */
+    public void removeStudent(Color color){
+        int index=color.ordinal();
+        if(students.get(index)>0) {
+            students.set(index,students.get(index)-1);
+        }
+    }
 }

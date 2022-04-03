@@ -17,13 +17,11 @@ public class Game {
      * Constructor
      */
     public Game() {
-        clouds = new ArrayList<Cloud>();
+        clouds = new ArrayList<>();
         archipelago = new IslandsManager();
         professorManager = new ProfessorManager();
-        players = new ArrayList<Player>();
-        assistants = new ArrayList<Assistant>();
-        for(AssistantName assistant : AssistantName.values())
-            assistants.add(new Assistant(assistant));
+        players = new ArrayList<>();
+        assistants= Assistant.getEveryAssistant();
         bag = new Bag();
         currPlayer = null;
         influenceStrategy = new StandardInfluence();
@@ -85,7 +83,9 @@ public class Game {
     public boolean addPlayer(String nickname) {
         if(isSameNickname(nickname))
             return false;
-        players.add(new Player(nickname));
+        players.add(new Player(nickname,assistants));
+        if(currPlayer==null)
+            currPlayer=players.get(0);
         return true;
     }
 

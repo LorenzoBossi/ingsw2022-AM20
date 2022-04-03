@@ -1,4 +1,7 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.characterCards;
+
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Island;
 
 public class Vassal extends CharacterCard {
 
@@ -19,8 +22,7 @@ public class Vassal extends CharacterCard {
      */
     @Override
     public void activateEffect(Game game) {
-        int islandIndex = game.getCurrPlayer().getPlayerChoice().getIslandSelection();
-        Island island = game.getArchipelago().getIsland(islandIndex);
+        Island island = game.getCurrPlayer().getPlayerChoice().getSelectedIsland();
         game.updateInfluence(island);
         endActivation();
         }

@@ -27,14 +27,14 @@ public class AssistantsTest
             assistants.add(new Assistant(assistantName));
 
         PlayerHand playerHand=new PlayerHand(assistants);
-        assertTrue(playerHand.size()== assistantNames.length);
+        assertEquals(playerHand.size(),assistantNames.length);
 
         Assistant assistant3=assistants.get(3);
-        assertTrue(assistant3.isAlreadyPlayed() == false);
+        assertFalse(assistant3.isAlreadyPlayed());
 
         playerHand.remove(assistant3);
-        assertTrue(assistant3.isAlreadyPlayed() == true);
-        assertTrue(playerHand.size()== assistantNames.length-1);
+        assertTrue(assistant3.isAlreadyPlayed());
+        assertEquals(playerHand.size(), assistantNames.length-1);
         assertTrue(assistants.contains(assistant3));
         playerHand.remove(assistant3);
         playerHand.remove(assistants.get(0));
@@ -47,9 +47,9 @@ public class AssistantsTest
         playerHand.remove(assistants.get(7));
         playerHand.remove(assistants.get(8));
         assertTrue(playerHand.isPresent(assistants.get(9)));
-        assertTrue(!playerHand.isPresent(assistants.get(8)));
+        assertFalse(playerHand.isPresent(assistants.get(8)));
         playerHand.remove(assistants.get(9));
-        assertTrue(playerHand.size()== 0);
+        assertEquals(0,playerHand.size());
     }
 
 
@@ -79,10 +79,10 @@ public class AssistantsTest
         playerHand.remove(assistants.get(7));
         playerHand.remove(assistants.get(8));
         playerHand.remove(assistants.get(9));
-        assertTrue(assistants.get(9).isAlreadyPlayed()==true);
+        assertTrue(assistants.get(9).isAlreadyPlayed());
         assistants.get(9).setPlayability(true);
         playerHand.remove(assistants.get(9));
-        assertTrue(assistants.get(9).isAlreadyPlayed()==false);
+        assertFalse(assistants.get(9).isAlreadyPlayed());
 
         playerHand=new PlayerHand(assistants);
         playerHand.remove(assistants.get(0));
@@ -94,16 +94,16 @@ public class AssistantsTest
         playerHand.remove(assistants.get(6));
         playerHand.remove(assistants.get(7));
         assistants.get(8).setPlayability(false);
-        assertTrue(playerHand.getPlayableAssistants().size()==1);
-        assertTrue(playerHand.size()==2);
+        assertEquals(playerHand.getPlayableAssistants().size(),1);
+        assertEquals(playerHand.size(),2);
         assistants.get(9).setPlayability(false);
-        assertTrue(playerHand.getPlayableAssistants().size()==2);
+        assertEquals(playerHand.getPlayableAssistants().size(),2);
         assertTrue(playerHand.getPlayableAssistants().contains(assistants.get(8)));
         assertTrue(playerHand.getPlayableAssistants().contains(assistants.get(9)));
-        assertTrue(playerHand.size()==2);
+        assertEquals(playerHand.size(),2);
         playerHand.remove(assistants.get(8));
         playerHand.remove(assistants.get(9));
-        assertTrue(playerHand.getPlayableAssistants().size()==0);
+        assertEquals(playerHand.getPlayableAssistants().size(),0);
 
     }
 
@@ -113,11 +113,33 @@ public class AssistantsTest
     @Test
     public void assistantValuesTest(){
         Assistant assistant= new Assistant(AssistantName.ASSISTANT10);
-        assertTrue(assistant.getValue()==10);
-        assertTrue(assistant.getMotherNatureMove()==5);
+        assertEquals(10,assistant.getValue());
+        assertEquals(5,assistant.getMotherNatureMove());
         assistant= new Assistant(AssistantName.ASSISTANT1);
-        assertTrue(assistant.getValue()==1);
-        assertTrue(assistant.getMotherNatureMove()==1);
+        assertEquals(1,assistant.getValue());
+        assertEquals(1,assistant.getMotherNatureMove());
+
+    }
+
+    /**
+     * testing player methods to use asssistants
+     */
+    @Test
+    public void playerAssistantTest(){
+
+        List<Assistant> assistants= Assistant.getEveryAssistant();
+
+        Player p1= new Player("Anna");
+        p1.setAssistants(assistants);
+        Player p2= new Player("Bob",assistants);
+
+        assertTrue(p1.playAssistant(assistants.get(3)));
+        assertEquals(p1.getMotherNatureMaxMove(),assistants.get(3).getMotherNatureMove());
+        assertEquals(p1.getPlayerPriority(),assistants.get(3).getValue());
+
+        assertFalse(p2.playAssistant(assistants.get(3)));
+        assertEquals(p2.getMotherNatureMaxMove(),0);
+        assertEquals(p2.getPlayerPriority(),0);
 
     }
 

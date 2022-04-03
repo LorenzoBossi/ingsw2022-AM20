@@ -1,15 +1,17 @@
-package it.polimi.ingsw.model;
+package it.polimi.ingsw.model.characterCards;
+
+import it.polimi.ingsw.model.*;
 
 import java.util.List;
 
-public class NoTowerInfluence implements InfluenceStrategy {
+public class NoColorInfluence implements InfluenceStrategy {
     Player currPlayer;
 
 
     /**
      * Constructor
      */
-    public NoTowerInfluence(){
+    public NoColorInfluence(){
         super();
         this.currPlayer = null;
     }
@@ -31,8 +33,12 @@ public class NoTowerInfluence implements InfluenceStrategy {
     public int calculateInfluence(Player selectedPlayer, Island island, ProfessorManager professorManager) {
         List<Color> professorsOwned = professorManager.getProfessorsOwnedBy(selectedPlayer);
         int influence = 0;
-        for(Color c: professorsOwned)
-            influence += island.getSelectedStudents(c);
+        for (Color c : professorsOwned) {
+            if (c != currPlayer.getPlayerChoice().getSelectedColor())
+                influence += island.getSelectedStudents(c);
+        }
+        if (selectedPlayer.equals(island.getOwner()))
+            influence += island.getNumberOfTowers();
         return influence;
     }
 
