@@ -66,6 +66,7 @@ import static org.junit.jupiter.api.Assertions.*;
             Island island= game.getArchipelago().getIsland(4);
             Color selectedColor=monk.getStudents().get(1);
             selection.add(selectedColor);
+            assertTrue(monk.getStudents().contains(selection.get(0)));
 
             p1.getPlayerChoice().selectStudents(selection);
             p1.getPlayerChoice().selectIsland(island);
@@ -73,7 +74,6 @@ import static org.junit.jupiter.api.Assertions.*;
             initialNumber=island.getSelectedStudents(selectedColor);
 
             monk.activateEffect(game);
-
 
             assertEquals(island.getSelectedStudents(selectedColor),initialNumber+1);
         }
