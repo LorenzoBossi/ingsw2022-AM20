@@ -1,10 +1,9 @@
 package it.polimi.ingsw.model;
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 
 
-import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
     private Player player = new Player("matteo");

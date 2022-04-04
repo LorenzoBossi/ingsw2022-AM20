@@ -104,7 +104,7 @@ public class UpdateInfluenceTest {
         island.addStudents(Color.PINK, 6);
         island.addStudents(Color.YELLOW, 10);
         game.updateInfluence(island);
-        assertEquals(11, player2.getPlayerBoard().getNumberTower());
+        assertEquals(8, player2.getPlayerBoard().getNumberTower());
         assertEquals(5, player1.getPlayerBoard().getNumberTower());
     }
 
