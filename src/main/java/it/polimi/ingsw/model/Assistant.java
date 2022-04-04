@@ -12,8 +12,8 @@ public class Assistant {
 
 
     public Assistant(AssistantName assistantName){
-    assistant=assistantName;
-    isPlayable=true;
+        assistant=assistantName;
+        isPlayable=true;
     }
 
 
