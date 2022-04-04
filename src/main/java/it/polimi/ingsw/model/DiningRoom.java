@@ -9,17 +9,31 @@ public class DiningRoom {
         this.students = new ArrayList<>(Arrays.asList(0,0,0,0,0));
     }
 
+    /**
+     * Method addStudent add a student on the dining room
+     * @param color select the table where the student will be placed
+     */
     public void addStudent(Color color){
         int indexColor = color.ordinal();
         students.set(indexColor,students.get(indexColor) + 1);
         if(isAddCoin(students.get(indexColor) + 1))
             System.out.println("Coin");
     }
+
+    /**
+     * Method addStudent add a student on the dining room
+     * @param indexColor select the table where the student will be placed
+     */
     public void addStudent(int indexColor){
         students.set(indexColor,students.get(indexColor) + 1 );
         if(isAddCoin(students.get(indexColor) + 1 ))
             System.out.println("Coin");
     }
+    /**
+     * Method getNumberOfStudent given a color returns the number of students of that color
+     * @param color chosen color
+     * @return number of students
+     */
     public int getNumberOfStudent(Color color){
         int indexColor = color.ordinal();
         return this.students.get(indexColor);
@@ -28,6 +42,12 @@ public class DiningRoom {
         return this.students.get(index);
     }
 
+    /**
+     * Method isAddCoin checks if the position on the dining room gives a coin to the player
+     * @param numOfStudents number of student on the table
+     * @return {@code true} if is a coin position,
+     *         {@code false} if is not a coin position
+     */
     private boolean isAddCoin(int numOfStudents){
         return numOfStudents % 3 == 0;
     }

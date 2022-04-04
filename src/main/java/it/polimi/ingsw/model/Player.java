@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Player {
 
     private final String nickname;
+    private List<Assistant> hand;
     private int playerPriority;
     private int motherNatureMaxMove;
     private int coins;
@@ -19,6 +20,7 @@ public class Player {
 
     public Player(String nickname) {
         this.nickname = nickname;
+        this.hand = new ArrayList<>();
         this.playerPriority = 0;
         this.motherNatureMaxMove = 0;
         this.coins = 1;
