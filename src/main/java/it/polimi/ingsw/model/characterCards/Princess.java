@@ -14,8 +14,8 @@ public class Princess extends WithStudents {
      */
     public Princess(Bag bag){
         super(2);
-        setNumberOfStudents(4);
-        setMaxSelection(1);
+        numberOfStudents=4;
+        maxSelection=1;
         setStudents(bag.getStudents(getNumberOfStudents()));
     }
 
@@ -26,10 +26,10 @@ public class Princess extends WithStudents {
     @Override
     public void activateEffect(Game game){
         List<Color> student= game.getCurrPlayer().getPlayerChoice().getSelectedStudents();
-        if(getStudents().contains(student)){
+        if(getStudents().contains(student.get(0))) {
             remove(student);
+            add(game.getBag().getStudents(1));
+            game.getCurrPlayer().getPlayerBoard().getDiningRoom().addStudent(student.get(0));
         }
-        add(game.getBag().getStudents(1));
-        game.getCurrPlayer().getPlayerBoard().getDiningRoom().addStudent(student.get(0));
     }
 }

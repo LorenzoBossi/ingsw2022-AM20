@@ -145,6 +145,7 @@ import static org.junit.jupiter.api.Assertions.*;
             List<Color> selectedStudent= new ArrayList<>();
             selectedStudent.add(princess.getStudents().get(2));
 
+            assertEquals(1,selectedStudent.size());
             p1.getPlayerChoice().selectStudents(selectedStudent);
             DiningRoom diningRoom=p1.getPlayerBoard().getDiningRoom();
 
@@ -153,7 +154,7 @@ import static org.junit.jupiter.api.Assertions.*;
             princess.activateEffect(game);
 
             assertEquals(diningRoom.getNumberOfStudent(selectedStudent.get(0)),1);
-
+            assertEquals(4,princess.getStudents().size());
         }
 
         @Test

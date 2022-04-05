@@ -13,8 +13,8 @@ public class Monk  extends WithStudents {
      */
     public Monk(Bag bag){
         super(1);
-        setNumberOfStudents(4);
-        setMaxSelection(1);
+        numberOfStudents=4;
+        maxSelection=1;
         setStudents(bag.getStudents(getNumberOfStudents()));
     }
 
