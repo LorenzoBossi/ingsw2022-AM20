@@ -66,6 +66,7 @@ import static org.junit.jupiter.api.Assertions.*;
             Island island= game.getArchipelago().getIsland(4);
             Color selectedColor=monk.getStudents().get(1);
             selection.add(selectedColor);
+            assertTrue(monk.getStudents().contains(selection.get(0)));
 
             p1.getPlayerChoice().selectStudents(selection);
             p1.getPlayerChoice().selectIsland(island);
@@ -73,7 +74,6 @@ import static org.junit.jupiter.api.Assertions.*;
             initialNumber=island.getSelectedStudents(selectedColor);
 
             monk.activateEffect(game);
-
 
             assertEquals(island.getSelectedStudents(selectedColor),initialNumber+1);
         }
@@ -145,6 +145,7 @@ import static org.junit.jupiter.api.Assertions.*;
             List<Color> selectedStudent= new ArrayList<>();
             selectedStudent.add(princess.getStudents().get(2));
 
+            assertEquals(1,selectedStudent.size());
             p1.getPlayerChoice().selectStudents(selectedStudent);
             DiningRoom diningRoom=p1.getPlayerBoard().getDiningRoom();
 
@@ -153,7 +154,7 @@ import static org.junit.jupiter.api.Assertions.*;
             princess.activateEffect(game);
 
             assertEquals(diningRoom.getNumberOfStudent(selectedStudent.get(0)),1);
-
+            assertEquals(4,princess.getStudents().size());
         }
 
         @Test

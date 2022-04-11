@@ -12,8 +12,8 @@ public class Jester extends WithStudents{
      */
     public Jester(Bag bag){
         super(1);
-        setNumberOfStudents(6);
-        setMaxSelection(3);
+        numberOfStudents=6;
+        maxSelection=3;
         setStudents(bag.getStudents(getNumberOfStudents()));
     }
 

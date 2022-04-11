@@ -5,8 +5,8 @@ import it.polimi.ingsw.model.Color;
 import java.util.List;
 
 public abstract class WithStudents extends CharacterCard {
-    private int numberOfStudents;
-    private int maxSelection;
+    protected int numberOfStudents;
+    protected int maxSelection;
     private List<Color> students;
 
     /**
@@ -32,19 +32,16 @@ public abstract class WithStudents extends CharacterCard {
         return students;
     }
 
-    protected void setNumberOfStudents(int numberOfStudents) {
-        this.numberOfStudents = numberOfStudents;
-    }
 
-    protected void setMaxSelection(int maxSelection) {
-        this.maxSelection = maxSelection;
-    }
+
+
 
     public void setStudents(List<Color> students) {
         this.students = students;
     }
     public void remove(List<Color> students){
-        this.students.removeAll(students);
+        for(Color color: students)
+            this.students.remove(color);
     }
     public void add(List<Color> students){
         this.students.addAll(students);

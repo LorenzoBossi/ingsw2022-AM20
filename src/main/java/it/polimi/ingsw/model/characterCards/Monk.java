@@ -13,8 +13,8 @@ public class Monk  extends WithStudents {
      */
     public Monk(Bag bag){
         super(1);
-        setNumberOfStudents(4);
-        setMaxSelection(1);
+        numberOfStudents=4;
+        maxSelection=1;
         setStudents(bag.getStudents(getNumberOfStudents()));
     }
 
@@ -25,7 +25,7 @@ public class Monk  extends WithStudents {
     @Override
     public void activateEffect(Game game){
         List<Color> student= game.getCurrPlayer().getPlayerChoice().getSelectedStudents();
-        if(getStudents().contains(student)){
+        if(getStudents().contains(student.get(0))){
             remove(student);
         }
         add(game.getBag().getStudents(1));
