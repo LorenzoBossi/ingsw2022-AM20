@@ -6,11 +6,9 @@ public class ProfCard extends CharacterCard {
 
     /**
      * Constructor
-     *
-     * @param coinsRequired the coins required to activate the card
      */
-    public ProfCard(int coinsRequired) {
-        super(coinsRequired);
+    public ProfCard() {
+        super(CharacterName.PROF_CARD, 2);
     }
 
     /**

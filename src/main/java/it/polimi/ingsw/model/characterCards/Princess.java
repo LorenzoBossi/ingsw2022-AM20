@@ -13,7 +13,7 @@ public class Princess extends WithStudents {
      * @param bag the bag of the game to put students on the card
      */
     public Princess(Bag bag){
-        super(2);
+        super(CharacterName.PRINCESS, 2);
         numberOfStudents=4;
         maxSelection=1;
         setStudents(bag.getStudents(getNumberOfStudents()));

@@ -9,11 +9,9 @@ public class Banker extends CharacterCard {
 
     /**
      * Constructor
-     *
-     * @param coinsRequired the coins required to activate the card
      */
-    public Banker(int coinsRequired) {
-        super(coinsRequired);
+    public Banker() {
+        super(CharacterName.BANKER, 3);
     }
 
     /**

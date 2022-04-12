@@ -8,11 +8,9 @@ public class Musician extends CharacterCard {
 
     /**
      * Constructor
-     *
-     * @param coinsRequired the coins required to activate the card
      */
-    public Musician(int coinsRequired) {
-        super(coinsRequired);
+    public Musician() {
+        super(CharacterName.MUSICIAN, 1);
     }
 
     /**

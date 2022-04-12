@@ -4,26 +4,16 @@ import java.util.*;
 public class IslandsManager {
     private List<Island> islands;
     private int motherNature;
-    private Island currIsland;
 
 
     /**
      * Constructor
      */
     public IslandsManager(){
-        islands = new ArrayList<Island>();
+        islands = new ArrayList<>();
         for(int i = 0; i < 12; i++)
             islands.add(new Island());
         motherNature = 0;
-        currIsland = islands.get(0);
-    }
-
-    public void setCurrIsland(Island currIsland) {
-        this.currIsland = currIsland;
-    }
-
-    public Island getCurrIsland() {
-        return currIsland;
     }
 
 
@@ -40,12 +30,15 @@ public class IslandsManager {
         else{
             motherNature = motherNatureMove + this.motherNature;
         }
-        setCurrIsland(getIsland(motherNatureMove));
         return getIsland(motherNature);
     }
 
     public int getMotherNature() {
         return motherNature;
+    }
+
+    public void moveMotherNatureOnIsland(Island isl){
+        motherNature = islands.indexOf(isl);
     }
 
     public Island getIsland(int islandPosition){
@@ -92,7 +85,7 @@ public class IslandsManager {
                     island.addStudents(c, isl.getSelectedStudents(c));
                 }
                 islands.remove(isl);
-                motherNature = islands.indexOf(island);
+                moveMotherNatureOnIsland(island);
             }
         }
     }
@@ -107,6 +100,11 @@ public class IslandsManager {
         return islands.size();
     }
 
+
+    /**
+     * Method getNumberOfBanCards checks all the islands and returns the number of ban cards on the islands
+     * @return the total number of ban cards on the islands
+     */
     public int getNumberOfBanCards() {
         int banCards = 0;
         for(Island isl : islands)

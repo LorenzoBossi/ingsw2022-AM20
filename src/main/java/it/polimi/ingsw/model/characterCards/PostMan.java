@@ -8,11 +8,9 @@ public class PostMan extends CharacterCard {
 
     /**
      * Constructor
-     *
-     * @param coinsRequired the coins required to activate the card
      */
-    public PostMan(int coinsRequired) {
-        super(coinsRequired);
+    public PostMan() {
+        super(CharacterName.POSTMAN, 1);
     }
 
     /**

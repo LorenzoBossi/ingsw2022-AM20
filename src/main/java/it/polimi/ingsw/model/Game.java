@@ -1,7 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.characterCards.*;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Game {
     private List<Cloud> clouds;
@@ -12,6 +16,7 @@ public class Game {
     private final Bag bag;
     private Player currPlayer;
     private InfluenceStrategy influenceStrategy;
+    private List<CharacterCard> characterCards;
 
     /**
      * Constructor
@@ -25,6 +30,7 @@ public class Game {
         bag = new Bag();
         currPlayer = null;
         influenceStrategy = new StandardInfluence();
+        characterCards = new ArrayList<>();
     }
 
     public Bag getBag() {
@@ -49,6 +55,10 @@ public class Game {
 
     public Player getCurrPlayer() {
         return currPlayer;
+    }
+
+    public List<CharacterCard> getCharacterCards() {
+        return characterCards;
     }
 
     public void setCurrPlayer(Player currPlayer) {
@@ -143,41 +153,135 @@ public class Game {
 
 
     /**
-     * Method updateInfluence checks per each player the influence on the specified island, change the island's owner
-     * if necessary and moves the towers consequently
+     * Method calculateIslandNewOwner calculates the new island owner
      *
-     * @param island the island on which I want to update influence
+     * @param island the island on which I want to check the influence
+     * @return the new island's owner or null if the owner doesn't change
      */
-    public void updateInfluence(Island island){
-        Player currentOwner = null;
+    public Player calculateIslandNewOwner(Island island) {
+        Player currOwner = null;
         int maxInfluence = 0;
         int influence = 0;
         for(Player player : players){
             influence = influenceStrategy.calculateInfluence(player, island, professorManager);
             if(influence > maxInfluence){
                 maxInfluence = influence;
-                currentOwner = player;
+                currOwner = player;
             }
-            else if(influence == maxInfluence)
-                currentOwner = null;
+            else if(influence == maxInfluence){
+                currOwner = null;
+            }
         }
-        if(island.getOwner() == null){
-            if(currentOwner != null){
+        return currOwner;
+    }
+
+
+    /**
+     * Method updateInfluence checks per each player the influence on the specified island, change the island's owner
+     * if necessary and moves the towers consequently
+     *
+     * @param island the island on which I want to update influence
+     */
+    public void updateInfluence(Island island) {
+        Player currentOwner = calculateIslandNewOwner(island);
+
+        if (currentOwner != null) {
+            if (island.getOwner() == null) {
                 island.setOwner(currentOwner);
                 currentOwner.getPlayerBoard().removeTowers(1);
                 island.setNumberOfTowers(1);
                 archipelago.mergeIslands(island);
+            } else {
+                if (!currentOwner.equals(island.getOwner())) {
+                    island.getOwner().getPlayerBoard().addTowers(island.getNumberOfTowers());
+                    currentOwner.getPlayerBoard().removeTowers(island.getNumberOfTowers());
+                    island.setOwner(currentOwner);
+                    archipelago.mergeIslands(island);
+                }
             }
         }
-        else{
-            if(currentOwner != null && !currentOwner.equals(island.getOwner())){
-                island.getOwner().getPlayerBoard().addTowers(island.getNumberOfTowers());
-                currentOwner.getPlayerBoard().removeTowers(island.getNumberOfTowers());
-                island.setOwner(currentOwner);
-                archipelago.mergeIslands(island);
-            }
-        }
+
         this.setInfluenceStrategy(new StandardInfluence());
+    }
+
+
+    /**
+     * Method initCharacterCards initializes the character cards for the game;
+     */
+    public void initCharacterCards() {
+        List<CharacterName> extractCards = randomCharacterExtraction();
+
+        for(CharacterName extractCard : extractCards)
+                switch (extractCard) {
+                    case BANKER:
+                        characterCards.add(new Banker());
+                        break;
+                    case POSTMAN:
+                        characterCards.add(new PostMan());
+                        break;
+                    case PROF_CARD:
+                        characterCards.add(new ProfCard());
+                        break;
+                    case KNIGHT:
+                        characterCards.add(new InfluenceCard(CharacterName.KNIGHT, 2, new MorePointsInfluence()));
+                        break;
+                    case CENTAUR:
+                        characterCards.add(new InfluenceCard(CharacterName.CENTAUR, 3, new NoTowerInfluence()));
+                        break;
+                    case SELLER:
+                        characterCards.add(new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence()));
+                        break;
+                    case HERBALIST:
+                        characterCards.add(new BanCharacter());
+                        break;
+                    case VASSAL:
+                        characterCards.add(new Vassal());
+                        break;
+                    case MUSICIAN:
+                        characterCards.add(new Musician());
+                        break;
+                    case JESTER:
+                        characterCards.add(new Jester(bag));
+                        break;
+                    case PRINCESS:
+                        characterCards.add(new Princess(bag));
+                        break;
+                    case MONK:
+                        characterCards.add(new Monk(bag));
+                        break;
+                }
+    }
+
+
+    /**
+     * Method randomCharacterExtraction takes randomly 3 character cards
+     *
+      * @return the 3 character cards extracted
+     */
+    public List<CharacterName> randomCharacterExtraction(){
+        int numberOfCharacter = 12;
+        List<CharacterName> characters = Arrays.asList(CharacterName.values());
+        List<CharacterName> extractCharacters = new ArrayList<>();
+
+        Random rand = new Random();
+        CharacterName extractCharacter;
+        boolean find;
+
+        for(int i = 0; i < 3; i++){
+            find = true;
+            while(find) {
+
+                extractCharacter = characters.get(rand.nextInt(numberOfCharacter));
+
+                if (!extractCharacters.contains(extractCharacter)) {
+                    extractCharacters.add(extractCharacter);
+                    numberOfCharacter--;
+                    find = false;
+                }
+
+            }
+        }
+        return extractCharacters;
     }
 
 }

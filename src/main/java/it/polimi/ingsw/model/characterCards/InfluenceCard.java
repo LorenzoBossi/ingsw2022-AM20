@@ -12,8 +12,8 @@ public class InfluenceCard extends CharacterCard {
      * @param coinsRequired the coins required to activate the card
      * @param influenceStrategy the strategy to calculate influence
      */
-    public InfluenceCard(int coinsRequired,InfluenceStrategy influenceStrategy){
-        super(coinsRequired);
+    public InfluenceCard(CharacterName name, int coinsRequired,InfluenceStrategy influenceStrategy){
+        super(name, coinsRequired);
         this.influenceStrategy = influenceStrategy;
     }
 
