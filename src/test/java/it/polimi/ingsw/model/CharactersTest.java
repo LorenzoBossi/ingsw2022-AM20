@@ -40,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.*;
         @Test
         public void bankerTest(){
 
-            CharacterCard banker = new Banker(3);
+            CharacterCard banker = new Banker();
             p1.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
 
             p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
@@ -106,7 +106,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         @Test
         public void postManTest(){
-            CharacterCard postman = new PostMan(1);
+            CharacterCard postman = new PostMan();
 
             p1.playAssistant(game.getAssistantByName(AssistantName.ASSISTANT3));
             assertEquals(p1.getMotherNatureMaxMove(),2);
@@ -119,7 +119,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         @Test
         public void profCardTest(){
-            CharacterCard profCard= new ProfCard(2);
+            CharacterCard profCard= new ProfCard();
 
             p1.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
             if(game.getProfessorManager().canTakeProfessor(p1,Color.BLUE))
@@ -159,7 +159,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         @Test
         public void MusicianTest(){
-            CharacterCard musician = new Musician(1);
+            CharacterCard musician = new Musician();
 
             Entrance entrance= p1.getPlayerBoard().getEntrance();
             DiningRoom diningRoom=p1.getPlayerBoard().getDiningRoom();

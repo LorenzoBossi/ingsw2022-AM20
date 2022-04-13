@@ -6,7 +6,6 @@ public class PlayerHand {
 
 
     public PlayerHand(List<Assistant> assistants){
-
         assistantCards = new LinkedList<>();
         if(assistants!=null) {
             assistantCards.addAll(assistants);

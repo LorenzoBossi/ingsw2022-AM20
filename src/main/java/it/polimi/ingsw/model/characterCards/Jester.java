@@ -11,7 +11,7 @@ public class Jester extends WithStudents{
      * @param bag the bag of the game to put students on the card
      */
     public Jester(Bag bag){
-        super(1);
+        super(CharacterName.JESTER, 1);
         numberOfStudents=6;
         maxSelection=3;
         setStudents(bag.getStudents(getNumberOfStudents()));

@@ -14,8 +14,8 @@ public abstract class WithStudents extends CharacterCard {
      *
      * @param coinsRequired the coins required to activate the card
      */
-    public WithStudents(int coinsRequired) {
-        super(coinsRequired);
+    public WithStudents(CharacterName name, int coinsRequired) {
+        super(name, coinsRequired);
     }
 
 

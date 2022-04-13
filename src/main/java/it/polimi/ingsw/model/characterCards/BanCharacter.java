@@ -9,11 +9,9 @@ public class BanCharacter extends CharacterCard {
 
     /**
      * Constructor
-     *
-     * @param coinsRequired the coins required to activate the card
      */
-    public BanCharacter(int coinsRequired) {
-        super(coinsRequired);
+    public BanCharacter() {
+        super(CharacterName.HERBALIST, 2);
         banCards = INITIAL_BANCARDS;
     }
 

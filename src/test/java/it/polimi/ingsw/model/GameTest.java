@@ -44,4 +44,14 @@ public class GameTest {
         assertEquals(AssistantName.ASSISTANT1, assistant.getAssistant());
     }
 
+    @Test
+    public void initCharacterTest(){
+        game.getBag().fillBag(12);
+        game.initCharacterCards();
+        assertEquals(3, game.getCharacterCards().size());
+        System.out.println(game.getCharacterCards().get(0).getName());
+        System.out.println(game.getCharacterCards().get(1).getName());
+        System.out.println(game.getCharacterCards().get(2).getName());
+    }
+
 }

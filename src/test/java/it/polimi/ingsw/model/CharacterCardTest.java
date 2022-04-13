@@ -35,7 +35,7 @@ public class CharacterCardTest {
 
     @Test
     public void VassalEffectTest() {
-        CharacterCard card = new Vassal(3);
+        CharacterCard card = new Vassal();
         assertNull(island.getOwner());
         card.activateEffect(game);
         assertEquals(player1, island.getOwner());
@@ -43,7 +43,7 @@ public class CharacterCardTest {
 
     @Test
     public void BanCardEffectTest() {
-        CharacterCard card = new BanCharacter(3);
+        CharacterCard card = new BanCharacter();
         assertEquals(0, island.getBanCards());
         card.activateEffect(game);
         assertEquals(1, island.getBanCards());
@@ -51,7 +51,7 @@ public class CharacterCardTest {
 
     @Test
     public void InfluenceCardNoTowerEffectTest() {
-        CharacterCard card = new InfluenceCard(3, new NoTowerInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.CENTAUR,3, new NoTowerInfluence());
 
         island.setOwner(player1);
         professorManager.takeProfessor(player2, Color.PINK);
@@ -65,7 +65,7 @@ public class CharacterCardTest {
 
     @Test
     public  void InfluenceCardNoColorEffectTest() {
-        CharacterCard card = new InfluenceCard(3, new NoColorInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence());
 
         island.setOwner(player1);
         professorManager.takeProfessor(player2, Color.PINK);
@@ -79,7 +79,7 @@ public class CharacterCardTest {
 
     @Test
     public void InfluenceCard2MorePointsEffectTest() {
-        CharacterCard card = new InfluenceCard(3, new MorePointsInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.KNIGHT, 3, new MorePointsInfluence());
 
         island.setOwner(player2);
         professorManager.takeProfessor(player2, Color.PINK);
@@ -93,7 +93,7 @@ public class CharacterCardTest {
 
     @Test
     public void resetGameStrategyTest(){
-        CharacterCard card = new InfluenceCard(3, new NoColorInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence());
 
         island.setOwner(player1);
         professorManager.takeProfessor(player2, Color.PINK);
@@ -110,8 +110,7 @@ public class CharacterCardTest {
 
     @Test
     public void IncreaseCoinTest() {
-        CharacterCard card = new Vassal(3);
-        assertTrue(card.isFirstTimePlayed());
+        CharacterCard card = new Vassal();
         card.activateEffect(game);
         assertEquals(4, card.getCoinsRequired());
         card.activateEffect(game);

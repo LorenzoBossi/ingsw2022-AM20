@@ -12,7 +12,7 @@ public class Monk  extends WithStudents {
      * @param bag the bag of the game to put students on the card
      */
     public Monk(Bag bag){
-        super(1);
+        super(CharacterName.MONK, 1);
         numberOfStudents=4;
         maxSelection=1;
         setStudents(bag.getStudents(getNumberOfStudents()));
