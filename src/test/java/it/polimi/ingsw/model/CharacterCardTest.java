@@ -17,7 +17,7 @@ public class CharacterCardTest {
 
     @BeforeEach
     public void init() {
-        game = new Game();
+        game = new Game(2);
         game.addPlayer("Paolo");
         game.addPlayer("Simone");
         player1 = game.getPlayers().get(0);

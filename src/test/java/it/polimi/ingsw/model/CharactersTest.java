@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         @BeforeEach
         public void init(){
-            game= new Game();
+            game= new Game(3);
             game.getBag().fillBag(30);
             game.addPlayer("Ada");
             game.addPlayer("Billy");
