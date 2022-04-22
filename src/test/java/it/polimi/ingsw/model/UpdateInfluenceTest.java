@@ -21,7 +21,7 @@ public class UpdateInfluenceTest {
 
     @BeforeEach
     public void init() {
-        game = new Game();
+        game = new Game(3);
         game.addPlayer("Federico");
         game.addPlayer("Giacomo");
         game.addPlayer("Carlo");
@@ -112,13 +112,15 @@ public class UpdateInfluenceTest {
         Island island = archipelago.getIsland(0);
         Island island1 = archipelago.getIsland(11);
         Island island2 = archipelago.getIsland(1);
+
+        island1.addStudents(Color.YELLOW,10);
         island2.addStudents(Color.GREEN, 10);
         island2.setOwner(player1);
         island1.setOwner(player1);
         island.setOwner(player2);
         island.setNumberOfTowers(3);
         island.addStudents(Color.PINK, 6);
-        island.addStudents(Color.YELLOW, 10);
+        island.addStudents(Color.YELLOW, 11);
         game.updateInfluence(island);
         assertEquals(10, archipelago.getNumberOfIslands());
         assertEquals(3, island.getNumberOfTowers());

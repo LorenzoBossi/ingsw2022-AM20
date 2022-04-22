@@ -12,6 +12,7 @@ public class Player {
     private PlayerHand playerHand;
     private final PlayerBoard playerBoard;
     private PlayerChoice playerChoice;
+    private int availableMoves;
 
     /**
      * Constructor
@@ -27,6 +28,7 @@ public class Player {
         this.playerHand = new PlayerHand(null);
         this.playerBoard = new PlayerBoard();
         this.playerChoice = new PlayerChoice();
+        this.availableMoves=0;
     }
 
     /**
@@ -106,6 +108,14 @@ public class Player {
 
     public void addCoin(){
         this.coins++;
+    }
+
+    public int getAvailableMoves() {
+        return availableMoves;
+    }
+
+    public void setAvailableMoves(int availableMoves) {
+        this.availableMoves = availableMoves;
     }
 
     public void useCoins(int payment){

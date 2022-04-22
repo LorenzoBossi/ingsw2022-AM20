@@ -2,35 +2,73 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characterCards.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class Game {
     private List<Cloud> clouds;
     private final IslandsManager archipelago;
     private ProfessorManager professorManager;
-    private List<Player> players;
     private final List<Assistant> assistants;
     private final Bag bag;
-    private Player currPlayer;
     private InfluenceStrategy influenceStrategy;
     private List<CharacterCard> characterCards;
+    private Phase phase;
+    private Player currPlayer;
+    private List<Player> players;
+    private int numberOfPlayers;
+    private List<Player> actionOrder;
+    private Player firstPlayer;
 
     /**
-     * Constructor
+     * Constructor.
+     * Put students on islands, fills the bag and the clouds.
+     * @param numberOfPlayers The number of players of the game. ( 2 or 3 )
      */
-    public Game() {
-        clouds = new ArrayList<>();
+    public Game(int numberOfPlayers) {
+        this.numberOfPlayers=numberOfPlayers;
+        bag = new Bag();
         archipelago = new IslandsManager();
+        initIslands();
+        bag.fillBag(24);
+        clouds = new ArrayList<>();
         professorManager = new ProfessorManager();
         players = new ArrayList<>();
         assistants= Assistant.getEveryAssistant();
-        bag = new Bag();
         currPlayer = null;
         influenceStrategy = new StandardInfluence();
         characterCards = new ArrayList<>();
+        phase=Phase.LOBBY;
+        actionOrder=new ArrayList<>();
+        addClouds(numberOfPlayers);
+        refillClouds();
+    }
+
+    /**
+     * Put the initial students on every island except the island of mother nature and the opposite one
+     *
+     */
+    private void initIslands(){
+        int numberOfIslands,oppositeOfMotherNature;
+        int i;
+        Island island;
+        Color student;
+
+        numberOfIslands=archipelago.getNumberOfIslands();
+        oppositeOfMotherNature=archipelago.getNumberOfIslands()/2 - 1;
+        bag.fillBag(2);
+
+        for(i = 1; i < oppositeOfMotherNature; i++)
+        {
+            student=bag.getStudents(1).get(0);
+            island= archipelago.getIsland(i);
+            island.addStudent(student);
+        }
+        for(i = oppositeOfMotherNature+1; i < numberOfIslands; i++)
+        {
+            student=bag.getStudents(1).get(0);
+            island= archipelago.getIsland(i);
+            island.addStudent(student);
+        }
     }
 
     public Bag getBag() {
@@ -61,6 +99,10 @@ public class Game {
         return characterCards;
     }
 
+    public Phase getPhase() {
+        return phase;
+    }
+
     public void setCurrPlayer(Player currPlayer) {
         this.currPlayer = currPlayer;
     }
@@ -69,6 +111,122 @@ public class Game {
         this.influenceStrategy = influenceStrategy;
     }
 
+    public void start(){
+        phase=Phase.PIANIFICATION;
+        firstPlayer=players.get(0);
+        currPlayer=firstPlayer;
+    }
+
+    /**
+     * update the current player and the phase of the game.
+     * During the action phase this methods resets the number of available moves of the current player
+     * according to the number of players of the game
+     */
+    public void nextPlayer(){
+        Player next;
+        if(phase==Phase.PIANIFICATION){
+            updateActionOrder();
+            next=getNextPianification();
+            if(next.equals(firstPlayer))
+                startActionPhase();
+            else
+                currPlayer=next;
+        }else if(phase==Phase.ACTION){
+            next=getNextAction();
+            if(next.equals(firstPlayer)) {
+                startPianificationPhase();
+            }
+            else {
+                currPlayer = next;
+                resetAvailableMoves(currPlayer);
+            }
+        }
+    }
+
+    /**
+     * Gets the next player in the Players Order (clockwise).
+     * @return The corrisponding player
+     */
+    private Player getNextPianification(){
+        int indexOfCurrentPlayer=players.indexOf(currPlayer);
+
+        if(indexOfCurrentPlayer==numberOfPlayers-1)
+            return players.get(0);
+        else
+            return players.get(indexOfCurrentPlayer+1);
+    }
+
+    /**
+     * insert the current player in the right place of the action order according to his priority
+     */
+    private void updateActionOrder(){
+        int position=0;
+        for(Player player : actionOrder){
+            if(player.getPlayerPriority()<=currPlayer.getPlayerPriority()){
+                position++;
+            }
+            else
+                break;
+        }
+
+        actionOrder.add(position,currPlayer);
+
+    }
+
+    /**
+     * Gets the next player in the Action Order.
+     * @return The corrisponding player
+     */
+    private Player getNextAction(){
+        int indexOfCurrentPlayer=actionOrder.indexOf(currPlayer);
+
+        if(indexOfCurrentPlayer==numberOfPlayers-1)
+            return actionOrder.get(0);
+        else
+            return actionOrder.get(indexOfCurrentPlayer+1);
+    }
+
+    private void startActionPhase(){
+        firstPlayer=actionOrder.get(0);
+        currPlayer=firstPlayer;
+        phase=Phase.ACTION;
+        resetAvailableMoves(currPlayer);
+    }
+
+    private void startPianificationPhase(){
+        refillClouds();
+        actionOrder.clear();
+        currPlayer=firstPlayer;
+        phase=Phase.PIANIFICATION;
+    }
+
+    /**
+     * refill every cloud with a number of students depending on the number of players in the game
+     */
+    private void refillClouds(){
+        if(numberOfPlayers==2){
+            for(Cloud cloud : clouds){
+                cloud.fill(bag.getStudents(3));
+            }
+        }else if(numberOfPlayers==3){
+            for(Cloud cloud : clouds){
+                cloud.fill(bag.getStudents(4));
+            }
+        }
+    }
+
+    /**
+     *resets the number of available moves of the current player
+     *according to the number of players of the game
+     * @param player the player to reset the number of moves
+     */
+    private void resetAvailableMoves(Player player){
+        if(numberOfPlayers==2){
+            player.setAvailableMoves(3);
+        }else if (numberOfPlayers==3){
+            player.setAvailableMoves(4);
+        }
+    }
 
     /**
      * Method isSameNickname checks if already exists a player with the chosen nickname
@@ -130,7 +288,7 @@ public class Game {
      *
      * @param numberOfClouds the number of the clouds that I wanted to add
      */
-    public void addClouds(int numberOfClouds){
+    private void addClouds(int numberOfClouds){
         for(int i = 0; i < numberOfClouds; i++)
             clouds.add(new Cloud());
     }
@@ -161,7 +319,7 @@ public class Game {
     public Player calculateIslandNewOwner(Island island) {
         Player currOwner = null;
         int maxInfluence = 0;
-        int influence = 0;
+        int influence;
         for(Player player : players){
             influence = influenceStrategy.calculateInfluence(player, island, professorManager);
             if(influence > maxInfluence){

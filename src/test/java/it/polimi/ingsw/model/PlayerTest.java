@@ -50,6 +50,4 @@ public class PlayerTest {
         assertFalse(player.isMotherNatureMoveLegit(0));
         assertFalse(player.isMotherNatureMoveLegit(5));
     }
-
-
 }
