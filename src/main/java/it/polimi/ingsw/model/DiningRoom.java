@@ -19,10 +19,11 @@ public class DiningRoom {
         int indexColor = color.ordinal();
         students.set(indexColor, students.get(indexColor) + 1);
         //if (isAddCoin(students.get(indexColor) + 1))
-            //System.out.println("Coin");
+        //System.out.println("Coin");
     }
 
     //Chiedere se serve effetivamente
+
     /**
      * Method addStudent add a student on the dining room
      *
@@ -31,9 +32,19 @@ public class DiningRoom {
     public void addStudent(int indexColor) {
         students.set(indexColor, students.get(indexColor) + 1);
         //if (isAddCoin(students.get(indexColor) + 1))
-            //System.out.println("Coin");
+        //System.out.println("Coin");
     }
 
+    /**
+     * Method refillDining add students to the dining room from a list of color
+     *
+     * @param students list of color
+     */
+    public void refillDining(List<Color> students) {
+        while (!students.isEmpty()) {
+            addStudent(students.remove(0));
+        }
+    }
 
     /**
      * Method getNumberOfStudent given a color returns the number of students of that color
@@ -72,5 +83,45 @@ public class DiningRoom {
         if (students.get(index) > 0) {
             students.set(index, students.get(index) - 1);
         }
+    }
+
+    /**
+     * Method isPresent notifies if there is at least one student of that color in the diningRoom
+     *
+     * @param student specify the chosen color
+     * @return {@code true} if there is at least one,
+     * {@code false} else
+     */
+    public boolean isPresent(Color student) {
+        int indexColor = student.ordinal();
+        return students.get(indexColor) >= 1;
+    }
+
+    /**
+     * Method isPresent notifies if there are at least the student in the input list in the diningRoom
+     *
+     * @param student specify the input list of color
+     * @return {@code true} if there are,
+     * {@code false} else
+     */
+    public boolean isPresent(List<Color> student) {
+        List<Integer> stud = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
+        int index = 0;
+
+        for (Color color : student)
+            stud.set(color.ordinal(), stud.get(color.ordinal()) + 1);
+
+        for (int intcolor : stud) {
+            if (this.students.get(index) < intcolor)
+                return false;
+            index += 1;
+        }
+
+        return true;
+
+    }
+
+    public List<Integer> getStudents() {
+        return students;
     }
 }

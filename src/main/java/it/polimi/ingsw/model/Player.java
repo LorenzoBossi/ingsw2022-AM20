@@ -27,7 +27,7 @@ public class Player {
         this.hand = new ArrayList<>();
         this.playerPriority = 0;
         this.motherNatureMaxMove = 0;
-        this.coins = 1;
+        this.coins = 0;
         this.playerHand = new PlayerHand(null);
         this.playerBoard = new PlayerBoard();
         this.playerChoice = new PlayerChoice();

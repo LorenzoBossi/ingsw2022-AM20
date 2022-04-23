@@ -24,16 +24,12 @@ public class BoardTest {
     @Test
     public void Prof(){
         board.changeProfessor(Color.RED);
-
         assertTrue(board.getProfessor(Color.RED));
         board.changeProfessor(Color.GREEN);
-
         assertTrue(board.getProfessor(Color.GREEN));
         board.changeProfessor(Color.RED);
-
         assertFalse(board.getProfessor(Color.RED));
         board.changeProfessor(Color.BLUE);
-
         assertTrue(board.getProfessor(Color.BLUE));
 
     }
