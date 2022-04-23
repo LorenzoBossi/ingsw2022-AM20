@@ -33,7 +33,7 @@ public class PlayerTest {
 
     @Test
     public void Coins(){
-        assertEquals(1,player.getCoins());
+        assertEquals(0,player.getCoins());
         player.setCoins(24);
         assertEquals(24,player.getCoins());
         player.addCoin();
