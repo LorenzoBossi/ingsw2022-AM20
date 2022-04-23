@@ -6,14 +6,14 @@ import java.util.List;
 public class Assistant {
 
 
-    private boolean isPlayable;
+    private boolean isAlreadyPlayed;
     private AssistantName assistant;
 
 
 
     public Assistant(AssistantName assistantName){
     assistant=assistantName;
-    isPlayable=true;
+    isAlreadyPlayed=false;
     }
 
 
@@ -22,19 +22,19 @@ public class Assistant {
      * returns false if the assistant has already been played during the current pianification phase
      */
     public boolean isAlreadyPlayed(){
-        return !isPlayable;
+        return isAlreadyPlayed;
     }
 
 
 
     /**
      * sets the assistant state to playable or not playable
-     * @param playability
-     * if true sets the assistant state to playable
-     * if false sets the assistant state to not playable (already played by another player)
+     * @param isPlayed
+     * if true sets the assistant has been played during the last round
+     * if false sets the assistant has not been played during the last round
      */
-    public void setPlayability(boolean playability){
-        isPlayable=playability;
+    public void setAlreadyPlayed(boolean isPlayed){
+        isAlreadyPlayed=isPlayed;
     }
 
     public AssistantName getAssistant() {

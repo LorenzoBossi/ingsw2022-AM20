@@ -124,7 +124,6 @@ public class UpdateInfluenceTest {
         game.updateInfluence(island);
         assertEquals(10, archipelago.getNumberOfIslands());
         assertEquals(3, island.getNumberOfTowers());
-        assertEquals(10, island.getSelectedStudents(Color.GREEN));
     }
 
 }

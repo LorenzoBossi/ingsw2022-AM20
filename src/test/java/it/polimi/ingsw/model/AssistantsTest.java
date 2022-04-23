@@ -80,7 +80,7 @@ public class AssistantsTest
         playerHand.remove(assistants.get(8));
         playerHand.remove(assistants.get(9));
         assertTrue(assistants.get(9).isAlreadyPlayed());
-        assistants.get(9).setPlayability(true);
+        assistants.get(9).setAlreadyPlayed(false);
         playerHand.remove(assistants.get(9));
         assertFalse(assistants.get(9).isAlreadyPlayed());
 
@@ -93,10 +93,10 @@ public class AssistantsTest
         playerHand.remove(assistants.get(5));
         playerHand.remove(assistants.get(6));
         playerHand.remove(assistants.get(7));
-        assistants.get(8).setPlayability(false);
+        assistants.get(8).setAlreadyPlayed(true);
         assertEquals(playerHand.getPlayableAssistants().size(),1);
         assertEquals(playerHand.size(),2);
-        assistants.get(9).setPlayability(false);
+        assistants.get(9).setAlreadyPlayed(true);
         assertEquals(playerHand.getPlayableAssistants().size(),2);
         assertTrue(playerHand.getPlayableAssistants().contains(assistants.get(8)));
         assertTrue(playerHand.getPlayableAssistants().contains(assistants.get(9)));
@@ -143,4 +143,40 @@ public class AssistantsTest
 
     }
 
+    @Test
+    public void canPlayTest(){
+        AssistantName[] assistantNames= AssistantName.values();
+        List<Assistant> assistants= new ArrayList<>();
+
+        for(AssistantName assistantName: assistantNames)
+            assistants.add(new Assistant(assistantName));
+
+        PlayerHand playerHand=new PlayerHand(assistants);
+
+        playerHand.remove(assistants.get(0));
+
+        assertFalse(playerHand.canPlay(assistants.get(0)));
+        assistants.get(0).setAlreadyPlayed(false);
+        assertFalse(playerHand.canPlay(assistants.get(0)));
+
+        assertTrue(playerHand.canPlay(assistants.get(1)));
+
+        playerHand.remove(assistants.get(1));
+        playerHand.remove(assistants.get(2));
+        playerHand.remove(assistants.get(3));
+        playerHand.remove(assistants.get(4));
+        playerHand.remove(assistants.get(5));
+        playerHand.remove(assistants.get(6));
+        playerHand.remove(assistants.get(7));
+        playerHand.remove(assistants.get(8));
+        //now every card has been played except 9
+
+
+        assertTrue(playerHand.canPlay(assistants.get(9)));
+
+        assistants.get(9).setAlreadyPlayed(true);
+
+        assertTrue(playerHand.canPlay(assistants.get(9)));
+
+    }
 }

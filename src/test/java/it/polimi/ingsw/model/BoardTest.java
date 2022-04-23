@@ -24,16 +24,16 @@ public class BoardTest {
     @Test
     public void Prof(){
         board.changeProfessor(Color.RED);
-        System.out.println(board.getProfessor(Color.RED));
+
         assertTrue(board.getProfessor(Color.RED));
         board.changeProfessor(Color.GREEN);
-        System.out.println(board.getProfessor(Color.GREEN));
+
         assertTrue(board.getProfessor(Color.GREEN));
         board.changeProfessor(Color.RED);
-        System.out.println(board.getProfessor(Color.RED));
+
         assertFalse(board.getProfessor(Color.RED));
         board.changeProfessor(Color.BLUE);
-        System.out.println(board.getProfessor(Color.BLUE));
+
         assertTrue(board.getProfessor(Color.BLUE));
 
     }

@@ -19,7 +19,7 @@ public class PlayerHand {
      */
     public void remove(Assistant assistantCard){
         if(assistantCards.contains(assistantCard)) {
-            assistantCard.setPlayability(false);
+            assistantCard.setAlreadyPlayed(true);
             assistantCards.remove(assistantCard);
         }
     }
@@ -41,12 +41,8 @@ public class PlayerHand {
      */
     public List<Assistant> getPlayableAssistants(){
         List<Assistant> playable= new LinkedList<>();
-        boolean everyCardPlayed=true;
 
-        for(Assistant a : assistantCards){
-            if(!a.isAlreadyPlayed())
-                everyCardPlayed=false;
-        }
+        boolean everyCardPlayed=isEveryCardAlreadyPlayed();
 
         if(everyCardPlayed){
             playable.addAll(assistantCards);
@@ -59,6 +55,46 @@ public class PlayerHand {
 
         return playable;
     }
+
+    /**
+     * tells if the player can play the specified assistant
+     * @param assistant
+     * @return
+     * {@code true} the player can play the specified assistant
+     * {@code false} the player can not play the specified assistant
+     */
+    public boolean canPlay(Assistant assistant){
+        if(!assistantCards.contains(assistant))
+            return false;
+
+        boolean isEveryCardPlayed=isEveryCardAlreadyPlayed();
+
+        if(isEveryCardPlayed){
+            return true;
+        }else{
+            if(assistant.isAlreadyPlayed())
+                return false;
+            else
+                return true;
+        }
+    }
+
+    /**
+     * tells if every assistant in the player hand has been already played in the current round
+     * @return
+     * {@code true} every assistant in the player hand has been already played in the current round
+     * {@code false} not every assistant in the player hand has been already played in the current round
+     */
+    private boolean isEveryCardAlreadyPlayed(){
+        boolean isEveryCardPlayed=true;
+        for(Assistant a : assistantCards){
+            if(!a.isAlreadyPlayed())
+                isEveryCardPlayed=false;
+        }
+        return isEveryCardPlayed;
+    }
+
+
 
 
     public int size(){

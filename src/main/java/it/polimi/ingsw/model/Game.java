@@ -147,7 +147,7 @@ public class Game extends ObservableSubject {
 
     /**
      * update the current player and the phase of the game.
-     * During the action phase this methods resets the number of available moves of the current player
+     * During the action phase this method resets the number of available moves of the current player
      * according to the number of players of the game
      */
     public void nextPlayer() {
@@ -173,7 +173,7 @@ public class Game extends ObservableSubject {
     /**
      * Gets the next player in the Players Order (clockwise).
      *
-     * @return The corrisponding player
+     * @return The corresponding player
      */
     private Player getNextPianification() {
         int indexOfCurrentPlayer = players.indexOf(currPlayer);
@@ -203,7 +203,7 @@ public class Game extends ObservableSubject {
     /**
      * Gets the next player in the Action Order.
      *
-     * @return The corrisponding player
+     * @return The corresponding player
      */
     private Player getNextAction() {
         int indexOfCurrentPlayer = actionOrder.indexOf(currPlayer);

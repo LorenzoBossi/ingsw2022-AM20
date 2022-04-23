@@ -15,8 +15,7 @@ public class DiningTest {
 
         diningRoom.addStudent(3);
 
-        for(int i=0; i<5 ; i++)
-            System.out.println(diningRoom.getNumberOfStudent(i));
+
 
         assertEquals(yellow,diningRoom.getNumberOfStudent(0));
         assertEquals(blue,diningRoom.getNumberOfStudent(1));
@@ -32,9 +31,6 @@ public class DiningTest {
         diningRoom.addStudent(Color.PINK);
         diningRoom.addStudent(Color.PINK);
         diningRoom.addStudent(Color.PINK);
-
-        for(int i=0; i<5 ; i++)
-            System.out.println(diningRoom.getNumberOfStudent(i));
 
         assertEquals(pink,diningRoom.getNumberOfStudent(4));
     }
