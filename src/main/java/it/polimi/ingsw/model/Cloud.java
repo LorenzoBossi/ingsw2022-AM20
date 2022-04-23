@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
+import it.polimi.ingsw.utils.ObservableSubject;
+
 import java.util.*;
-public class Cloud {
+public class Cloud extends ObservableSubject {
 
     private boolean chosen;
     private List<Color> students;
@@ -18,6 +20,7 @@ public class Cloud {
      */
     public void fill(List<Color> studentsList) {
         this.students.addAll(studentsList);
+        //notifyObserver(new AddStudentsOnCloud());
     }
 
 

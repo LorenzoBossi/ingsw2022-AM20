@@ -1,4 +1,6 @@
 package it.polimi.ingsw.model;
+
+
 import java.util.*;
 import java.util.Objects;
 
@@ -16,6 +18,7 @@ public class Player {
 
     /**
      * Constructor
+     *
      * @param nickname nickname of the player
      */
 
@@ -28,23 +31,25 @@ public class Player {
         this.playerHand = new PlayerHand(null);
         this.playerBoard = new PlayerBoard();
         this.playerChoice = new PlayerChoice();
-        this.availableMoves=0;
+        this.availableMoves = 0;
     }
 
     /**
      * gives the player all the references to the assistants shared by every player in the game
+     *
      * @param assistants a list of Assistant created by the game and given to every player
      */
-    public void setAssistants(List<Assistant> assistants){
-        playerHand=new PlayerHand(assistants);
+    public void setAssistants(List<Assistant> assistants) {
+        playerHand = new PlayerHand(assistants);
     }
 
     /**
      * Constructor
-     * @param nickname nickname of the player
+     *
+     * @param nickname   nickname of the player
      * @param assistants a list of Assistant created by the game and given to every player
      */
-    public Player(String nickname, List<Assistant> assistants){
+    public Player(String nickname, List<Assistant> assistants) {
         this.nickname = nickname;
         this.playerPriority = 0;
         this.motherNatureMaxMove = 0;
@@ -62,23 +67,22 @@ public class Player {
     /**
      * If the specified assistant is playable in the current turn this method sets the priority and the max mother nature moves of the player
      * and removes the assistant from the player hand.
+     *
      * @param assistant the assistant to play
      * @return {@code true} if the assistant is playable
-     *         {@code false} if the assistant is not playable
+     * {@code false} if the assistant is not playable
      */
-    public boolean playAssistant(Assistant assistant){
-        if(playerHand.getPlayableAssistants().contains(assistant))
-        {
-            playerPriority=assistant.getValue();
-            motherNatureMaxMove=assistant.getMotherNatureMove();
+    public boolean playAssistant(Assistant assistant) {
+        if (playerHand.getPlayableAssistants().contains(assistant)) {
+            playerPriority = assistant.getValue();
+            motherNatureMaxMove = assistant.getMotherNatureMove();
             playerHand.remove(assistant);
             return true;
         }
         return false;
     }
 
-
-    public void setPlayerPriority(int newPriority){
+    public void setPlayerPriority(int newPriority) {
         this.playerPriority = newPriority;
     }
 
@@ -86,27 +90,27 @@ public class Player {
         return this.playerPriority;
     }
 
-    public void setMotherNatureMaxMove(int MotherNatureMaxMove ){
-        this.motherNatureMaxMove= MotherNatureMaxMove ;
+    public void setMotherNatureMaxMove(int MotherNatureMaxMove) {
+        this.motherNatureMaxMove = MotherNatureMaxMove;
     }
 
     public int getMotherNatureMaxMove() {
         return this.motherNatureMaxMove;
     }
 
-    public PlayerBoard getPlayerBoard(){
+    public PlayerBoard getPlayerBoard() {
         return this.playerBoard;
     }
 
     public void setCoins(int amount) {
-        this.coins=amount;
+        this.coins = amount;
     }
 
     public int getCoins() {
         return this.coins;
     }
 
-    public void addCoin(){
+    public void addCoin() {
         this.coins++;
     }
 
@@ -118,29 +122,28 @@ public class Player {
         this.availableMoves = availableMoves;
     }
 
-    public void useCoins(int payment){
-        if(isEnoughCoin(payment))
-            this.coins=this.coins-payment;
-        else
-            System.out.println("impossibile fare operazione");
+    public void useCoins(int payment) {
+        if (isEnoughCoin(payment))
+            this.coins = this.coins - payment;
     }
 
-    private boolean isEnoughCoin(int coinRequired){
+    private boolean isEnoughCoin(int coinRequired) {
         return this.coins >= coinRequired;
     }
 
 
     /**
      * Method isMotherNatureMoveLegit checks if the player can move Mother Nature how much he wants
+     *
      * @param selectedMotherNatureMove how much the player wants to move Mother Nature
      * @return {@code true} if the selected Mother Nature move is legit,
-     *         {@code false} if the selected Mother Nature move is  illicit
+     * {@code false} if the selected Mother Nature move is  illicit
      */
-    public boolean isMotherNatureMoveLegit(int selectedMotherNatureMove){
+    public boolean isMotherNatureMoveLegit(int selectedMotherNatureMove) {
         return selectedMotherNatureMove <= motherNatureMaxMove && selectedMotherNatureMove > 0;
     }
 
-    public PlayerChoice getPlayerChoice(){
+    public PlayerChoice getPlayerChoice() {
         return playerChoice;
     }
 

@@ -49,6 +49,8 @@ public class Assistant {
         return  assistant.getMotherNatureMove();
     }
 
+
+
     /**
      * creates a new List of Assistants containing every assistant in the enumeration AssistantName
      * @return the list created by the function
