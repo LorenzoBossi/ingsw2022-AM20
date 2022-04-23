@@ -14,8 +14,8 @@ public enum AssistantName {
 
 
 
-    private int value;
-    private int moves;
+    private final int value;
+    private final int moves;
 
 
     

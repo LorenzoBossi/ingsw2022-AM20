@@ -25,8 +25,10 @@ public class Vassal extends CharacterCard {
         int motherNaturePosition = archipelago.getMotherNature();
         Island isl = archipelago.getIsland(motherNaturePosition);
         Island island = game.getCurrPlayer().getPlayerChoice().getSelectedIsland();
+
         game.updateInfluence(island);
         archipelago.moveMotherNatureOnIsland(isl);
+
         endActivation();
         }
     }

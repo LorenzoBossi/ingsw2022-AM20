@@ -1,7 +1,13 @@
 package it.polimi.ingsw.model;
+
+import it.polimi.ingsw.network.messages.serverMessage.BanCardEvent;
+import it.polimi.ingsw.network.messages.serverMessage.ChangeIslandOwner;
+import it.polimi.ingsw.network.messages.serverMessage.MergeIslands;
+import it.polimi.ingsw.utils.ObservableSubject;
+
 import java.util.*;
 
-public class IslandsManager {
+public class IslandsManager extends ObservableSubject {
     private List<Island> islands;
     private int motherNature;
 
@@ -9,11 +15,49 @@ public class IslandsManager {
     /**
      * Constructor
      */
-    public IslandsManager(){
+    public IslandsManager (){
+        super();
         islands = new ArrayList<>();
         for(int i = 0; i < 12; i++)
             islands.add(new Island());
         motherNature = 0;
+    }
+
+    /**
+     * Method changeIslandOwner changes the owner of the selected island
+     *
+     * @param newOwner the new island's owner
+     * @param island the selected island
+     */
+    public void changeIslandOwner(Player newOwner, Island island) {
+        int islandPosition = islands.indexOf(island);
+        String oldOwner = null;
+        int numberOfTower;
+
+        if(island.getOwner() != null) {
+            oldOwner = island.getOwner().getNickname();
+        }
+
+        numberOfTower = island.getNumberOfTowers();
+        island.setOwner(newOwner);
+
+        notifyObserver(new ChangeIslandOwner(newOwner.getNickname(), oldOwner, islandPosition, numberOfTower));
+    }
+
+
+    public void addBanCardOnIsland(Island island) {
+        island.addBanCard();
+        notifyObserver(new BanCardEvent(getPositionByIsland(island), "ADD"));
+    }
+
+    public void removeBanCardOnIsland(Island island) {
+        island.removeBanCard();
+        notifyObserver(new BanCardEvent(getPositionByIsland(island), "REMOVE"));
+    }
+
+
+    public int getPositionByIsland(Island island) {
+        return islands.indexOf(island);
     }
 
 
@@ -77,14 +121,20 @@ public class IslandsManager {
      */
     public void mergeIslands(Island island){
         List<Island> nearIslands = getNeighbouringIslands(island);
-        for(Island isl : nearIslands){
-            if(island.isSameOwner(isl)){
+        for (Island isl : nearIslands){
+            if (island.isSameOwner(isl)){
                 island.setNumberOfTowers(island.getNumberOfTowers() + isl.getNumberOfTowers());
                 island.setBanCards(island.getBanCards() + isl.getBanCards());
-                for(Color c : Color.values()){
+                for (Color c : Color.values()){
                     island.addStudents(c, isl.getSelectedStudents(c));
                 }
+                int currIslandPosition = islands.indexOf(island);
+                int islandToMergePosition = islands.indexOf(isl);
+
                 islands.remove(isl);
+
+                notifyObserver(new MergeIslands(currIslandPosition, islandToMergePosition, islands.indexOf(island)));
+
                 moveMotherNatureOnIsland(island);
             }
         }

@@ -67,22 +67,22 @@ public class Entrance {
 
     /**
      * Method isPresent notifies if there is at least one student of that color in the entrance
-     * @param cstudent specify the chosen color
+     * @param student specify the chosen color
      * @return {@code true} if there is at least one,
      *         {@code false} else
      */
-    public boolean isPresent(Color cstudent){
-        int indexColor = cstudent.ordinal();
+    public boolean isPresent(Color student){
+        int indexColor = student.ordinal();
         return students.get(indexColor) >= 1;
     }
 
     /**
      * Method refillEntrance add students to the entrance from a list of color
-     * @param student list of color
+     * @param students list of color
      */
-    public void refillEntrance(List<Color> student){
-        while(!student.isEmpty()){
-            addStudent(student.remove(0));
+    public void refillEntrance(List<Color> students){
+        while(!students.isEmpty()){
+            addStudent(students.remove(0));
         }
     }
 

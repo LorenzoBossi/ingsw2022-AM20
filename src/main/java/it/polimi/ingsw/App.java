@@ -1,6 +1,5 @@
 package it.polimi.ingsw;
-import it.polimi.ingsw.model.AssistantName;
-import it.polimi.ingsw.model.Color;
+
 
 /**
  * Hello world!

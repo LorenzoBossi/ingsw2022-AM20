@@ -5,24 +5,24 @@ import java.util.List;
 public class PlayerChoice {
 
     private List<Color> selectedStudents;
-    private List<Color>selectedStudentFromEntrance;
+    private List<Color> selectedStudentFromEntrance;
     private Island selectedIsland;
     private Color selectedColor;
 
 
-    public List<Color> getSelectedStudents(){
+    public List<Color> getSelectedStudents() {
         return selectedStudents;
     }
 
-    public Island getSelectedIsland(){
+    public Island getSelectedIsland() {
         return selectedIsland;
     }
 
-    public Color getSelectedColor(){
+    public Color getSelectedColor() {
         return selectedColor;
     }
 
-    public List<Color> getSelectedStudentFromEntrance(){
+    public List<Color> getSelectedStudentFromEntrance() {
         return selectedStudentFromEntrance;
     }
 

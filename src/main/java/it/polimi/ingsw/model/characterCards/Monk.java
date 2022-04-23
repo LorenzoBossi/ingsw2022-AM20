@@ -1,35 +1,49 @@
 package it.polimi.ingsw.model.characterCards;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
 
 
 import java.util.List;
 
-public class Monk  extends WithStudents {
+public class Monk extends WithStudents {
+    private final int NUMBER_OF_STUDENT = 4;
+    private final int MAX_SELECTION = 1;
 
     /**
      * Constructor
+     *
      * @param bag the bag of the game to put students on the card
      */
-    public Monk(Bag bag){
+    public Monk(Bag bag) {
         super(CharacterName.MONK, 1);
-        numberOfStudents=4;
-        maxSelection=1;
-        setStudents(bag.getStudents(getNumberOfStudents()));
+        setStudents(bag.getStudents(NUMBER_OF_STUDENT));
     }
 
     /**
-     *Puts the selected student on the selected Island
+     * Puts the selected student on the selected Island
+     *
      * @param game the game
      */
     @Override
-    public void activateEffect(Game game){
-        List<Color> student= game.getCurrPlayer().getPlayerChoice().getSelectedStudents();
-        if(getStudents().contains(student.get(0))){
+    public void activateEffect(Game game) {
+        IslandsManager islandsManager = game.getArchipelago();
+        Player currPlayer = game.getCurrPlayer();
+        int islandPosition;
+
+        List<Color> student = currPlayer.getPlayerChoice().getSelectedStudents();
+        if (getStudents().contains(student.get(0))) {
             remove(student);
         }
-        add(game.getBag().getStudents(1));
-        Island island= game.getCurrPlayer().getPlayerChoice().getSelectedIsland();
+
+        Island island = currPlayer.getPlayerChoice().getSelectedIsland();
+        islandPosition = islandsManager.getPositionByIsland(island);
+
         island.addStudent(student.get(0));
+        notifyObserver(new MoveStudents("CARD", "ISLAND", student, getName().name(), islandPosition));
+
+        List<Color> studentToAdd = game.getBag().getStudents(1);
+        add(studentToAdd);
+        notifyObserver(new MoveStudents("BAG", "CARD", studentToAdd, null, getName().name()));
     }
 }

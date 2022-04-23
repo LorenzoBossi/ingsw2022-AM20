@@ -9,10 +9,10 @@ public class InfluenceCard extends CharacterCard {
     /**
      * Constructor
      *
-     * @param coinsRequired the coins required to activate the card
+     * @param coinsRequired     the coins required to activate the card
      * @param influenceStrategy the strategy to calculate influence
      */
-    public InfluenceCard(CharacterName name, int coinsRequired,InfluenceStrategy influenceStrategy){
+    public InfluenceCard(CharacterName name, int coinsRequired, InfluenceStrategy influenceStrategy) {
         super(name, coinsRequired);
         this.influenceStrategy = influenceStrategy;
     }

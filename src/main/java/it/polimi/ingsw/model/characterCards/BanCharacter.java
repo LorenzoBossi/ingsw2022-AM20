@@ -2,6 +2,8 @@ package it.polimi.ingsw.model.characterCards;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.Island;
+import it.polimi.ingsw.model.IslandsManager;
+import it.polimi.ingsw.model.Player;
 
 public class BanCharacter extends CharacterCard {
     private int banCards;
@@ -24,11 +26,16 @@ public class BanCharacter extends CharacterCard {
      */
     @Override
     public void activateEffect(Game game) {
-        int removedBanCards = INITIAL_BANCARDS - game.getArchipelago().getNumberOfBanCards() - banCards;
+        IslandsManager islandsManager = game.getArchipelago();
+        Player currPlayer = game.getCurrPlayer();
+        int removedBanCards = INITIAL_BANCARDS - islandsManager.getNumberOfBanCards() - banCards;
+
         banCards = removedBanCards + banCards;
-        Island island= game.getCurrPlayer().getPlayerChoice().getSelectedIsland();
-        island.addBanCard();
+
+        Island island = currPlayer.getPlayerChoice().getSelectedIsland();
+        islandsManager.addBanCardOnIsland(island);
         banCards--;
+
         endActivation();
     }
 }
