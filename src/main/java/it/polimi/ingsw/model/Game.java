@@ -25,18 +25,28 @@ public class Game extends ObservableSubject {
     private List<Player> actionOrder;
     private Player firstPlayer;
     private int numberOfCoins = 0;
+
+    /**
+     * Game's constants
+     */
     private final int TOTAL_NUMBER_OF_COINS = 20;
+    private final int STUDENTS_ENTRANCE_2P = 7;
+    private final int STUDENTS_ENTRANCE_3P = 9;
+    private final int TOWERS_2P = 8;
+    private final int TOWERS_3P = 6;
+    private final int STUDENTS_CLOUD_2P = 3;
+    private final int STUDENTS_CLOUD_3P = 4;
 
 
     /**
      * Constructor
+     *
+     * @param numberOfPlayers the number of players in the Game
      */
     public Game(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
         bag = new Bag();
         archipelago = new IslandsManager();
-        initIslands();
-        bag.fillBag(24);
         clouds = new ArrayList<>();
         professorManager = new ProfessorManager();
         players = new ArrayList<>();
@@ -46,32 +56,101 @@ public class Game extends ObservableSubject {
         characterCards = new ArrayList<>();
         phase = Phase.LOBBY;
         actionOrder = new ArrayList<>();
-        addClouds(numberOfPlayers);
-        refillClouds();
     }
 
+    public void initGame() {
+        initIslands();
+        bag.fillBag(24);
+        addClouds(numberOfPlayers);
+        refillClouds();
+        initPlayerBoard();
+    }
+
+    /**
+     * Method getNumberOfCoins returns the Game's number of coins
+     *
+     * @return the Game's number of coins
+     */
     public int getNumberOfCoins() {
         return numberOfCoins;
     }
 
+    /**
+     * Method initCoins initializes the Game's coins and adds one coin for each player
+     */
     public void initCoins() {
         this.numberOfCoins = TOTAL_NUMBER_OF_COINS;
         for (Player player : players)
-            addCoinsToPlayer(player);
+            addCoinsToPlayer(player.getNickname());
     }
 
+    /**
+     * Methods initTowers initializes the towers number for each player
+     *
+     * @param numberOfTowers the number of Towers for each PlayerBoard
+     */
+    public void initTowers(int numberOfTowers) {
+        for (Player player : players) {
+            player.getPlayerBoard().addTowers(numberOfTowers);
+        }
+    }
+
+    /**
+     * Methods initEntrance fills all the entrance with che correct number of students
+     *
+     * @param numberOfStudentsInEntrance the number of students for each entrance
+     */
+    private void initEntrances(int numberOfStudentsInEntrance) {
+        for (Player player : players) {
+            PlayerBoard board = player.getPlayerBoard();
+            List<Color> studentsToAdd = bag.getStudents(numberOfStudentsInEntrance);
+            board.getEntrance().refillEntrance(studentsToAdd);
+            notifyObserver(new MoveStudents("BAG", "ENTRANCE", studentsToAdd, null, player.getNickname()));
+        }
+    }
+
+    /**
+     * Method initPlayerBoard initializes all the PlayerBoards
+     */
+    public void initPlayerBoard() {
+        if (numberOfPlayers == 2) {
+            initTowers(TOWERS_2P);
+            initEntrances(STUDENTS_ENTRANCE_2P);
+        } else if (numberOfPlayers == 3) {
+            initTowers(TOWERS_3P);
+            initEntrances(STUDENTS_ENTRANCE_3P);
+        }
+    }
+
+    /**
+     * Method characterCardPayment add the card's payment to the Game's coin
+     *
+     * @param payment the cost of the card
+     */
     public void characterCardPayment(int payment) {
         currPlayer.useCoins(payment);
         numberOfCoins += payment;
     }
 
-    public void addCoinsToPlayer(Player player) {
+    /**
+     * Method addCoinsToPlayer adds a coin to a player removing from the game
+     *
+     * @param nickname the player's nickname that needs the coin
+     */
+    public void addCoinsToPlayer(String nickname) {
+        Player currPlayer = getPlayerByNickname(nickname);
         numberOfCoins--;
-        player.addCoin();
+        currPlayer.addCoin();
     }
 
-    public boolean hasEnoughCoins(int numberOfCoins) {
-        return this.numberOfCoins > numberOfCoins;
+    /**
+     * Method hasEnoughCoins controls if the Game has enough coins
+     *
+     * @return {@code true} if the Game has enough coins,
+     * {@code false} if the Game hasn't enough coins
+     */
+    public boolean hasEnoughCoins() {
+        return this.numberOfCoins > 0;
     }
 
     /**
@@ -81,21 +160,23 @@ public class Game extends ObservableSubject {
         int numberOfIslands, oppositeOfMotherNature;
         int i;
         Island island;
-        Color student;
+        List<Color> student;
 
         numberOfIslands = archipelago.getNumberOfIslands();
         oppositeOfMotherNature = archipelago.getNumberOfIslands() / 2 - 1;
         bag.fillBag(2);
 
         for (i = 1; i < oppositeOfMotherNature; i++) {
-            student = bag.getStudents(1).get(0);
+            student = bag.getStudents(1);
             island = archipelago.getIsland(i);
-            island.addStudent(student);
+            island.addStudent(student.get(0));
+            notifyObserver(new MoveStudents("BAG", "ISLAND", student, null, i));
         }
         for (i = oppositeOfMotherNature + 1; i < numberOfIslands; i++) {
-            student = bag.getStudents(1).get(0);
+            student = bag.getStudents(1);
             island = archipelago.getIsland(i);
-            island.addStudent(student);
+            island.addStudent(student.get(0));
+            notifyObserver(new MoveStudents("BAG", "ISLAND", student, null, i));
         }
     }
 
@@ -232,13 +313,22 @@ public class Game extends ObservableSubject {
      * refill every cloud with a number of students depending on the number of players in the game
      */
     private void refillClouds() {
+        List<Color> studentsToAdd;
+        int cloudId;
+
         if (numberOfPlayers == 2) {
             for (Cloud cloud : clouds) {
-                cloud.fill(bag.getStudents(3));
+                studentsToAdd = bag.getStudents(STUDENTS_CLOUD_2P);
+                cloudId = clouds.indexOf(cloud);
+                cloud.fill(studentsToAdd);
+                notifyObserver(new MoveStudents("BAG", "CLOUD", studentsToAdd, null, cloudId));
             }
         } else if (numberOfPlayers == 3) {
             for (Cloud cloud : clouds) {
-                cloud.fill(bag.getStudents(4));
+                studentsToAdd = bag.getStudents(STUDENTS_CLOUD_3P);
+                cloudId = clouds.indexOf(cloud);
+                cloud.fill(studentsToAdd);
+                notifyObserver(new MoveStudents("BAG", "CLOUD", studentsToAdd, null, cloudId));
             }
         }
     }

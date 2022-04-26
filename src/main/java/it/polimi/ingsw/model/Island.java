@@ -119,7 +119,7 @@ public class Island {
      * @return {@code true} if they have the same owner,
      *         {@code false} if they have different owner or the island checked has no owner
      */
-    public boolean isSameOwner(Island isl){
+    public boolean hasSameOwner(Island isl){
         if(isl.getOwner() == null)
             return false;
         return owner.equals(isl.getOwner());

@@ -53,7 +53,7 @@ public class Player {
         this.nickname = nickname;
         this.playerPriority = 0;
         this.motherNatureMaxMove = 0;
-        this.coins = 1;
+        this.coins = 0;
         this.playerHand = new PlayerHand(assistants);
         this.playerBoard = new PlayerBoard();
         this.playerChoice = new PlayerChoice();

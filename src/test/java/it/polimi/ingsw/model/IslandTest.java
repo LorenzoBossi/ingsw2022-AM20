@@ -48,9 +48,9 @@ public class IslandTest {
 
         isl1.setOwner(player1);
         isl2.setOwner(player2);
-        assertFalse(isl1.isSameOwner(isl2));
+        assertFalse(isl1.hasSameOwner(isl2));
         isl2.setOwner(player3);
-        assertTrue(isl1.isSameOwner(isl2));
+        assertTrue(isl1.hasSameOwner(isl2));
     }
 
     @Test
@@ -60,9 +60,9 @@ public class IslandTest {
         Island isl1 = new Island();
         Island isl2 = new Island();
 
-        assertFalse(isl1.isSameOwner(isl2));
+        assertFalse(isl1.hasSameOwner(isl2));
         isl1.setOwner(player1);
-        assertFalse(isl1.isSameOwner(isl2));
+        assertFalse(isl1.hasSameOwner(isl2));
     }
 
 }

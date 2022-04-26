@@ -14,7 +14,7 @@ public class PlayerBoard {
     public PlayerBoard(){
         this.entrance = new Entrance();
         this.diningRoom = new DiningRoom();
-        this.numberTower = 8;
+        this.numberTower = 0;
         this.professor = new ArrayList<>(Arrays.asList(FALSE,FALSE,FALSE,FALSE, FALSE));
 
     }
@@ -56,7 +56,7 @@ public class PlayerBoard {
     public void changeProfessor(Color color){
         int indexColor = color.ordinal();
         if(professor.get(indexColor) == FALSE)
-            professor.set(indexColor,TRUE);
+            professor.set(indexColor, TRUE);
         else
             professor.set(indexColor, FALSE);
     }

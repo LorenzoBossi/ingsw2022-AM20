@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -9,7 +10,18 @@ import java.util.*;
 
 
 public class BoardTest {
-    private PlayerBoard board = new PlayerBoard();
+    private Game game;
+    private PlayerBoard board;
+
+    @BeforeEach
+    public void initGame(){
+        game = new Game(2);
+        game.addPlayer("Paolo");
+        game.addPlayer("Franco");
+        board = game.getPlayers().get(0).getPlayerBoard();
+        game.initTowers(8);
+    }
+
 
     @Test
     public void getEntrance() {

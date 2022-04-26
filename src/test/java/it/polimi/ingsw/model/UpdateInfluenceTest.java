@@ -35,6 +35,7 @@ public class UpdateInfluenceTest {
         professorManager.takeProfessor(player1, Color.BLUE);
         professorManager.takeProfessor(player2, Color.PINK);
         professorManager.takeProfessor(player3, Color.GREEN );
+        game.initTowers(8);
     }
 
     @Test

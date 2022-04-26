@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.network.messages.serverMessage.BanCardEvent;
 import it.polimi.ingsw.network.messages.serverMessage.ChangeIslandOwner;
 import it.polimi.ingsw.network.messages.serverMessage.MergeIslands;
+import it.polimi.ingsw.network.messages.serverMessage.MotherNatureMove;
 import it.polimi.ingsw.utils.ObservableSubject;
 
 import java.util.*;
@@ -74,6 +75,7 @@ public class IslandsManager extends ObservableSubject {
         else{
             motherNature = motherNatureMove + this.motherNature;
         }
+        notifyObserver(new MotherNatureMove(motherNature));
         return getIsland(motherNature);
     }
 
@@ -82,7 +84,8 @@ public class IslandsManager extends ObservableSubject {
     }
 
     public void moveMotherNatureOnIsland(Island isl){
-        motherNature = islands.indexOf(isl);
+        motherNature = getPositionByIsland(isl);
+        notifyObserver(new MotherNatureMove(motherNature));
     }
 
     public Island getIsland(int islandPosition){
@@ -121,19 +124,21 @@ public class IslandsManager extends ObservableSubject {
      */
     public void mergeIslands(Island island){
         List<Island> nearIslands = getNeighbouringIslands(island);
+
         for (Island isl : nearIslands){
-            if (island.isSameOwner(isl)){
+            if (island.hasSameOwner(isl)){
                 island.setNumberOfTowers(island.getNumberOfTowers() + isl.getNumberOfTowers());
                 island.setBanCards(island.getBanCards() + isl.getBanCards());
                 for (Color c : Color.values()){
                     island.addStudents(c, isl.getSelectedStudents(c));
                 }
+
                 int currIslandPosition = islands.indexOf(island);
                 int islandToMergePosition = islands.indexOf(isl);
 
                 islands.remove(isl);
 
-                notifyObserver(new MergeIslands(currIslandPosition, islandToMergePosition, islands.indexOf(island)));
+                notifyObserver(new MergeIslands(currIslandPosition, islandToMergePosition));
 
                 moveMotherNatureOnIsland(island);
             }

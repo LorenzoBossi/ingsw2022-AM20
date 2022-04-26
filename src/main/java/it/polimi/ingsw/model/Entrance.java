@@ -91,6 +91,7 @@ public class Entrance {
      * {@code false} else
      */
     public boolean isPresent(List<Color> student) {
+
         List<Integer> stud = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
         int index = 0;
 
@@ -104,6 +105,8 @@ public class Entrance {
         }
 
         return true;
+
+
 
     }
 
