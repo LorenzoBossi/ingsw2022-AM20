@@ -121,5 +121,8 @@ public class ProfessorManager extends ObservableSubject {
         return professors;
     }
 
+    public Player ownerOf(Color color){
+        return owners.get(color.ordinal());
+    }
 
 }

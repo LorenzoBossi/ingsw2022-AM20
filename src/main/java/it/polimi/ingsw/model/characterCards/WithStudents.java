@@ -54,7 +54,6 @@ public abstract class WithStudents extends CharacterCard {
     }
     */
 
-
     public void add(List<Color> students) {
         this.students.addAll(students);
     }

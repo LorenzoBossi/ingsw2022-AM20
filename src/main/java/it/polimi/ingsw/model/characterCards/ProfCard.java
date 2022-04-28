@@ -18,5 +18,6 @@ public class ProfCard extends CharacterCard {
     @Override
     public void activateEffect(Game game){
         game.getProfessorManager().setComparator( (x,y) -> x>=y ? 1:0 );
+        endActivation();
     }
 }

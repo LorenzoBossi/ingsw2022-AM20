@@ -38,4 +38,11 @@ public class BanCharacter extends CharacterCard {
 
         endActivation();
     }
+
+    @Override
+    public boolean checkRequirements(){
+        if(banCards==0)
+            return false;
+        return true;
+    }
 }

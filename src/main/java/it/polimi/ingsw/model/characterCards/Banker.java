@@ -23,6 +23,7 @@ public class Banker extends CharacterCard {
     @Override
     public void activateEffect(Game game) {
 
+        ProfessorManager professorManager=game.getProfessorManager();
         Color selectedColor = game.getCurrPlayer().getPlayerChoice().getSelectedColor();
         Bag bag = game.getBag();
         List<Color> removedStudents = new ArrayList<>();
@@ -30,6 +31,7 @@ public class Banker extends CharacterCard {
         int i;
         DiningRoom diningRoom;
         List<Player> players = game.getPlayers();
+
 
         for (Player p : players) {
             diningRoom = p.getPlayerBoard().getDiningRoom();
@@ -43,10 +45,18 @@ public class Banker extends CharacterCard {
                 removedStudents.add(selectedColor);
             }
 
-            notifyObserver(new MoveStudents("ENTRANCE", "BAG", removedStudents, p.getNickname(), null));
+            notifyObserver(new MoveStudents("DININGROOM", "BAG", removedStudents, p.getNickname(), null));
             bag.addStudents(removedStudents);
             removedStudents.clear();
         }
+
+
+        //reset the max number of students of the chosen color
+        if(professorManager.ownerOf(selectedColor)!=null) {
+            professorManager.takeProfessor(professorManager.ownerOf(selectedColor), selectedColor);
+        }
+
+        endActivation();
     }
 }
 

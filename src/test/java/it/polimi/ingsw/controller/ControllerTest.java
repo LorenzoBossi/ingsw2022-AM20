@@ -25,7 +25,6 @@ public class ControllerTest {
         game.addPlayer("Simone");
         List<Color> studentsToAdd = new ArrayList<>(Arrays.asList(Color.BLUE, Color.RED, Color.BLUE, Color.RED));
         game.getCurrPlayer().getPlayerBoard().getEntrance().refillEntrance(studentsToAdd);
-        game.start();
         controller = new Controller(game);
     }
 

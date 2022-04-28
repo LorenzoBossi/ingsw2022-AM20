@@ -21,5 +21,6 @@ public class PostMan extends CharacterCard {
     public void activateEffect(Game game){
         Player p= game.getCurrPlayer();
         p.setMotherNatureMaxMove(p.getMotherNatureMaxMove()+2);
+        endActivation();
     }
 }

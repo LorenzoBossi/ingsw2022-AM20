@@ -48,6 +48,8 @@ public class Musician extends CharacterCard {
 
         notifyObserver(new MoveStudents("ENTRANCE", "DINING_ROOM", fromEntrance, currPlayer.getNickname(), currPlayer.getNickname()));
         notifyObserver(new MoveStudents("DINING_ROOM", "ENTRANCE", fromDiningRoom, currPlayer.getNickname(), currPlayer.getNickname()));
+
+        endActivation();
     }
 
 }

@@ -39,7 +39,9 @@ public class GameTest {
         assertEquals(3, game.getClouds().size());
 
         game = new Game(2);
-        game.initGame();
+        game.addPlayer("Andrea");
+        game.addPlayer("Giovanni");
+        game.start();
         assertEquals(2, game.getClouds().size());
     }
 
@@ -199,7 +201,6 @@ public class GameTest {
         game.addPlayer("Giovanni");
         game.addPlayer("Marco");
 
-        game.start();
 
         for (Cloud cloud : game.getClouds()) {
             assertEquals(4, cloud.getStudents().size());

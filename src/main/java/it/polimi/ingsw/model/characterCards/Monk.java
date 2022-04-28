@@ -45,5 +45,14 @@ public class Monk extends WithStudents {
         List<Color> studentToAdd = game.getBag().getStudents(1);
         add(studentToAdd);
         notifyObserver(new MoveStudents("BAG", "CARD", studentToAdd, null, getName().name()));
+        endActivation();
+    }
+
+
+    @Override
+    public boolean checkRequirements(){
+        if(getStudents().size()<MAX_SELECTION)
+            return false;
+        return true;
     }
 }

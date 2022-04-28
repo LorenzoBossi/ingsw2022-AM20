@@ -42,6 +42,15 @@ public class Princess extends WithStudents {
 
             notifyObserver(new MoveStudents("BAG", "CARD", studentToAdd, null, getName().name()));
             notifyObserver(new MoveStudents("CARD", "DINING_ROOM", student, getName().name(), currPlayer.getNickname()));
+            endActivation();
         }
+    }
+
+
+    @Override
+    public boolean checkRequirements(){
+        if(getStudents().size()<MAX_SELECTION)
+            return false;
+        return true;
     }
 }

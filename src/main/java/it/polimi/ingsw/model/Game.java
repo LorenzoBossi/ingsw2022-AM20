@@ -221,6 +221,7 @@ public class Game extends ObservableSubject {
     }
 
     public void start() {
+        initGame();
         phase = Phase.PIANIFICATION;
         firstPlayer = players.get(0);
         currPlayer = firstPlayer;
@@ -307,6 +308,9 @@ public class Game extends ObservableSubject {
         actionOrder.clear();
         currPlayer = firstPlayer;
         phase = Phase.PIANIFICATION;
+        for(Assistant assistant : assistants){
+            assistant.setAlreadyPlayed(false);
+        }
     }
 
     /**

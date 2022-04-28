@@ -27,10 +27,10 @@ import static org.junit.jupiter.api.Assertions.*;
         @BeforeEach
         public void init(){
             game= new Game(3);
-            game.getBag().fillBag(30);
             game.addPlayer("Ada");
             game.addPlayer("Billy");
             game.addPlayer("Charlie");
+            game.start();
             p1= game.getPlayers().get(0);
             p2= game.getPlayers().get(1);
             p3= game.getPlayers().get(2);
@@ -54,8 +54,37 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(p1.getPlayerBoard().getDiningRoom().getNumberOfStudent(Color.BLUE),0);
             assertEquals(p2.getPlayerBoard().getDiningRoom().getNumberOfStudent(Color.BLUE),1);
             assertEquals(p3.getPlayerBoard().getDiningRoom().getNumberOfStudent(Color.BLUE),0);
+
+            assertTrue(banker.checkRequirements());
         }
 
+        /**
+         * Tests the correct placement of professors after the activation of the banker card
+         */
+        @Test
+        public void bankerProfResetTest() {
+            CharacterCard banker = new Banker();
+            ProfessorManager professorManager=game.getProfessorManager();
+            p1.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+            if(professorManager.canTakeProfessor(p1,Color.BLUE))
+                professorManager.takeProfessor(p1,Color.BLUE);
+
+            p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+            p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+            p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+            p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+
+            if(professorManager.canTakeProfessor(p2,Color.BLUE))
+                professorManager.takeProfessor(p2,Color.BLUE);
+
+            p1.getPlayerChoice().selectColor(Color.BLUE);
+            banker.activateEffect(game);
+
+            p3.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+            assertFalse(game.getProfessorManager().canTakeProfessor(p3,Color.BLUE));
+            p3.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+            assertTrue(game.getProfessorManager().canTakeProfessor(p3,Color.BLUE));
+        }
 
         @Test
         public void monkTest(){
@@ -76,6 +105,7 @@ import static org.junit.jupiter.api.Assertions.*;
             monk.activateEffect(game);
 
             assertEquals(island.getSelectedStudents(selectedColor),initialNumber+1);
+            assertTrue(monk.checkRequirements());
         }
 
 
@@ -101,6 +131,7 @@ import static org.junit.jupiter.api.Assertions.*;
             assertTrue(p1.getPlayerBoard().getEntrance().isPresent(selectedStudents.get(0)));
             assertTrue(p1.getPlayerBoard().getEntrance().isPresent(selectedStudents.get(1)));
             assertTrue(p1.getPlayerBoard().getEntrance().isPresent(Color.GREEN));
+            assertTrue(jester.checkRequirements());
         }
 
 
@@ -114,6 +145,7 @@ import static org.junit.jupiter.api.Assertions.*;
             postman.activateEffect(game);
 
             assertEquals(p1.getMotherNatureMaxMove(),4);
+            assertTrue(postman.checkRequirements());
         }
 
 
@@ -135,6 +167,8 @@ import static org.junit.jupiter.api.Assertions.*;
                 game.getProfessorManager().takeProfessor(p2,Color.BLUE);
             assertTrue(game.getProfessorManager().getProfessorsOwnedBy(p2).contains(Color.BLUE));
             assertFalse(game.getProfessorManager().getProfessorsOwnedBy(p1).contains(Color.BLUE));
+
+            assertTrue(profCard.checkRequirements());
         }
 
 
@@ -155,6 +189,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
             assertEquals(diningRoom.getNumberOfStudent(selectedStudent.get(0)),1);
             assertEquals(4,princess.getStudents().size());
+
+            assertTrue(princess.checkRequirements());
         }
 
         @Test
@@ -194,6 +230,8 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(1,diningRoom.getNumberOfStudent(Color.GREEN));
             assertEquals(0,diningRoom.getNumberOfStudent(Color.YELLOW));
             assertEquals(0,diningRoom.getNumberOfStudent(Color.PINK));
+
+            assertTrue(musician.checkRequirements());
         }
 
     }

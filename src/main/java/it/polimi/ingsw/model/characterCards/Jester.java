@@ -47,5 +47,6 @@ public class Jester extends WithStudents {
 
         notifyObserver(new MoveStudents("ENTRANCE", "CARD", fromEntrance, currPlayer.getNickname(), getName().name()));
         notifyObserver(new MoveStudents("CARD", "ENTRANCE", students, getName().name(), currPlayer.getNickname()));
+        endActivation();
     }
 }

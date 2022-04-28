@@ -47,6 +47,14 @@ public class CharacterCardTest {
         assertEquals(0, island.getBanCards());
         card.activateEffect(game);
         assertEquals(1, island.getBanCards());
+
+        assertTrue(card.checkRequirements());
+        card.activateEffect(game);
+        card.activateEffect(game);
+        card.activateEffect(game);
+        assertEquals(4, island.getBanCards());
+
+        assertFalse(card.checkRequirements());
     }
 
     @Test
@@ -61,6 +69,8 @@ public class CharacterCardTest {
         card.activateEffect(game);
         game.updateInfluence(island);
         assertEquals(player2, island.getOwner());
+
+        assertTrue(card.checkRequirements());
     }
 
     @Test
@@ -75,6 +85,8 @@ public class CharacterCardTest {
         card.activateEffect(game);
         game.updateInfluence(island);
         assertEquals(player2, island.getOwner());
+
+        assertTrue(card.checkRequirements());
     }
 
     @Test
@@ -89,6 +101,8 @@ public class CharacterCardTest {
         card.activateEffect(game);
         game.updateInfluence(island);
         assertEquals(player1, island.getOwner());
+
+        assertTrue(card.checkRequirements());
     }
 
     @Test

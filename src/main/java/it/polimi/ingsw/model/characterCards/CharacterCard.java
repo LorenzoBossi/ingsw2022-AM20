@@ -54,7 +54,7 @@ public abstract class CharacterCard extends ObservableSubject {
     public List<Color> getStudents(){return null;}
 
 
-
+    public boolean checkRequirements(){return true;}
 
     public abstract void activateEffect(Game game);
 
