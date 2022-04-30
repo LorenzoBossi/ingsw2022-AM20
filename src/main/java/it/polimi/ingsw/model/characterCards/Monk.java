@@ -40,11 +40,11 @@ public class Monk extends WithStudents {
         islandPosition = islandsManager.getPositionByIsland(island);
 
         island.addStudent(student.get(0));
-        notifyObserver(new MoveStudents("CARD", "ISLAND", student, getName().name(), islandPosition));
+        notifyObserver(new MoveStudents(GameComponent.CARD, GameComponent.ISLAND, student, getName().name(), islandPosition));
 
         List<Color> studentToAdd = game.getBag().getStudents(1);
         add(studentToAdd);
-        notifyObserver(new MoveStudents("BAG", "CARD", studentToAdd, null, getName().name()));
+        notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CARD, studentToAdd, null, getName().name()));
         endActivation();
     }
 

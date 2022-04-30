@@ -11,6 +11,7 @@ public abstract class CharacterCard extends ObservableSubject {
     private CharacterName name;
     private int coinsRequired;
     private boolean firstTimePlayed;
+    private CharacterCardType characterCardType;
 
     /**
      * Constructor
@@ -52,8 +53,9 @@ public abstract class CharacterCard extends ObservableSubject {
 
 
     public List<Color> getStudents(){return null;}
-
-
+    public CharacterCardType getCharacterCardType() {
+        return characterCardType;
+    }
     public boolean checkRequirements(){return true;}
 
     public abstract void activateEffect(Game game);

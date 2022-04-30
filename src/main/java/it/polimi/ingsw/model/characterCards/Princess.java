@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.characterCards;
 
-import it.polimi.ingsw.model.Bag;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
 
 import java.util.List;
@@ -40,8 +37,8 @@ public class Princess extends WithStudents {
 
             currPlayer.getPlayerBoard().getDiningRoom().addStudent(student.get(0));
 
-            notifyObserver(new MoveStudents("BAG", "CARD", studentToAdd, null, getName().name()));
-            notifyObserver(new MoveStudents("CARD", "DINING_ROOM", student, getName().name(), currPlayer.getNickname()));
+            notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CARD, studentToAdd, null, getName().name()));
+            notifyObserver(new MoveStudents(GameComponent.CARD, GameComponent.DINING_ROOM, student, getName().name(), currPlayer.getNickname()));
             endActivation();
         }
     }

@@ -46,8 +46,8 @@ public class Musician extends CharacterCard {
             playerBoard.getDiningRoom().addStudent(entrance);
         }
 
-        notifyObserver(new MoveStudents("ENTRANCE", "DINING_ROOM", fromEntrance, currPlayer.getNickname(), currPlayer.getNickname()));
-        notifyObserver(new MoveStudents("DINING_ROOM", "ENTRANCE", fromDiningRoom, currPlayer.getNickname(), currPlayer.getNickname()));
+        notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.DINING_ROOM, fromEntrance, currPlayer.getNickname(), currPlayer.getNickname()));
+        notifyObserver(new MoveStudents(GameComponent.DINING_ROOM, GameComponent.ENTRANCE, fromDiningRoom, currPlayer.getNickname(), currPlayer.getNickname()));
 
         endActivation();
     }

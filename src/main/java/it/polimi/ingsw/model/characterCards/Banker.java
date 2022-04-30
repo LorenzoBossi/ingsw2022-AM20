@@ -45,7 +45,7 @@ public class Banker extends CharacterCard {
                 removedStudents.add(selectedColor);
             }
 
-            notifyObserver(new MoveStudents("DININGROOM", "BAG", removedStudents, p.getNickname(), null));
+            notifyObserver(new MoveStudents(GameComponent.DINING_ROOM, GameComponent.BAG, removedStudents, p.getNickname(), null));
             bag.addStudents(removedStudents);
             removedStudents.clear();
         }

@@ -45,8 +45,8 @@ public class Jester extends WithStudents {
         remove(students);
         add(fromEntrance);
 
-        notifyObserver(new MoveStudents("ENTRANCE", "CARD", fromEntrance, currPlayer.getNickname(), getName().name()));
-        notifyObserver(new MoveStudents("CARD", "ENTRANCE", students, getName().name(), currPlayer.getNickname()));
+        notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.CARD, fromEntrance, currPlayer.getNickname(), getName().name()));
+        notifyObserver(new MoveStudents(GameComponent.CARD, GameComponent.ENTRANCE, students, getName().name(), currPlayer.getNickname()));
         endActivation();
     }
 }

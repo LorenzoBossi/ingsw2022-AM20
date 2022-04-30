@@ -56,7 +56,7 @@ public class Controller extends ObservableSubject {
             notifyObserver(new PlayerCoinsEvent(1));
         }
 
-        notifyObserver(new MoveStudents("ENTRANCE", "DINING_ROOM", studentToAdd, nickname, nickname));
+        notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.DINING_ROOM, studentToAdd, nickname, nickname));
 
         if (professorManager.canTakeProfessor(currPlayer, student)) {
             professorManager.takeProfessor(currPlayer, student);
@@ -79,7 +79,7 @@ public class Controller extends ObservableSubject {
 
         board.getEntrance().removeStudent(student);
         island.addStudent(student);
-        notifyObserver(new MoveStudents("ENTRANCE", "ISLAND", studentToAdd, currPlayer.getNickname(), islandPosition));
+        notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.ISLAND, studentToAdd, currPlayer.getNickname(), islandPosition));
     }
 
     /**
@@ -113,7 +113,7 @@ public class Controller extends ObservableSubject {
         studentsToAdd = chosenCloud.getStudents();
         entrance.addStudentFromCloud(chosenCloud);
         chosenCloud.setChosen(true);
-        notifyObserver(new MoveStudents("CLOUD", "ENTRANCE", studentsToAdd, cloudID, currPlayer.getNickname()));
+        notifyObserver(new MoveStudents(GameComponent.CLOUD, GameComponent.ENTRANCE, studentsToAdd, cloudID, currPlayer.getNickname()));
     }
 
     /**

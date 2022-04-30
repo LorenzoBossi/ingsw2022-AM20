@@ -37,7 +37,7 @@ public abstract class WithStudents extends CharacterCard {
 
     public void setStudents(List<Color> students) {
         this.students = students;
-        notifyObserver(new MoveStudents("BAG", "CARD", students, null, getName().name()));
+        //notifyObserver(new MoveStudents("BAG", "CARD", students, null, getName().name()));
     }
 
 

@@ -101,11 +101,15 @@ public class Game extends ObservableSubject {
      * @param numberOfStudentsInEntrance the number of students for each entrance
      */
     private void initEntrances(int numberOfStudentsInEntrance) {
+        List<Color> studentsToAdd;
+        List<Color> studentsToNotify = new ArrayList<>();
         for (Player player : players) {
+            studentsToNotify.clear();
             PlayerBoard board = player.getPlayerBoard();
-            List<Color> studentsToAdd = bag.getStudents(numberOfStudentsInEntrance);
+            studentsToAdd = bag.getStudents(numberOfStudentsInEntrance);
+            studentsToNotify.addAll(studentsToAdd);
             board.getEntrance().refillEntrance(studentsToAdd);
-            notifyObserver(new MoveStudents("BAG", "ENTRANCE", studentsToAdd, null, player.getNickname()));
+            notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.ENTRANCE, studentsToNotify, null, player.getNickname()));
         }
     }
 
@@ -170,13 +174,13 @@ public class Game extends ObservableSubject {
             student = bag.getStudents(1);
             island = archipelago.getIsland(i);
             island.addStudent(student.get(0));
-            notifyObserver(new MoveStudents("BAG", "ISLAND", student, null, i));
+            notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.ISLAND, student, null, i));
         }
         for (i = oppositeOfMotherNature + 1; i < numberOfIslands; i++) {
             student = bag.getStudents(1);
             island = archipelago.getIsland(i);
             island.addStudent(student.get(0));
-            notifyObserver(new MoveStudents("BAG", "ISLAND", student, null, i));
+            notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.ISLAND, student, null, i));
         }
     }
 
@@ -325,14 +329,14 @@ public class Game extends ObservableSubject {
                 studentsToAdd = bag.getStudents(STUDENTS_CLOUD_2P);
                 cloudId = clouds.indexOf(cloud);
                 cloud.fill(studentsToAdd);
-                notifyObserver(new MoveStudents("BAG", "CLOUD", studentsToAdd, null, cloudId));
+                notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CLOUD, studentsToAdd, null, cloudId));
             }
         } else if (numberOfPlayers == 3) {
             for (Cloud cloud : clouds) {
                 studentsToAdd = bag.getStudents(STUDENTS_CLOUD_3P);
                 cloudId = clouds.indexOf(cloud);
                 cloud.fill(studentsToAdd);
-                notifyObserver(new MoveStudents("BAG", "CLOUD", studentsToAdd, null, cloudId));
+                notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CLOUD, studentsToAdd, null, cloudId));
             }
         }
     }
