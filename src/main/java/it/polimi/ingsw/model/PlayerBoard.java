@@ -10,6 +10,7 @@ public class PlayerBoard {
     private DiningRoom diningRoom;
     private int numberTower;
     private List<Boolean> professor;
+    private EndGameObserver endGameObserver;
 
     public PlayerBoard(){
         this.entrance = new Entrance();
@@ -39,14 +40,20 @@ public class PlayerBoard {
     }
 
     /**
-     * RemoveTowers remove towers from the playerBoard
+     * RemoveTowers remove towers from the playerBoard.
+     * If the number of towers to remove is higher than the number of tower on the playerboard
+     * it removes every tower on the playerboard
      * @param towersRemove number of towers to remove at once
      */
     public void removeTowers(int towersRemove){
-        if(this.numberTower - towersRemove >= 0)
+        if(this.numberTower > towersRemove)
             this.numberTower = this.numberTower - towersRemove;
-        /*else
-            System.out.println("errore");*/
+        else {
+            this.numberTower=0;
+        }
+        if(numberTower==0){
+            endGameObserver.notifyEndGame();
+        }
     }
 
     /**
@@ -82,5 +89,8 @@ public class PlayerBoard {
         }
     }
 
+    public void attach(EndGameObserver endGameObserver){
+        this.endGameObserver=endGameObserver;
+    }
 
 }

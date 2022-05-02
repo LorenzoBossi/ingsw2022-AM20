@@ -22,6 +22,8 @@ public class CharacterCardTest {
         game.addPlayer("Simone");
         player1 = game.getPlayers().get(0);
         player2 = game.getPlayers().get(1);
+        player1.getPlayerBoard().addTowers(8);
+        player2.getPlayerBoard().addTowers(8);
         player1.getPlayerChoice().selectColor(Color.YELLOW);
         player1.getPlayerChoice().selectIsland(game.getArchipelago().getIsland(0));
         island = game.getArchipelago().getIsland(0);

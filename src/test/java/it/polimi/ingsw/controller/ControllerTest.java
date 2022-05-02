@@ -23,6 +23,8 @@ public class ControllerTest {
         game = new Game(2);
         game.addPlayer("Carlo");
         game.addPlayer("Simone");
+        game.getPlayerByNickname("Carlo").getPlayerBoard().addTowers(8);
+        game.getPlayerByNickname("Simone").getPlayerBoard().addTowers(8);
         List<Color> studentsToAdd = new ArrayList<>(Arrays.asList(Color.BLUE, Color.RED, Color.BLUE, Color.RED));
         game.getCurrPlayer().getPlayerBoard().getEntrance().refillEntrance(studentsToAdd);
         controller = new Controller(game);

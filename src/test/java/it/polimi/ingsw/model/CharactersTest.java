@@ -34,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.*;
             p1= game.getPlayers().get(0);
             p2= game.getPlayers().get(1);
             p3= game.getPlayers().get(2);
+
         }
 
 

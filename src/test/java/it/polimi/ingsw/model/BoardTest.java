@@ -54,7 +54,7 @@ public class BoardTest {
         board.addTowers(2);
         assertEquals(5,board.getNumberTower());
         board.removeTowers(8);
-        assertEquals(5,board.getNumberTower());
+        assertEquals(0,board.getNumberTower());
     }
 
     @Test

@@ -1,11 +1,11 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exceptions.DrawException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static it.polimi.ingsw.model.Phase.LOBBY;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -329,4 +329,80 @@ public class GameTest {
         assertEquals(9, numberOfStudents);
     }
 
+    @Test()
+    public void getWinnerTest() {
+        game.addPlayer("Paolo");
+        game.addPlayer("Simone");
+        game.addPlayer("Luca");
+        game.start();
+        Player winner;
+        game.getPlayerByNickname("Paolo").getPlayerBoard().removeTowers(2);
+        //Paolo has 4 towers in his tower garden
+        assertDoesNotThrow(()->game.getWinner());
+        try {
+            winner= game.getWinner();
+            assertEquals("Paolo",winner.getNickname());
+        }catch (DrawException e){
+            System.out.println("getWinnerTest: not expected excepion");
+        }
+
+
+        game.getPlayerByNickname("Simone").getPlayerBoard().removeTowers(1);
+        //Simone has 5 towers in his tower garden
+        //Paolo has 4 towers in his tower garden
+        assertDoesNotThrow(()->game.getWinner());
+        try {
+            winner= game.getWinner();
+            assertEquals("Paolo",winner.getNickname());
+        }catch (DrawException e){
+            System.out.println("getWinnerTest: not expected excepion");
+        }
+
+
+        game.getPlayerByNickname("Simone").getPlayerBoard().removeTowers(1);
+        //Simone has 4 towers in his tower garden
+        //Paolo has 4 towers in his tower garden
+        assertThrows(DrawException.class,()->game.getWinner());
+
+        game.getProfessorManager().takeProfessor(game.getPlayerByNickname("Paolo"),Color.BLUE);
+        //Simone has 4 towers in his tower garden
+        //Paolo has 4 towers in his tower garden, Professors: BLUE
+        assertDoesNotThrow(()->game.getWinner());
+        try {
+            winner= game.getWinner();
+            assertEquals("Paolo",winner.getNickname());
+        }catch (DrawException e){
+            System.out.println("getWinnerTest: not expected excepion");
+        }
+
+
+        game.getPlayerByNickname("Simone").getPlayerBoard().removeTowers(2);
+        game.getPlayerByNickname("Luca").getPlayerBoard().removeTowers(4);
+        game.getProfessorManager().takeProfessor(game.getPlayerByNickname("Paolo"),Color.YELLOW);
+        game.getProfessorManager().takeProfessor(game.getPlayerByNickname("Luca"),Color.PINK);
+        //Simone has 2 towers in his tower garden
+        //Paolo has 4 towers in his tower garden, Professors: BLUE,YELLOW
+        //Luca has 2 towers in his tower garden, Professors: PINK
+
+        assertDoesNotThrow(()->game.getWinner());
+        try {
+            winner= game.getWinner();
+            assertEquals("Luca",winner.getNickname());
+        }catch (DrawException e){
+            System.out.println("getWinnerTest: not expected excepion");
+        }
+
+        game.getPlayerByNickname("Paolo").getPlayerBoard().removeTowers(2);
+        game.getProfessorManager().takeProfessor(game.getPlayerByNickname("Simone"),Color.RED);
+        //Simone has 2 towers in his tower garden, Professors: RED
+        //Paolo has 2 towers in his tower garden, Professors: BLUE,YELLOW
+        //Luca has 2 towers in his tower garden, Professors: PINK
+        assertDoesNotThrow(()->game.getWinner());
+        try {
+            winner= game.getWinner();
+            assertEquals("Paolo",winner.getNickname());
+        }catch (DrawException e){
+            System.out.println("getWinnerTest: not expected excepion");
+        }
+    }
 }

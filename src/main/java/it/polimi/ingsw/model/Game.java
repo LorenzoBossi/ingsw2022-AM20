@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.model.exceptions.DrawException;
 import it.polimi.ingsw.model.characterCards.*;
 import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
-import it.polimi.ingsw.network.messages.serverMessage.ServerMessage;
 import it.polimi.ingsw.utils.ObservableSubject;
 
 import java.util.ArrayList;
@@ -25,7 +25,8 @@ public class Game extends ObservableSubject {
     private List<Player> actionOrder;
     private Player firstPlayer;
     private int numberOfCoins = 0;
-
+    private int remainingRounds = 10;
+    private boolean isLastRound=false;
     /**
      * Game's constants
      */
@@ -60,7 +61,9 @@ public class Game extends ObservableSubject {
 
     public void initGame() {
         initIslands();
+        archipelago.attach(new EndGameObserver(this));
         bag.fillBag(24);
+        bag.attach(new EndGameObserver(this));
         addClouds(numberOfPlayers);
         refillClouds();
         initPlayerBoard();
@@ -90,8 +93,12 @@ public class Game extends ObservableSubject {
      * @param numberOfTowers the number of Towers for each PlayerBoard
      */
     public void initTowers(int numberOfTowers) {
+        EndGameObserver endGameObserver= new EndGameObserver(this);
+        PlayerBoard playerBoard;
         for (Player player : players) {
-            player.getPlayerBoard().addTowers(numberOfTowers);
+            playerBoard=player.getPlayerBoard();
+            playerBoard.addTowers(numberOfTowers);
+            playerBoard.attach(endGameObserver);
         }
     }
 
@@ -248,7 +255,11 @@ public class Game extends ObservableSubject {
         } else if (phase == Phase.ACTION) {
             next = getNextAction();
             if (next.equals(firstPlayer)) {
-                startPianificationPhase();
+                remainingRounds--;
+                if(remainingRounds==0 || isLastRound)
+                    end();
+                else
+                    startPianificationPhase();
             } else {
                 currPlayer = next;
                 resetAvailableMoves(currPlayer);
@@ -312,7 +323,7 @@ public class Game extends ObservableSubject {
         actionOrder.clear();
         currPlayer = firstPlayer;
         phase = Phase.PIANIFICATION;
-        for(Assistant assistant : assistants){
+        for (Assistant assistant : assistants) {
             assistant.setAlreadyPlayed(false);
         }
     }
@@ -577,4 +588,53 @@ public class Game extends ObservableSubject {
         return extractCharacters;
     }
 
+    /**
+     * find the winner of the game.
+     *
+     * @return the Player who won the game or null if the game ends in a draw
+     */
+    public Player getWinner() throws DrawException {
+        int minTowers = 10;
+        int maxProfessors = -1;
+        int numberOfProfessors;
+        int numberOfTowers;
+        boolean isADraw = false;
+        Player winner = currPlayer;
+        for (Player player : players) {
+
+            numberOfTowers = player.getPlayerBoard().getNumberTower();
+
+            if (numberOfTowers < minTowers) {
+                minTowers = numberOfTowers;
+                winner = player;
+                numberOfProfessors = professorManager.getProfessorsOwnedBy(player).size();
+                maxProfessors = numberOfProfessors;
+                isADraw = false;
+            } else if (numberOfTowers == minTowers) {
+                numberOfProfessors = professorManager.getProfessorsOwnedBy(player).size();
+                if (numberOfProfessors > maxProfessors) {
+                    maxProfessors = numberOfProfessors;
+                    winner = player;
+                    isADraw = false;
+                } else if (numberOfProfessors == maxProfessors) {
+                    isADraw = true;
+                }
+            }
+
+            if (isADraw) {
+                throw new DrawException();
+            }
+
+        }
+        return winner;
+    }
+
+
+    public void end() {
+        phase = Phase.ENDED;
+    }
+
+    public void lastRound() {
+        isLastRound=true;
+    }
 }

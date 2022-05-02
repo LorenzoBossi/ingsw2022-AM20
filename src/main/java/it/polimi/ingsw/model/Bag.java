@@ -3,13 +3,13 @@ package it.polimi.ingsw.model;
 import java.util.*;
 
 public class Bag {
-    List<Color> students;
-
+    private List<Color> students;
+    private EndGameObserver endGameObserver;
     /**
      * Constructor
      */
     public Bag(){
-        students = new ArrayList<Color>();
+        students = new ArrayList<>();
     }
 
 
@@ -27,14 +27,22 @@ public class Bag {
 
 
     /**
-     * Method getStudents takes randomly students from the Bag and removes them
+     * Method getStudents takes randomly students from the Bag and removes them.
+     * If there aren't enough students in the bag, it returns the last available students
      * @param numberOfStudents the number of students that I want to take from the bag
      * @return the students taken from the bag
      */
-    public List<Color> getStudents(int numberOfStudents){
+    public List<Color> getStudents(int numberOfStudents) {
         Random rand = new Random();
-        int rnd_int;
-        List<Color> wantedStudents = new ArrayList<Color>();
+        int rnd_int,availableStudents;
+        List<Color> wantedStudents = new ArrayList<>();
+        availableStudents=students.size();
+
+        if(numberOfStudents>availableStudents){
+            numberOfStudents=availableStudents;
+            endGameObserver.notifyLastRound();
+        }
+
         for(int i = 0; i < numberOfStudents; i++){
             rnd_int = rand.nextInt(students.size());
             wantedStudents.add(students.get(rnd_int));
@@ -60,5 +68,9 @@ public class Bag {
      */
     public boolean isEmpty(){
         return students.size() == 0;
+    }
+
+    public void attach(EndGameObserver endGameObserver){
+        this.endGameObserver=endGameObserver;
     }
 }

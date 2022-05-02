@@ -11,7 +11,7 @@ import java.util.*;
 public class IslandsManager extends ObservableSubject {
     private List<Island> islands;
     private int motherNature;
-
+    private EndGameObserver endGameObserver;
 
     /**
      * Constructor
@@ -141,6 +141,10 @@ public class IslandsManager extends ObservableSubject {
                 notifyObserver(new MergeIslands(currIslandPosition, islandToMergePosition));
 
                 moveMotherNatureOnIsland(island);
+
+                if(getNumberOfIslands()<=3){
+                    endGameObserver.notifyEndGame();
+                }
             }
         }
     }
@@ -167,4 +171,7 @@ public class IslandsManager extends ObservableSubject {
         return banCards;
     }
 
+    public void attach(EndGameObserver endGameObserver){
+        this.endGameObserver=endGameObserver;
+    }
 }
