@@ -1,6 +1,9 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.network.messages.clientMessage.ClientMessage;
+import it.polimi.ingsw.network.messages.clientMessage.Pong;
+import it.polimi.ingsw.network.messages.serverMessage.Disconnection;
+import it.polimi.ingsw.network.messages.serverMessage.Ping;
 import it.polimi.ingsw.network.messages.serverMessage.ServerMessage;
 
 import java.io.IOException;
@@ -8,7 +11,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ServerConnection implements Runnable{
+/**
+ * Class ServerConnection handles the connection between Client and Server
+ */
+public class ServerConnection implements Runnable {
     private String serverIp;
     private int serverPort;
     private ObjectOutputStream outputStream;
@@ -17,12 +23,22 @@ public class ServerConnection implements Runnable{
     private boolean status = true;
     private Socket socket;
 
+    /**
+     * Constructor
+     *
+     * @param serverIp       the Server's Ip address
+     * @param serverPort     the Server's port
+     * @param messageHandler the messageHandler's Server message
+     */
     public ServerConnection(String serverIp, int serverPort, ServerMessageHandler messageHandler) {
         this.serverIp = serverIp;
         this.serverPort = serverPort;
         this.messageHandler = messageHandler;
     }
 
+    /**
+     * Method setupConnection setups the connection with Server
+     */
     public void setupConnection() {
         try {
             socket = new Socket(serverIp, serverPort);
@@ -35,10 +51,20 @@ public class ServerConnection implements Runnable{
         }
     }
 
-    public void receiveFromServer() {
+    /**
+     * Method receiveFromServer receives the message comes from the Server
+     */
+    public synchronized void receiveFromServer() {
         try {
             ServerMessage message = (ServerMessage) inputStream.readObject();
-            messageHandler.handleMessage(message);
+            if (message instanceof Disconnection) {
+                messageHandler.Disconnection();
+                close();
+            } else if (message instanceof Ping) {
+                sendMessageToServer(new Pong());
+            } else {
+                messageHandler.handleMessage(message);
+            }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Server Connection Lost...");
             e.printStackTrace();
@@ -46,6 +72,11 @@ public class ServerConnection implements Runnable{
         }
     }
 
+    /**
+     * Method sendMessageToServer sends the Client message to the Server
+     *
+     * @param message the message that the client sends to the Server
+     */
     public void sendMessageToServer(ClientMessage message) {
         try {
             outputStream.reset();
@@ -57,8 +88,12 @@ public class ServerConnection implements Runnable{
         }
     }
 
+    /**
+     * This method closes the connection with the server and close the streams
+     */
     public void close() {
         try {
+            status = false;
             inputStream.close();
             outputStream.close();
             socket.close();
@@ -68,9 +103,17 @@ public class ServerConnection implements Runnable{
         }
     }
 
+    public boolean isConnected() {
+        return status;
+    }
+
+    /**
+     * Method run continues to receive message from the server
+     */
     @Override
     public void run() {
-        while(status) {
+        while (status) {
+
             receiveFromServer();
         }
         close();

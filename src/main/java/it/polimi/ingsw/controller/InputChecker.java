@@ -15,8 +15,9 @@ public class InputChecker {
     }
 
     public boolean checkAssistantPlayed(AssistantName name) {
-        model.getCurrPlayer();
-        return true;
+        Player currPlayer = model.getCurrPlayer();
+        Assistant assistant = model.getAssistantByName(name);
+        return currPlayer.getPlayerHand().canPlay(assistant);
     }
 
     public boolean checkValidTurn(String player) {

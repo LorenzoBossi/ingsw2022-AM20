@@ -1,17 +1,28 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.GameComponent;
 import it.polimi.ingsw.network.messages.clientMessage.ClientMessage;
+import it.polimi.ingsw.network.messages.clientMessage.GameMessage;
 import it.polimi.ingsw.network.messages.serverMessage.*;
 
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class ServerMessageHandler handles the messages receive from the Server
+ */
 public class ServerMessageHandler {
     private ClientModel model;
     private CLI view;
 
+    /**
+     * Constructor
+     *
+     * @param model the client's model representation
+     * @param view  the view
+     */
     public ServerMessageHandler(ClientModel model, CLI view) {
         this.model = model;
         this.view = view;
@@ -21,7 +32,11 @@ public class ServerMessageHandler {
         this.model = model;
     }
 
-
+    /**
+     * Method handleMessage receives all the Server messages and dispatches them
+     *
+     * @param message the Server message
+     */
     public void handleMessage(ServerMessage message) {
         if (message instanceof SendLobbies) {
             Map<Integer, Integer> numberPlayerMap = ((SendLobbies) message).getAttendingLobbiesNumberPlayerMap();
@@ -38,14 +53,38 @@ public class ServerMessageHandler {
             List<String> players = ((GameStarting) message).getPlayers();
             String gameMode = ((GameStarting) message).getGameMode();
             view.startGame(players, gameMode);
-        } else if (message instanceof MoveStudents) {
-            handleStudentsMove(message);
         } else if (message instanceof StartPianificationPhase) {
             String currPlayer = ((StartPianificationPhase) message).getTargetPlayer();
-            view.PianificationPhase(currPlayer);
+            view.pianificationPhase(currPlayer);
+        } else if (message instanceof StartActionPhase) {
+            model.getAssistantsPlayed().clear();
+            view.actionPhase(((StartActionPhase) message).getTargetPlayer());
+        } else if (message instanceof UpdateMessage) {
+            handleUpdateMessage(message);
         }
     }
 
+    /**
+     * Method handleUpdateMessage consumes the updateMessage from the Server
+     *
+     * @param message the UpdateMessage from the server
+     */
+    public void handleUpdateMessage(ServerMessage message) {
+        if (message instanceof AssistantPlayed) {
+            String player = ((AssistantPlayed) message).getPlayer();
+            String name = ((AssistantPlayed) message).getAssistantName();
+            model.getAssistantsPlayed().add(AssistantName.valueOf(name));
+            System.out.println(player + " has played " + name);
+        } else if (message instanceof MoveStudents) {
+            handleStudentsMove(message);
+        }
+    }
+
+    /**
+     * Method handleStudentsMove consumes the MoveStudents message from the server
+     *
+     * @param message the MoveStudents message
+     */
     public void handleStudentsMove(ServerMessage message) {
         MoveStudents updateMessage = (MoveStudents) message;
         GameComponent source = updateMessage.getSource();
@@ -54,9 +93,11 @@ public class ServerMessageHandler {
         Object indexSource = updateMessage.getIndexSource();
         Object indexDestination = updateMessage.getIndexDestination();
 
+        /*
         System.out.println(source +"--->" + destination);
         System.out.println(students);
         System.out.println(indexSource + "--->" + indexDestination);
+         */
 
         switch (source) {
             case ENTRANCE:
@@ -103,6 +144,11 @@ public class ServerMessageHandler {
 
     }
 
+    /**
+     * Method handleError consumes the Error message from the Server
+     *
+     * @param message the error message
+     */
     public void handleError(ServerMessage message) {
         ErrorType errorType = ((GameError) message).getErrorType();
         String errorText = ((GameError) message).getErrorText();
@@ -115,7 +161,15 @@ public class ServerMessageHandler {
                 System.out.println(errorText);
                 view.lobbyRefresh();
                 break;
-
+            case ASSISTANT_NOT_PLAYABLE:
+                System.out.println(errorText);
+                model.getAssistants().add(model.getLastAssistantPlayed());
+                view.pianificationPhase(view.getClientNickname());
         }
+    }
+
+    public void Disconnection() {
+        System.out.println("Disconnection");
+        System.exit(0);
     }
 }

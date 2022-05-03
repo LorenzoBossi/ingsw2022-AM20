@@ -1,6 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.clientMessage.ClientMessage;
+import it.polimi.ingsw.network.messages.clientMessage.Pong;
 import it.polimi.ingsw.network.messages.serverMessage.ServerMessage;
 
 import java.io.IOException;
@@ -31,6 +32,10 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
+    public boolean isConnected() {
+        return !stop;
+    }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
@@ -45,6 +50,8 @@ public class ClientConnectionHandler implements Runnable {
             message = (ClientMessage) inputStream.readObject();
         } catch (IOException e) {
             System.err.println(nickname + " disconnection");
+            if (nickname != null)
+                server.closeLobby(nickname);
             closeConnection();
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -52,7 +59,11 @@ public class ClientConnectionHandler implements Runnable {
             closeConnection();
             e.printStackTrace();
         }
-        server.messageDispatcher(message, this);
+        if (message instanceof Pong)
+            System.out.println("");
+        else {
+            server.messageDispatcher(message, this);
+        }
     }
 
     public void sendMessageToClient(ServerMessage serverMessage) {
@@ -77,15 +88,16 @@ public class ClientConnectionHandler implements Runnable {
     }
 
     public void closeConnection() {
-        server.removeActivePlayer(nickname);
-        stop = true;
-        try {
-            outputStream.close();
-            inputStream.close();
-            socket.close();
-        } catch (IOException e) {
-            System.err.println("GameError during closing client socket");
-            e.printStackTrace();
+        if (isConnected()) {
+            stop = true;
+            try {
+                outputStream.close();
+                inputStream.close();
+                socket.close();
+            } catch (IOException e) {
+                System.err.println("GameError during closing client socket");
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -82,6 +82,10 @@ public class Player {
         return false;
     }
 
+    public PlayerHand getPlayerHand() {
+        return playerHand;
+    }
+
     public void setPlayerPriority(int newPriority) {
         this.playerPriority = newPriority;
     }
@@ -142,6 +146,7 @@ public class Player {
     public boolean isMotherNatureMoveLegit(int selectedMotherNatureMove) {
         return selectedMotherNatureMove <= motherNatureMaxMove && selectedMotherNatureMove > 0;
     }
+
 
     public PlayerChoice getPlayerChoice() {
         return playerChoice;

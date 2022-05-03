@@ -13,7 +13,7 @@ public class PingHandler implements Runnable{
 
     @Override
     public void run() {
-        while(true) {
+        while(clientConnectionHandler.isConnected()) {
             clientConnectionHandler.sendMessageToClient(new Ping());
             try {
                 TimeUnit.MILLISECONDS.sleep(1000);

@@ -14,6 +14,7 @@ import it.polimi.ingsw.network.messages.serverMessage.*;
 import java.util.List;
 
 public class GameHandler {
+    private int i = 0;
 
     private Server server;
 
@@ -100,6 +101,7 @@ public class GameHandler {
             AssistantName name = ((ChosenAssistant) message).getName();
             if (!inputChecker.checkAssistantPlayed(name)) {
                 sendMessageToOneClient(player, new GameError(ErrorType.ASSISTANT_NOT_PLAYABLE, "Assistant chosen is not playable"));
+                return;
             }
             controller.playAssistant(name);
             nextPlayerHandler();

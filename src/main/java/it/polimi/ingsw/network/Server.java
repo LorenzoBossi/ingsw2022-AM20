@@ -130,11 +130,6 @@ public class Server {
         return attendingLobbiesNumberOfPlayerMap;
     }
 
-    public void removeActivePlayer(String nickname) {
-        if (activePlayers.contains(nickname))
-            activePlayers.remove(nickname);
-    }
-
     public void createLobby(String nickname, int numberOfPlayers, String gameMode) {
         List<TowerColor> towerColorsAvailable = new ArrayList<>(Arrays.asList(TowerColor.values()));
 
@@ -185,21 +180,56 @@ public class Server {
         return getPlayersInSameLobby(lobbyId).size() == getNumberOfPlayersByLobbyID(lobbyId);
     }
 
-    private void closeLobby(int lobbyId) {
+    public void closeLobby(String playerDisconnected) {
+        if (playerLobbyMap.containsKey(playerDisconnected)) {
+            int lobby = playerLobbyMap.get(playerDisconnected);
+            List<String> players = getPlayersInSameLobby(lobby);
 
+            activePlayers.removeAll(players);
+            if(attendingLobbies.contains(lobby))
+                attendingLobbies.remove(lobby);
+            activeLobbies.remove(lobby);
+
+            for (String player : players) {
+                playerLobbyMap.remove(player, lobby);
+                clientConnectionHandlerMap.get(player).sendMessageToClient(new Disconnection());
+                activePlayers.remove(player);
+                clientConnectionHandlerMap.remove(player);
+            }
+        } else {
+            activePlayers.remove(playerDisconnected);
+        }
     }
 
-    private void startGame(List<String> players, int lobbyId) {
+    private void startGame(List<String> players, Integer lobby) {
         for (String player : players) {
-            clientConnectionHandlerMap.get(player).sendMessageToClient(new GameStarting(players, getGameModeByLobbyID(lobbyId)));
+            clientConnectionHandlerMap.get(player).sendMessageToClient(new GameStarting(players, getGameModeByLobbyID(lobby)));
         }
-        attendingLobbies.remove(lobbyId);
-        GameHandler gameHandler = new GameHandler(this, lobbyId);
-        activeLobbies.put(lobbyId, gameHandler);
+        if (lobby == 1) {
+            System.out.println("Uguale a 1");
+        }
+        System.out.println(attendingLobbies);
+        System.out.println(attendingLobbies.contains(lobby));
+        try {
+            System.out.println(attendingLobbies.remove(lobby));
+        } catch (UnsupportedOperationException e) {
+            System.out.println("Operazione non supportata");
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("OutofBound");
+            e.printStackTrace();
+        }
+        GameHandler gameHandler = new GameHandler(this, lobby);
+        activeLobbies.put(lobby, gameHandler);
         gameHandler.startGameHandler();
     }
 
-    public synchronized void messageDispatcher(ClientMessage message, ClientConnectionHandler clientConnectionHandler) {
+    /**
+     * Method messageDispatcher handles the nickname setup and the lobby phase pf the game and dispatches the different client message to the right GameHandler
+     *
+     * @param message                 the message sends by the client
+     * @param clientConnectionHandler the client connection to receive the client's message and to send the server's message
+     */
+    public void messageDispatcher(ClientMessage message, ClientConnectionHandler clientConnectionHandler) {
         if (message instanceof NicknameRequest) {
             String nickname = ((NicknameRequest) message).getNickname();
             if (activePlayers.contains(nickname)) {

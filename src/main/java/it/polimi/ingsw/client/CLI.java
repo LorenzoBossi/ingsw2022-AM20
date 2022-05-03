@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.network.messages.clientMessage.*;
 
@@ -7,6 +8,7 @@ import java.io.PrintStream;
 import java.util.*;
 
 public class CLI {
+    private int i = 0;
     private String serverIp;
     private int serverPort;
     private ServerConnection connectionToServer;
@@ -83,6 +85,7 @@ public class CLI {
             case "join":
                 if (attendingLobbies.isEmpty()) {
                     System.out.println("There are not available lobbies");
+                    System.out.println("Lobbies refreshing...");
                     lobbyRefresh();
                     return;
                 }
@@ -91,6 +94,7 @@ public class CLI {
                 int lobbyId = getInt();
                 if (!attendingLobbies.contains(lobbyId)) {
                     System.out.println("The chosen LobbyId is not valid");
+                    System.out.println("Lobbies refreshing...");
                     input.nextLine();
                     lobbyRefresh();
                     return;
@@ -106,16 +110,30 @@ public class CLI {
         clientModel.initGame(players, gameMode);
     }
 
-    public void PianificationPhase(String targetPlayer) {
-        if(!clientNickname.equals(targetPlayer)) {
+    public void pianificationPhase(String targetPlayer) {
+        if (!clientNickname.equals(targetPlayer)) {
             System.out.println(targetPlayer + " pianification turn");
             return;
         }
-        Map<String, List<Color>> entrances = clientModel.getEntrances();
-        for(String player : entrances.keySet()) {
-            System.out.println(player + "----entrance----");
-            System.out.println(entrances.get(player));
+        String check = StringCheckAssistants();
+        printAssistants();
+        System.out.println("Assistants played during this turn " + clientModel.getAssistantsPlayed());
+        System.out.println("Chose one of your assistants : " + check);
+        String choice = getString(check);
+        choice = choice.toUpperCase();
+        AssistantName name = AssistantName.valueOf(choice);
+        clientModel.setLastAssistantPlayed(name);
+        clientModel.removeAssistant(name);
+        connectionToServer.sendMessageToServer(new ChosenAssistant(clientNickname, name));
+    }
+
+    public void actionPhase(String targetPlayer) {
+        if (!clientNickname.equals(targetPlayer)) {
+            System.out.println(targetPlayer + " action turn");
+            return;
         }
+        System.out.println("My turn");
+        connectionToServer.sendMessageToServer(new EndActionPhase(clientNickname));
     }
 
     public boolean checkString(String input, String check) {
@@ -131,9 +149,13 @@ public class CLI {
         input.reset();
         String choice = input.nextLine().toLowerCase();
         while (!checkString(choice, check)) {
-            System.out.println("Insert one of these options : " + check);
+            if(!choice.equals(""))
+                System.out.println("Insert one of these options : " + check);
+            if(!connectionToServer.isConnected())
+                break;
             choice = input.nextLine().toLowerCase();
         }
+        input.reset();
         return choice;
     }
 
@@ -150,6 +172,37 @@ public class CLI {
             }
         }
         return number;
+    }
+
+    public String getClientNickname() {
+        return clientNickname;
+    }
+
+    private void printPLayerBoard() {
+        Map<String, List<Color>> entrances = clientModel.getEntrances();
+        for (String player : entrances.keySet()) {
+            System.out.println(player + "----entrance----");
+            System.out.println(entrances.get(player));
+        }
+    }
+
+    private String StringCheckAssistants() {
+        List<AssistantName> assistants = clientModel.getAssistants();
+        StringBuilder check = new StringBuilder();
+        for (AssistantName assistant : assistants) {
+            check.append("/").append(assistant);
+        }
+        check = new StringBuilder(check.substring(1, check.length()));
+        return check.toString().toLowerCase();
+    }
+
+    public void printAssistants() {
+        List<AssistantName> assistants = clientModel.getAssistants();
+        for (AssistantName assistant : assistants) {
+            System.out.println(assistant);
+            System.out.println("MotherNatureMove : " + assistant.getMotherNatureMove());
+            System.out.println("PlayerPriority : " + assistant.getValue());
+        }
     }
 
 }
