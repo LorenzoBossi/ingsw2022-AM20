@@ -7,8 +7,10 @@ import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
 import java.util.List;
 
 public class Monk extends WithStudents {
+    /*
     private final int NUMBER_OF_STUDENT = 4;
     private final int MAX_SELECTION = 1;
+    */
 
     /**
      * Constructor
@@ -16,8 +18,8 @@ public class Monk extends WithStudents {
      * @param bag the bag of the game to put students on the card
      */
     public Monk(Bag bag) {
-        super(CharacterName.MONK, 1);
-        setStudents(bag.getStudents(NUMBER_OF_STUDENT));
+        super(CharacterName.MONK, 1,1);
+        setStudents(bag.getStudents(4));
     }
 
     /**
@@ -49,10 +51,5 @@ public class Monk extends WithStudents {
     }
 
 
-    @Override
-    public boolean checkRequirements(){
-        if(getStudents().size()<MAX_SELECTION)
-            return false;
-        return true;
-    }
+
 }

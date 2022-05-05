@@ -2,9 +2,11 @@ package it.polimi.ingsw.model.characterCards;
 
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.messages.serverMessage.IncreaseCardPrice;
 import it.polimi.ingsw.utils.ObservableSubject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class CharacterCard extends ObservableSubject {
@@ -56,7 +58,14 @@ public abstract class CharacterCard extends ObservableSubject {
     public CharacterCardType getCharacterCardType() {
         return characterCardType;
     }
-    public boolean checkRequirements(){return true;}
+
+    /**
+     * checks if the card is playable and if the students selected by the player are correct (if required by the card)
+     * @param currPlayer the Player who wants to activate the card (the current player of the game)
+     * @return  true if the requirements are satisfied
+     *          false if the requirements are not satisfied
+     */
+    public boolean checkRequirements(Player currPlayer){return true;}
 
     public abstract void activateEffect(Game game);
 

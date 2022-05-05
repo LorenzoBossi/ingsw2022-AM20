@@ -49,6 +49,7 @@ import static org.junit.jupiter.api.Assertions.*;
             p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
             p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
 
+            assertTrue(banker.checkRequirements(p1));
             p1.getPlayerChoice().selectColor(Color.BLUE);
             banker.activateEffect(game);
 
@@ -56,7 +57,6 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(p2.getPlayerBoard().getDiningRoom().getNumberOfStudent(Color.BLUE),1);
             assertEquals(p3.getPlayerBoard().getDiningRoom().getNumberOfStudent(Color.BLUE),0);
 
-            assertTrue(banker.checkRequirements());
         }
 
         /**
@@ -96,17 +96,25 @@ import static org.junit.jupiter.api.Assertions.*;
             Island island= game.getArchipelago().getIsland(4);
             Color selectedColor=monk.getStudents().get(1);
             selection.add(selectedColor);
+
             assertTrue(monk.getStudents().contains(selection.get(0)));
 
             p1.getPlayerChoice().selectStudents(selection);
             p1.getPlayerChoice().selectIsland(island);
 
+            assertTrue(monk.checkRequirements(p1));
             initialNumber=island.getSelectedStudents(selectedColor);
 
             monk.activateEffect(game);
 
             assertEquals(island.getSelectedStudents(selectedColor),initialNumber+1);
-            assertTrue(monk.checkRequirements());
+
+            selection=new ArrayList<>();
+            p1.getPlayerChoice().selectStudents(selection);
+            assertFalse(monk.checkRequirements(p1));
+            selection.add(monk.getStudents().get(0));
+            selection.add(monk.getStudents().get(0));
+            assertFalse(monk.checkRequirements(p1));
         }
 
 
@@ -123,7 +131,7 @@ import static org.junit.jupiter.api.Assertions.*;
             p1.getPlayerChoice().selectStudents(selectedStudents);
 
             p1.getPlayerChoice().selectStudentFromEntrance(asList(Color.BLUE,Color.GREEN));
-
+            assertTrue(jester.checkRequirements(p1));
             jester.activateEffect(game);
 
             assertTrue(jester.getStudents().contains(Color.BLUE));
@@ -132,7 +140,11 @@ import static org.junit.jupiter.api.Assertions.*;
             assertTrue(p1.getPlayerBoard().getEntrance().isPresent(selectedStudents.get(0)));
             assertTrue(p1.getPlayerBoard().getEntrance().isPresent(selectedStudents.get(1)));
             assertTrue(p1.getPlayerBoard().getEntrance().isPresent(Color.GREEN));
-            assertTrue(jester.checkRequirements());
+
+            selectedStudents.add(Color.RED);
+            p1.getPlayerChoice().selectStudents(selectedStudents);
+
+            assertFalse(jester.checkRequirements(p1));
         }
 
 
@@ -143,10 +155,11 @@ import static org.junit.jupiter.api.Assertions.*;
             p1.playAssistant(game.getAssistantByName(AssistantName.ASSISTANT3));
             assertEquals(p1.getMotherNatureMaxMove(),2);
 
+            assertTrue(postman.checkRequirements(p1));
             postman.activateEffect(game);
 
             assertEquals(p1.getMotherNatureMaxMove(),4);
-            assertTrue(postman.checkRequirements());
+
         }
 
 
@@ -157,19 +170,17 @@ import static org.junit.jupiter.api.Assertions.*;
             p1.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
             if(game.getProfessorManager().canTakeProfessor(p1,Color.BLUE))
                 game.getProfessorManager().takeProfessor(p1,Color.BLUE);
-
             game.setCurrPlayer(p2);
             p2.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
             assertTrue(game.getProfessorManager().getProfessorsOwnedBy(p1).contains(Color.BLUE));
 
+            assertTrue(profCard.checkRequirements(p1));
             profCard.activateEffect(game);
 
             if(game.getProfessorManager().canTakeProfessor(p2,Color.BLUE))
                 game.getProfessorManager().takeProfessor(p2,Color.BLUE);
             assertTrue(game.getProfessorManager().getProfessorsOwnedBy(p2).contains(Color.BLUE));
             assertFalse(game.getProfessorManager().getProfessorsOwnedBy(p1).contains(Color.BLUE));
-
-            assertTrue(profCard.checkRequirements());
         }
 
 
@@ -186,12 +197,22 @@ import static org.junit.jupiter.api.Assertions.*;
 
             assertEquals(diningRoom.getNumberOfStudent(selectedStudent.get(0)),0);
 
+            assertTrue(princess.checkRequirements(p1));
             princess.activateEffect(game);
 
             assertEquals(diningRoom.getNumberOfStudent(selectedStudent.get(0)),1);
             assertEquals(4,princess.getStudents().size());
 
-            assertTrue(princess.checkRequirements());
+            Color missingColor=Color.RED;
+            for(Color color :Color.values()){
+                if(!princess.getStudents().contains(color)){
+                    missingColor=color;
+                }
+            }
+            selectedStudent.clear();
+            selectedStudent.add(missingColor);
+            p1.getPlayerChoice().selectStudents(selectedStudent);
+            assertFalse(princess.checkRequirements(p1));
         }
 
         @Test
@@ -223,6 +244,7 @@ import static org.junit.jupiter.api.Assertions.*;
             p1.getPlayerChoice().selectStudentFromEntrance(selectedEntrance);
             p1.getPlayerChoice().selectStudents(selectedDining);
 
+            assertTrue(musician.checkRequirements(p1));
             musician.activateEffect(game);
 
             assertTrue(entrance.isPresent(Color.YELLOW));
@@ -232,7 +254,7 @@ import static org.junit.jupiter.api.Assertions.*;
             assertEquals(0,diningRoom.getNumberOfStudent(Color.YELLOW));
             assertEquals(0,diningRoom.getNumberOfStudent(Color.PINK));
 
-            assertTrue(musician.checkRequirements());
+            selectedDining.add(Color.RED);
+            assertFalse(musician.checkRequirements(p1));
         }
-
     }

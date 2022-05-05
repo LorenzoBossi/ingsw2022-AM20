@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Game extends ObservableSubject {
+public class Game extends ObservableSubject implements EndObserver {
     private List<Cloud> clouds;
     private final IslandsManager archipelago;
     private ProfessorManager professorManager;

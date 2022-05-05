@@ -3,11 +3,14 @@ package it.polimi.ingsw.model.characterCards;
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Jester extends WithStudents {
+    /*
     private final int NUMBER_OF_STUDENT = 6;
     private final int MAX_SELECTION = 3;
+    */
 
     /**
      * Constructor
@@ -15,9 +18,9 @@ public class Jester extends WithStudents {
      * @param bag the bag of the game to put students on the card
      */
     public Jester(Bag bag) {
-        super(CharacterName.JESTER, 1);
+        super(CharacterName.JESTER, 1,3);
         List<Color> students;
-        setStudents(bag.getStudents(NUMBER_OF_STUDENT));
+        setStudents(bag.getStudents(6));
     }
 
     /**
@@ -49,4 +52,33 @@ public class Jester extends WithStudents {
         notifyObserver(new MoveStudents(GameComponent.CARD, GameComponent.ENTRANCE, students, getName().name(), currPlayer.getNickname()));
         endActivation();
     }
+
+    /**
+     * checks if the card contains at least the max selection number of students,
+     *        if the player selected the right number of students and if those students are on the card,
+     *        if the player selected students in his entrance
+     * @param currPlayer the current player of the game
+     * @return true if the requirements are satisfied
+     *         false otherwise
+     */
+    @Override
+    public boolean checkRequirements(Player currPlayer) {
+        PlayerChoice playerChoice=currPlayer.getPlayerChoice();
+        List<Color> selectedOnTheCard=playerChoice.getSelectedStudents();
+        Entrance entrance=currPlayer.getPlayerBoard().getEntrance();
+        List<Color> selectedInEntrance=playerChoice.getSelectedStudentFromEntrance();
+
+        if(!super.checkRequirements(currPlayer))
+            return false;
+
+        if(selectedOnTheCard.size()!=selectedInEntrance.size())
+            return false;
+        if(!entrance.isPresent(selectedInEntrance))
+            return false;
+
+        return true;
+    }
+
+
+
 }

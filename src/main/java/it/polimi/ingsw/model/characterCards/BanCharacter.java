@@ -39,8 +39,14 @@ public class BanCharacter extends CharacterCard {
         endActivation();
     }
 
+    /**
+     * checks if the card contains at least one ban card
+     * @param player the current player of the game
+     * @return true if the requirements are satisfied
+     *         false otherwise
+     */
     @Override
-    public boolean checkRequirements(){
+    public boolean checkRequirements(Player player){
         if(banCards==0)
             return false;
         return true;

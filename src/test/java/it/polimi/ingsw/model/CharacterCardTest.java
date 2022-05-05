@@ -39,6 +39,7 @@ public class CharacterCardTest {
     public void VassalEffectTest() {
         CharacterCard card = new Vassal();
         assertNull(island.getOwner());
+        assertTrue(card.checkRequirements(player1));
         card.activateEffect(game);
         assertEquals(player1, island.getOwner());
     }
@@ -47,16 +48,18 @@ public class CharacterCardTest {
     public void BanCardEffectTest() {
         CharacterCard card = new BanCharacter();
         assertEquals(0, island.getBanCards());
+        assertTrue(card.checkRequirements(player1));
         card.activateEffect(game);
         assertEquals(1, island.getBanCards());
 
-        assertTrue(card.checkRequirements());
+
         card.activateEffect(game);
         card.activateEffect(game);
         card.activateEffect(game);
+        assertFalse(card.checkRequirements(player1));
         assertEquals(4, island.getBanCards());
 
-        assertFalse(card.checkRequirements());
+
     }
 
     @Test
@@ -68,11 +71,12 @@ public class CharacterCardTest {
         island.addStudents(Color.PINK, 6);
         game.updateInfluence(island);
         assertEquals(player1, island.getOwner());
+        assertTrue(card.checkRequirements(player1));
         card.activateEffect(game);
         game.updateInfluence(island);
         assertEquals(player2, island.getOwner());
 
-        assertTrue(card.checkRequirements());
+
     }
 
     @Test
@@ -84,11 +88,10 @@ public class CharacterCardTest {
         island.addStudents(Color.PINK, 3);
         game.updateInfluence(island);
         assertEquals(player1, island.getOwner());
+        assertTrue(card.checkRequirements(player1));
         card.activateEffect(game);
         game.updateInfluence(island);
         assertEquals(player2, island.getOwner());
-
-        assertTrue(card.checkRequirements());
     }
 
     @Test
@@ -100,11 +103,11 @@ public class CharacterCardTest {
         island.addStudents(Color.PINK, 3);
         game.updateInfluence(island);
         assertEquals(player2, island.getOwner());
+        assertTrue(card.checkRequirements(player1));
         card.activateEffect(game);
         game.updateInfluence(island);
         assertEquals(player1, island.getOwner());
 
-        assertTrue(card.checkRequirements());
     }
 
     @Test
