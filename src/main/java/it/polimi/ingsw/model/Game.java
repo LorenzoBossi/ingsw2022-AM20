@@ -2,7 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.exceptions.DrawException;
 import it.polimi.ingsw.model.characterCards.*;
+import it.polimi.ingsw.network.messages.serverMessage.ExtractedCard;
 import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
+import it.polimi.ingsw.network.messages.serverMessage.PlayerCoinsEvent;
 import it.polimi.ingsw.utils.ObservableSubject;
 
 import java.util.ArrayList;
@@ -26,7 +28,7 @@ public class Game extends ObservableSubject implements EndObserver {
     private Player firstPlayer;
     private int numberOfCoins = 0;
     private int remainingRounds = 10;
-    private boolean isLastRound=false;
+    private boolean isLastRound = false;
     /**
      * Game's constants
      */
@@ -93,10 +95,10 @@ public class Game extends ObservableSubject implements EndObserver {
      * @param numberOfTowers the number of Towers for each PlayerBoard
      */
     public void initTowers(int numberOfTowers) {
-        EndGameObserver endGameObserver= new EndGameObserver(this);
+        EndGameObserver endGameObserver = new EndGameObserver(this);
         PlayerBoard playerBoard;
         for (Player player : players) {
-            playerBoard=player.getPlayerBoard();
+            playerBoard = player.getPlayerBoard();
             playerBoard.addTowers(numberOfTowers);
             playerBoard.attach(endGameObserver);
         }
@@ -141,6 +143,7 @@ public class Game extends ObservableSubject implements EndObserver {
     public void characterCardPayment(int payment) {
         currPlayer.useCoins(payment);
         numberOfCoins += payment;
+        notifyObserver(new PlayerCoinsEvent(-payment, currPlayer.getNickname()));
     }
 
     /**
@@ -152,6 +155,7 @@ public class Game extends ObservableSubject implements EndObserver {
         Player currPlayer = getPlayerByNickname(nickname);
         numberOfCoins--;
         currPlayer.addCoin();
+        notifyObserver(new PlayerCoinsEvent(1, nickname));
     }
 
     /**
@@ -179,15 +183,11 @@ public class Game extends ObservableSubject implements EndObserver {
 
         for (i = 1; i < oppositeOfMotherNature; i++) {
             student = bag.getStudents(1);
-            island = archipelago.getIsland(i);
-            island.addStudent(student.get(0));
-            notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.ISLAND, student, null, i));
+            archipelago.addStudentOnIsland(student.get(0), i, null);
         }
         for (i = oppositeOfMotherNature + 1; i < numberOfIslands; i++) {
             student = bag.getStudents(1);
-            island = archipelago.getIsland(i);
-            island.addStudent(student.get(0));
-            notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.ISLAND, student, null, i));
+            archipelago.addStudentOnIsland(student.get(0), i, null);
         }
     }
 
@@ -231,6 +231,9 @@ public class Game extends ObservableSubject implements EndObserver {
         this.influenceStrategy = influenceStrategy;
     }
 
+    /**
+     * Method start initializes the game
+     */
     public void start() {
         initGame();
         phase = Phase.PIANIFICATION;
@@ -256,7 +259,7 @@ public class Game extends ObservableSubject implements EndObserver {
             next = getNextAction();
             if (next.equals(firstPlayer)) {
                 remainingRounds--;
-                if(remainingRounds==0 || isLastRound)
+                if (remainingRounds == 0 || isLastRound)
                     end();
                 else
                     startPianificationPhase();
@@ -329,26 +332,31 @@ public class Game extends ObservableSubject implements EndObserver {
     }
 
     /**
-     * refill every cloud with a number of students depending on the number of players in the game
+     * Refill every cloud with a number of students depending on the number of players in the game
      */
     private void refillClouds() {
+        if (numberOfPlayers == 2) {
+            initClouds(STUDENTS_CLOUD_2P);
+        } else if (numberOfPlayers == 3) {
+            initClouds(STUDENTS_CLOUD_3P);
+        }
+    }
+
+    /**
+     * Method initClouds initializes the clouds
+     *
+     * @param numberOfPlayers the number of the player in the game
+     */
+    private void initClouds(int numberOfPlayers) {
         List<Color> studentsToAdd;
         int cloudId;
 
-        if (numberOfPlayers == 2) {
-            for (Cloud cloud : clouds) {
-                studentsToAdd = bag.getStudents(STUDENTS_CLOUD_2P);
-                cloudId = clouds.indexOf(cloud);
-                cloud.fill(studentsToAdd);
-                notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CLOUD, studentsToAdd, null, cloudId));
-            }
-        } else if (numberOfPlayers == 3) {
-            for (Cloud cloud : clouds) {
-                studentsToAdd = bag.getStudents(STUDENTS_CLOUD_3P);
-                cloudId = clouds.indexOf(cloud);
-                cloud.fill(studentsToAdd);
-                notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CLOUD, studentsToAdd, null, cloudId));
-            }
+        for (Cloud cloud : clouds) {
+            studentsToAdd = bag.getStudents(numberOfPlayers);
+            cloudId = clouds.indexOf(cloud);
+            cloud.fill(studentsToAdd);
+            cloud.setChosen(false);
+            notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CLOUD, studentsToAdd, null, cloudId));
         }
     }
 
@@ -482,7 +490,7 @@ public class Game extends ObservableSubject implements EndObserver {
 
         if (currentOwner != null) {
             if (island.getOwner() == null) {
-                island.setOwner(currentOwner);
+                //island.setOwner(currentOwner);
                 currentOwner.getPlayerBoard().removeTowers(1);
                 island.setNumberOfTowers(1);
                 archipelago.changeIslandOwner(currentOwner, island);
@@ -515,7 +523,7 @@ public class Game extends ObservableSubject implements EndObserver {
     public void initCharacterCards() {
         List<CharacterName> extractCards = randomCharacterExtraction();
 
-        for (CharacterName extractCard : extractCards)
+        for (CharacterName extractCard : extractCards) {
             switch (extractCard) {
                 case BANKER:
                     characterCards.add(new Banker());
@@ -527,13 +535,13 @@ public class Game extends ObservableSubject implements EndObserver {
                     characterCards.add(new ProfCard());
                     break;
                 case KNIGHT:
-                    characterCards.add(new InfluenceCard(CharacterName.KNIGHT, 2, new MorePointsInfluence()));
+                    characterCards.add(new InfluenceCard(CharacterName.KNIGHT, 2, new MorePointsInfluence(), CharacterCardType.NORMAL));
                     break;
                 case CENTAUR:
-                    characterCards.add(new InfluenceCard(CharacterName.CENTAUR, 3, new NoTowerInfluence()));
+                    characterCards.add(new InfluenceCard(CharacterName.CENTAUR, 3, new NoTowerInfluence(), CharacterCardType.NORMAL));
                     break;
                 case SELLER:
-                    characterCards.add(new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence()));
+                    characterCards.add(new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence(), CharacterCardType.COLOR_SELECTION));
                     break;
                 case HERBALIST:
                     characterCards.add(new BanCharacter());
@@ -554,6 +562,12 @@ public class Game extends ObservableSubject implements EndObserver {
                     characterCards.add(new Monk(bag));
                     break;
             }
+        }
+    }
+
+    public void notifyExtractedCard() {
+        for (CharacterCard card : characterCards)
+            notifyObserver(new ExtractedCard(card.getName(), card.getCoinsRequired(), card.getCharacterCardType(), card.getStudents()));
     }
 
 
@@ -635,6 +649,6 @@ public class Game extends ObservableSubject implements EndObserver {
     }
 
     public void lastRound() {
-        isLastRound=true;
+        isLastRound = true;
     }
 }

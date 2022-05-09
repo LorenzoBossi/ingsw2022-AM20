@@ -18,7 +18,7 @@ public class Monk extends WithStudents {
      * @param bag the bag of the game to put students on the card
      */
     public Monk(Bag bag) {
-        super(CharacterName.MONK, 1,1);
+        super(CharacterName.MONK, 1,CharacterCardType.MONK, 1);
         setStudents(bag.getStudents(4));
     }
 
@@ -47,7 +47,7 @@ public class Monk extends WithStudents {
         List<Color> studentToAdd = game.getBag().getStudents(1);
         add(studentToAdd);
         notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CARD, studentToAdd, null, getName().name()));
-        endActivation();
+        endActivation(currPlayer.getNickname());
     }
 
 

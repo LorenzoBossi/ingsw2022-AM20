@@ -10,7 +10,7 @@ public class Vassal extends CharacterCard {
      * Constructor
      */
     public Vassal() {
-        super(CharacterName.VASSAL, 3);
+        super(CharacterName.VASSAL, 3, CharacterCardType.ISLAND_SELECTION);
     }
 
 
@@ -29,7 +29,7 @@ public class Vassal extends CharacterCard {
         game.updateInfluence(island);
         archipelago.moveMotherNatureOnIsland(isl);
 
-        endActivation();
-        }
+        endActivation(game.getCurrPlayer().getNickname());
     }
+}
 

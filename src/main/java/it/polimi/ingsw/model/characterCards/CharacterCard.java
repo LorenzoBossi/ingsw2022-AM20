@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.characterCards;
 
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.network.messages.serverMessage.CardActivated;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.messages.serverMessage.IncreaseCardPrice;
 import it.polimi.ingsw.utils.ObservableSubject;
@@ -20,8 +21,8 @@ public abstract class CharacterCard extends ObservableSubject {
      *
      * @param coinsRequired the coins required to activate the card
      */
-    public CharacterCard(CharacterName name, int coinsRequired) {
-        super();
+    public CharacterCard(CharacterName name, int coinsRequired, CharacterCardType characterCardType) {
+        this.characterCardType = characterCardType;
         this.name = name;
         this.coinsRequired = coinsRequired;
         firstTimePlayed = true;
@@ -45,16 +46,19 @@ public abstract class CharacterCard extends ObservableSubject {
     /**
      * Method endActivation increases the cost to activate the card if it's the first time that the card is played
      */
-    public void endActivation() {
-        if(firstTimePlayed){
+    public void endActivation(String player) {
+        if (firstTimePlayed) {
             increaseCoinsRequired();
             firstTimePlayed = false;
             notifyObserver(new IncreaseCardPrice(getName()));
         }
+        notifyObserver(new CardActivated(player, name));
     }
 
+    public List<Color> getStudents() {
+        return null;
+    }
 
-    public List<Color> getStudents(){return null;}
     public CharacterCardType getCharacterCardType() {
         return characterCardType;
     }

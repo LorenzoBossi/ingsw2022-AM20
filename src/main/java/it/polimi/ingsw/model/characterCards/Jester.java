@@ -18,7 +18,7 @@ public class Jester extends WithStudents {
      * @param bag the bag of the game to put students on the card
      */
     public Jester(Bag bag) {
-        super(CharacterName.JESTER, 1,3);
+        super(CharacterName.JESTER, 1, CharacterCardType.JESTER, 3);
         List<Color> students;
         setStudents(bag.getStudents(6));
     }
@@ -50,7 +50,7 @@ public class Jester extends WithStudents {
 
         notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.CARD, fromEntrance, currPlayer.getNickname(), getName().name()));
         notifyObserver(new MoveStudents(GameComponent.CARD, GameComponent.ENTRANCE, students, getName().name(), currPlayer.getNickname()));
-        endActivation();
+        endActivation(currPlayer.getNickname());
     }
 
     /**

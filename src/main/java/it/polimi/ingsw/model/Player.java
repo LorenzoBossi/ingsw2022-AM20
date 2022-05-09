@@ -1,10 +1,15 @@
 package it.polimi.ingsw.model;
 
 
+import it.polimi.ingsw.network.messages.serverMessage.AssistantPlayed;
+import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
+import it.polimi.ingsw.network.messages.serverMessage.PlayerCoinsEvent;
+import it.polimi.ingsw.utils.ObservableSubject;
+
 import java.util.*;
 import java.util.Objects;
 
-public class Player {
+public class Player extends ObservableSubject {
 
     private final String nickname;
     private List<Assistant> hand;
@@ -77,9 +82,27 @@ public class Player {
             playerPriority = assistant.getValue();
             motherNatureMaxMove = assistant.getMotherNatureMove();
             playerHand.remove(assistant);
+            notifyObserver(new AssistantPlayed(nickname, assistant.getAssistant()));
             return true;
         }
         return false;
+    }
+
+    public void moveStudentToDiningRoom(Color student) {
+        List<Color> studentToAdd = new ArrayList<>();
+        studentToAdd.add(student);
+
+        playerBoard.moveStudentFromEntranceToDiningRoom(student);
+        notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.DINING_ROOM, studentToAdd, nickname, nickname));
+    }
+
+    public void addStudentFromCloud(Cloud chosenCloud, int cloudID) {
+        Entrance entrance = playerBoard.getEntrance();
+        List<Color> studentsToAdd = new ArrayList<>(chosenCloud.getStudents());
+
+        entrance.addStudentFromCloud(chosenCloud);
+        chosenCloud.setChosen(true);
+        notifyObserver(new MoveStudents(GameComponent.CLOUD, GameComponent.ENTRANCE, studentsToAdd, cloudID, nickname));
     }
 
     public PlayerHand getPlayerHand() {

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Class ServerConnection handles the connection between Client and Server
@@ -17,9 +19,13 @@ import java.net.Socket;
 public class ServerConnection implements Runnable {
     private String serverIp;
     private int serverPort;
+
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
+    private ExecutorService executorService = Executors.newCachedThreadPool();
+
     private ServerMessageHandler messageHandler;
+
     private boolean status = true;
     private Socket socket;
 
@@ -63,7 +69,7 @@ public class ServerConnection implements Runnable {
             } else if (message instanceof Ping) {
                 sendMessageToServer(new Pong());
             } else {
-                messageHandler.handleMessage(message);
+                new Thread(() -> messageHandler.handleMessage(message)).start();
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Server Connection Lost...");

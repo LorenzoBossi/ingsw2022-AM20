@@ -10,17 +10,18 @@ public class PostMan extends CharacterCard {
      * Constructor
      */
     public PostMan() {
-        super(CharacterName.POSTMAN, 1);
+        super(CharacterName.POSTMAN, 1, CharacterCardType.NORMAL);
     }
 
     /**
-     * adds 2 to the maximum mother nature moves of the current player
+     * Adds 2 to the maximum mother nature moves of the current player
+     *
      * @param game the game
      */
     @Override
-    public void activateEffect(Game game){
-        Player p= game.getCurrPlayer();
-        p.setMotherNatureMaxMove(p.getMotherNatureMaxMove()+2);
-        endActivation();
+    public void activateEffect(Game game) {
+        Player p = game.getCurrPlayer();
+        p.setMotherNatureMaxMove(p.getMotherNatureMaxMove() + 2);
+        endActivation(game.getCurrPlayer().getNickname());
     }
 }

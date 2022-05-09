@@ -2,10 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.Controller;
 import it.polimi.ingsw.controller.InputChecker;
-import it.polimi.ingsw.model.AssistantName;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.Phase;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.characterCards.CharacterCard;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.*;
@@ -14,7 +11,8 @@ import it.polimi.ingsw.network.messages.serverMessage.*;
 import java.util.List;
 
 public class GameHandler {
-    private int i = 0;
+
+    private VirtualView virtualView;
 
     private Server server;
 
@@ -36,24 +34,33 @@ public class GameHandler {
         controller = new Controller(model);
         inputChecker = new InputChecker(model);
         addPlayersToModel(server.getPlayersInSameLobby(lobbyId));
-        if (server.getGameModeByLobbyID(lobbyId).equals("experts")) {
-            model.initCoins();
-            model.initCharacterCards();
-        }
         attachObserver();
         model.start();
+        if(server.getGameModeByLobbyID(lobbyId).equals("experts")) {
+            model.initCoins();
+            model.initCharacterCards();
+            attachCardObserver();
+            model.notifyExtractedCard();
+        }
         String firstPlayer = model.getCurrPlayer().getNickname();
         sendMessageToLobby(new StartPianificationPhase(firstPlayer));
     }
 
     private void attachObserver() {
-        VirtualView virtualView = new VirtualView(this);
-        List<CharacterCard> cards = model.getCharacterCards();
+        List<Player> players = model.getPlayers();
+        virtualView = new VirtualView(this);
 
-        controller.registerObserver(virtualView);
         model.getArchipelago().registerObserver(virtualView);
         model.registerObserver(virtualView);
         model.getProfessorManager().registerObserver(virtualView);
+        for(Player player : players) {
+            player.registerObserver(virtualView);
+        }
+    }
+
+    private void attachCardObserver() {
+        List<CharacterCard> cards = model.getCharacterCards();
+
         for (CharacterCard card : cards) {
             card.registerObserver(virtualView);
         }
@@ -151,6 +158,7 @@ public class GameHandler {
 
             if (!inputChecker.checkSelectedCloud(cloudId)) {
                 sendMessageToOneClient(player, new GameError(ErrorType.SELECTED_CLOUD_ERROR, "CloudId selected is not valid"));
+                return;
             }
 
             controller.selectCloud(cloudId);
@@ -186,6 +194,7 @@ public class GameHandler {
 
             if (!inputChecker.checkStudentInEntrance(students)) {
                 sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Students chosen are not in the entrance"));
+                return;
             }
 
             controller.setStudentsSelectedEntrance(students);
@@ -196,9 +205,21 @@ public class GameHandler {
 
             if(!inputChecker.checkStudentsOnCard(name, students)) {
                 sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Students chosen from the selected card are not valid"));
+                return;
             }
 
             controller.setStudentsSelectedFromCard(students);
+
+        } else if (message instanceof ActiveEffect) {
+            CharacterName name = ((ActiveEffect) message).getName();
+
+            if(!inputChecker.checkCharacterCardActivation(name)) {
+                sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Error during the activation of " + name + "character card"));
+                return;
+            }
+
+            controller.useCharacterCard(name);
+            sendMessageToOneClient(player, new NextMove());
         }
     }
 

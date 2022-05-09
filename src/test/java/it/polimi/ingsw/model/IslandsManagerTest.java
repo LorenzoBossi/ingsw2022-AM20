@@ -22,8 +22,8 @@ public class IslandsManagerTest {
         assertSame(mng.getIsland(8), isl);
         assertEquals(8, mng.getMotherNature());
         isl = mng.moveMotherNature(7);
-        assertSame(mng.getIsland(2), isl);
-        assertEquals(2, mng.getMotherNature());
+        assertSame(mng.getIsland(3), isl);
+        assertEquals(3, mng.getMotherNature());
     }
 
     @Test
@@ -50,6 +50,8 @@ public class IslandsManagerTest {
     @Test
     public void IslandsMergingTestWithSameOwner(){
         Player player1 = new Player("Paolo");
+        Island isl3 = mng.getIsland(3);
+        Island isl5 = mng.getIsland(5);
 
         mng.getIsland(2).setOwner(player1);
         mng.getIsland(2).addStudents(Color.YELLOW, 5);
@@ -70,6 +72,9 @@ public class IslandsManagerTest {
         assertEquals(15, mng.getIsland(mng.getMotherNature()).getSelectedStudents(Color.YELLOW));
         assertEquals(0, mng.getIsland(mng.getMotherNature()).getSelectedStudents(Color.RED));
         assertEquals(3, mng.getIsland(mng.getMotherNature()).getNumberOfTowers());
+
+        assertEquals(isl3, mng.getIsland(2));
+        assertEquals(isl5, mng.getIsland(3));
     }
 
     @Test

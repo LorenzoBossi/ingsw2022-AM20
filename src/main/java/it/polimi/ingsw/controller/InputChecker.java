@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.characterCards.CharacterCard;
+import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class InputChecker {
 
     public boolean checkIslandPosition(int islandPosition) {
         int numberOfIslands = model.getArchipelago().getNumberOfIslands();
-        return islandPosition >= 0 && islandPosition <= numberOfIslands;
+        return islandPosition >= 0 && islandPosition < numberOfIslands;
     }
 
     public boolean checkMotherNatureMove(int motherNatureMove) {
@@ -68,5 +69,14 @@ public class InputChecker {
             studentsOnCard.remove(student);
         }
         return true;
+    }
+
+    public boolean checkCharacterCardActivation(CharacterName name) {
+        CharacterCard card = model.getCharacterCardByName(name);
+        if (card == null)
+            return false;
+        if (card.getCoinsRequired() > model.getCurrPlayer().getCoins())
+            return false;
+        return card.checkRequirements(model.getCurrPlayer());
     }
 }

@@ -3,8 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.GameComponent;
-import it.polimi.ingsw.network.messages.clientMessage.ClientMessage;
-import it.polimi.ingsw.network.messages.clientMessage.GameMessage;
+import it.polimi.ingsw.model.characterCards.CharacterCardType;
+import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.serverMessage.*;
 
 import java.util.List;
@@ -16,6 +16,7 @@ import java.util.Map;
 public class ServerMessageHandler {
     private ClientModel model;
     private CLI view;
+    private ActionMovesHandler actionMovesHandler;
 
     /**
      * Constructor
@@ -23,9 +24,10 @@ public class ServerMessageHandler {
      * @param model the client's model representation
      * @param view  the view
      */
-    public ServerMessageHandler(ClientModel model, CLI view) {
+    public ServerMessageHandler(ClientModel model, CLI view, ActionMovesHandler actionMovesHandler) {
         this.model = model;
         this.view = view;
+        this.actionMovesHandler = actionMovesHandler;
     }
 
     public void setModel(ClientModel model) {
@@ -37,7 +39,7 @@ public class ServerMessageHandler {
      *
      * @param message the Server message
      */
-    public void handleMessage(ServerMessage message) {
+    public synchronized void handleMessage(ServerMessage message) {
         if (message instanceof SendLobbies) {
             Map<Integer, Integer> numberPlayerMap = ((SendLobbies) message).getAttendingLobbiesNumberPlayerMap();
             Map<Integer, String> gameModeMap = ((SendLobbies) message).getAttendingLobbiesGameModeMap();
@@ -57,10 +59,14 @@ public class ServerMessageHandler {
             String currPlayer = ((StartPianificationPhase) message).getTargetPlayer();
             view.pianificationPhase(currPlayer);
         } else if (message instanceof StartActionPhase) {
+            actionMovesHandler.initializeAction();
             model.getAssistantsPlayed().clear();
+            actionMovesHandler.initializeAction();
             view.actionPhase(((StartActionPhase) message).getTargetPlayer());
         } else if (message instanceof UpdateMessage) {
             handleUpdateMessage(message);
+        } else if (message instanceof NextMove) {
+            view.actionPhase(view.getClientNickname());
         }
     }
 
@@ -73,10 +79,54 @@ public class ServerMessageHandler {
         if (message instanceof AssistantPlayed) {
             String player = ((AssistantPlayed) message).getPlayer();
             String name = ((AssistantPlayed) message).getAssistantName();
+
             model.getAssistantsPlayed().add(AssistantName.valueOf(name));
             System.out.println(player + " has played " + name);
         } else if (message instanceof MoveStudents) {
             handleStudentsMove(message);
+        } else if (message instanceof ExtractedCard) {
+            CharacterName name = ((ExtractedCard) message).getName();
+            int coins = ((ExtractedCard) message).getCoinRequired();
+            CharacterCardType type = ((ExtractedCard) message).getType();
+            List<Color> students = ((ExtractedCard) message).getStudents();
+
+            model.addCharacterCard(name, coins, type, students);
+        } else if (message instanceof ChangeProfessor) {
+            String newOwner = ((ChangeProfessor) message).getNewOwner();
+            String oldOwner = ((ChangeProfessor) message).getOldOwner();
+            Color professor = ((ChangeProfessor) message).getProfessorColor();
+
+            model.changeProfessorOwner(newOwner, oldOwner, professor);
+        } else if (message instanceof MotherNatureMove) {
+            int newMotherNaturePosition = ((MotherNatureMove) message).getNewMotherNaturePosition();
+
+            model.moveMotherNature(newMotherNaturePosition);
+        } else if (message instanceof ChangeIslandOwner) {
+            String newOwner = ((ChangeIslandOwner) message).getNewOwner();
+            String oldOwner = ((ChangeIslandOwner) message).getOldOwner();
+            int islandId = ((ChangeIslandOwner) message).getIslandPosition();
+            int numberOfTowers  = ((ChangeIslandOwner) message).getNumberOfTower();
+
+            model.changeIslandOwner(newOwner, oldOwner, islandId, numberOfTowers);
+        } else if(message instanceof MergeIslands) {
+            int currIsland = ((MergeIslands) message).getCurrIslandPosition();
+            int islToMerge = ((MergeIslands) message).getIslandToMergePosition();
+
+            model.mergeIsland(currIsland, islToMerge);
+        } else if (message instanceof PlayerCoinsEvent) {
+            int coins = ((PlayerCoinsEvent) message).getNumber();
+            String nickname = ((PlayerCoinsEvent) message).getNickname();
+
+            model.coinsMovement(nickname, coins);
+        } else if (message instanceof CardActivated) {
+            String player = ((CardActivated) message).getPlayer();
+            CharacterName name = ((CardActivated) message).getName();
+
+            System.out.println(player + "has activated " + name + " card");
+        } else if(message instanceof IncreaseCardPrice) {
+            CharacterName name = ((IncreaseCardPrice) message).getCharacterName();
+
+            model.increasePaymentCard(name);
         }
     }
 
@@ -94,9 +144,10 @@ public class ServerMessageHandler {
         Object indexDestination = updateMessage.getIndexDestination();
 
         /*
-        System.out.println(source +"--->" + destination);
+        System.out.println(source + "--->" + destination);
         System.out.println(students);
         System.out.println(indexSource + "--->" + indexDestination);
+
          */
 
         switch (source) {
@@ -129,6 +180,10 @@ public class ServerMessageHandler {
                         break;
                     case ENTRANCE:
                         model.addStudentsToGameComponent(destination, (String) indexDestination, students);
+                        break;
+                    case ISLAND:
+                        model.addStudentsToGameComponent(destination, (int) indexDestination, students);
+                        break;
                 }
                 break;
 
@@ -165,6 +220,11 @@ public class ServerMessageHandler {
                 System.out.println(errorText);
                 model.getAssistants().add(model.getLastAssistantPlayed());
                 view.pianificationPhase(view.getClientNickname());
+                break;
+            case SELECTED_CLOUD_ERROR:
+                System.out.println(errorText);
+                actionMovesHandler.handleError(ActionMove.SELECT_CLOUD);
+                view.actionPhase(view.getClientNickname());
         }
     }
 

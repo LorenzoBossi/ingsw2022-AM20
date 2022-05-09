@@ -19,8 +19,8 @@ public abstract class WithStudents extends CharacterCard {
      *
      * @param coinsRequired the coins required to activate the card
      */
-    public WithStudents(CharacterName name, int coinsRequired, int MAX_SELECTION) {
-        super(name, coinsRequired);
+    public WithStudents(CharacterName name, int coinsRequired,CharacterCardType type, int MAX_SELECTION) {
+        super(name, coinsRequired, type);
         this.MAX_SELECTION=MAX_SELECTION;
     }
 

@@ -13,7 +13,7 @@ public class BanCharacter extends CharacterCard {
      * Constructor
      */
     public BanCharacter() {
-        super(CharacterName.HERBALIST, 2);
+        super(CharacterName.HERBALIST, 2, CharacterCardType.ISLAND_SELECTION);
         banCards = INITIAL_BANCARDS;
     }
 
@@ -36,7 +36,7 @@ public class BanCharacter extends CharacterCard {
         islandsManager.addBanCardOnIsland(island);
         banCards--;
 
-        endActivation();
+        endActivation(currPlayer.getNickname());
     }
 
     /**

@@ -11,7 +11,7 @@ import it.polimi.ingsw.utils.ObservableSubject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Controller extends ObservableSubject {
+public class Controller {
     Game game;
 
     /**
@@ -33,7 +33,7 @@ public class Controller extends ObservableSubject {
         Assistant assistant = game.getAssistantByName(assistantName);
 
         currPlayer.playAssistant(assistant);
-        notifyObserver(new AssistantPlayed(currPlayer.getNickname(), assistantName));
+        //notifyObserver(new AssistantPlayed(currPlayer.getNickname(), assistantName));
     }
 
     /**
@@ -46,17 +46,17 @@ public class Controller extends ObservableSubject {
         PlayerBoard board = currPlayer.getPlayerBoard();
         String nickname = currPlayer.getNickname();
         ProfessorManager professorManager = game.getProfessorManager();
+        /*
         List<Color> studentToAdd = new ArrayList<>();
         studentToAdd.add(student);
 
         board.moveStudentFromEntranceToDiningRoom(student);
+        */
+        currPlayer.moveStudentToDiningRoom(student);
 
         if (board.getDiningRoom().isAddCoin(student) && game.hasEnoughCoins()) {
-            currPlayer.addCoin();
-            notifyObserver(new PlayerCoinsEvent(1));
+            game.addCoinsToPlayer(nickname);
         }
-
-        notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.DINING_ROOM, studentToAdd, nickname, nickname));
 
         if (professorManager.canTakeProfessor(currPlayer, student)) {
             professorManager.takeProfessor(currPlayer, student);
@@ -72,6 +72,11 @@ public class Controller extends ObservableSubject {
     public void moveStudentToIsland(Color student, int islandPosition) {
         Player currPlayer = game.getCurrPlayer();
         IslandsManager islandsManager = game.getArchipelago();
+        PlayerBoard board = currPlayer.getPlayerBoard();
+
+        board.getEntrance().removeStudent(student);
+        islandsManager.addStudentOnIsland(student, islandPosition, currPlayer.getNickname());
+        /*
         Island island = islandsManager.getIsland(islandPosition);
         PlayerBoard board = currPlayer.getPlayerBoard();
         List<Color> studentToAdd = new ArrayList<>();
@@ -80,6 +85,7 @@ public class Controller extends ObservableSubject {
         board.getEntrance().removeStudent(student);
         island.addStudent(student);
         notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.ISLAND, studentToAdd, currPlayer.getNickname(), islandPosition));
+         */
     }
 
     /**
@@ -108,12 +114,16 @@ public class Controller extends ObservableSubject {
         Player currPlayer = game.getCurrPlayer();
         Entrance entrance = currPlayer.getPlayerBoard().getEntrance();
         Cloud chosenCloud = game.getClouds().get(cloudID);
+
+        currPlayer.addStudentFromCloud(chosenCloud, cloudID);
+        /*
         List<Color> studentsToAdd;
 
         studentsToAdd = chosenCloud.getStudents();
         entrance.addStudentFromCloud(chosenCloud);
         chosenCloud.setChosen(true);
         notifyObserver(new MoveStudents(GameComponent.CLOUD, GameComponent.ENTRANCE, studentsToAdd, cloudID, currPlayer.getNickname()));
+         */
     }
 
     /**
@@ -126,7 +136,6 @@ public class Controller extends ObservableSubject {
         int payment = card.getCoinsRequired();
 
         game.characterCardPayment(payment);
-        notifyObserver(new PlayerCoinsEvent(-payment));
         card.activateEffect(game);
     }
 

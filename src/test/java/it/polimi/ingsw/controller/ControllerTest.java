@@ -202,6 +202,23 @@ public class ControllerTest {
     }
 
     @Test
+    public void MoveMotherNatureCircleTest() {
+        IslandsManager islandsManager = game.getArchipelago();
+
+        controller.moveMotherNature(6);
+        assertEquals(6, islandsManager.getMotherNature());
+
+        controller.moveMotherNature(4);
+        assertEquals(10, islandsManager.getMotherNature());
+
+        controller.moveMotherNature(2);
+        assertEquals(0, islandsManager.getMotherNature());
+
+        controller.moveMotherNature(12);
+        assertEquals(0, islandsManager.getMotherNature());
+    }
+
+    @Test
     public void MoveMotherNatureBanCardTest() {
         IslandsManager islandsManager = game.getArchipelago();
         Island island = islandsManager.getIsland(4);
@@ -217,6 +234,20 @@ public class ControllerTest {
         controller.moveMotherNature(4);
         assertNull(island.getOwner());
         assertFalse(island.isBanCardPresent());
+    }
+
+    @Test
+    public void playAssistantTest() {
+        Player currPlayer = game.getCurrPlayer();
+        controller.playAssistant(AssistantName.ASSISTANT1);
+
+        assertEquals(1, currPlayer.getMotherNatureMaxMove());
+        assertEquals(1, currPlayer.getPlayerPriority());
+
+        controller.playAssistant(AssistantName.ASSISTANT10);
+
+        assertEquals(5, currPlayer.getMotherNatureMaxMove());
+        assertEquals(10, currPlayer.getPlayerPriority());
     }
 
 

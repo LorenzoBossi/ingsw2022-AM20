@@ -60,7 +60,7 @@ public class ClientConnectionHandler implements Runnable {
             e.printStackTrace();
         }
         if (message instanceof Pong)
-            System.out.println("");
+            System.out.println("Pong");
         else {
             server.messageDispatcher(message, this);
         }
@@ -73,7 +73,7 @@ public class ClientConnectionHandler implements Runnable {
             outputStream.flush();
         } catch (IOException e) {
             System.err.println("GameError during sending message to client");
-            closeConnection();
+            //closeConnection();
             e.printStackTrace();
         }
     }

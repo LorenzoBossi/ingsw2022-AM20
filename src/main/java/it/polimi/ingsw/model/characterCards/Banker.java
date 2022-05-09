@@ -12,7 +12,7 @@ public class Banker extends CharacterCard {
      * Constructor
      */
     public Banker() {
-        super(CharacterName.BANKER, 3);
+        super(CharacterName.BANKER, 3, CharacterCardType.COLOR_SELECTION);
     }
 
     /**
@@ -23,7 +23,7 @@ public class Banker extends CharacterCard {
     @Override
     public void activateEffect(Game game) {
 
-        ProfessorManager professorManager=game.getProfessorManager();
+        ProfessorManager professorManager = game.getProfessorManager();
         Color selectedColor = game.getCurrPlayer().getPlayerChoice().getSelectedColor();
         Bag bag = game.getBag();
         List<Color> removedStudents = new ArrayList<>();
@@ -52,11 +52,11 @@ public class Banker extends CharacterCard {
 
 
         //reset the max number of students of the chosen color
-        if(professorManager.ownerOf(selectedColor)!=null) {
+        if (professorManager.ownerOf(selectedColor) != null) {
             professorManager.takeProfessor(professorManager.ownerOf(selectedColor), selectedColor);
         }
 
-        endActivation();
+        endActivation(game.getCurrPlayer().getNickname());
     }
 }
 

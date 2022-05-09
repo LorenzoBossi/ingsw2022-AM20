@@ -12,8 +12,8 @@ public class InfluenceCard extends CharacterCard {
      * @param coinsRequired     the coins required to activate the card
      * @param influenceStrategy the strategy to calculate influence
      */
-    public InfluenceCard(CharacterName name, int coinsRequired, InfluenceStrategy influenceStrategy) {
-        super(name, coinsRequired);
+    public InfluenceCard(CharacterName name, int coinsRequired, InfluenceStrategy influenceStrategy, CharacterCardType characterCardType) {
+        super(name, coinsRequired, characterCardType);
         this.influenceStrategy = influenceStrategy;
     }
 
@@ -27,6 +27,6 @@ public class InfluenceCard extends CharacterCard {
     public void activateEffect(Game game) {
         influenceStrategy.setCurrPlayer(game.getCurrPlayer());
         game.setInfluenceStrategy(this.influenceStrategy);
-        endActivation();
+        endActivation(game.getCurrPlayer().getNickname());
     }
 }

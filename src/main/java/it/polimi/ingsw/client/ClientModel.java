@@ -1,9 +1,11 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.model.Assistant;
 import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.GameComponent;
+import it.polimi.ingsw.model.characterCards.CharacterCard;
+import it.polimi.ingsw.model.characterCards.CharacterCardType;
+import it.polimi.ingsw.model.characterCards.CharacterName;
 
 import java.util.*;
 
@@ -11,26 +13,39 @@ import java.util.*;
  * Class ClientModel contains a simplify version of the game's model
  */
 public class ClientModel {
-    private String clientNickname;
+
+    private final int TOWERS_3P = 6;
+    private final int TOWERS_2P = 8;
+
     private Map<String, List<Color>> entrances;
     private Map<String, List<Integer>> diningRooms;
-    private Map<Integer, List<Color>> islands;
+    private Map<String, List<Color>> professors;
+    private Map<String, Integer> towers;
+    private Map<Integer, IslandView> islandsViewMap;
     private Map<Integer, List<Color>> clouds;
+    private Map<CharacterName, CharacterCardView> cards;
+    private Map<String, Integer> coins;
+
+    private int motherNaturePosition;
     private List<AssistantName> assistants;
     private List<AssistantName> assistantsPlayed;
     private AssistantName lastAssistantPlayed;
-    private int coins;
+    private boolean postmanActivation = false;
 
     /**
      * Constructor
      */
     public ClientModel() {
+        professors = new HashMap<>();
+        towers = new HashMap<>();
         entrances = new HashMap<>();
         diningRooms = new HashMap<>();
-        islands = new HashMap<>();
+        islandsViewMap = new HashMap<>();
         clouds = new HashMap<>();
         assistants = new ArrayList<>();
         assistantsPlayed = new ArrayList<>();
+        cards = new HashMap<>();
+        coins = new HashMap<>();
     }
 
     /**
@@ -41,22 +56,29 @@ public class ClientModel {
      */
     public void initGame(List<String> players, String gameMode) {
         int cloudIndex = 0;
+
         for (String player : players) {
             clouds.put(cloudIndex, new ArrayList<>());
             entrances.put(player, new ArrayList<>());
-            diningRooms.put(player, new ArrayList<>());
+            diningRooms.put(player, Arrays.asList(0, 0, 0, 0, 0));
+            professors.put(player, new ArrayList<>());
+            coins.put(player, 0);
+            if (players.size() == 3) {
+                towers.put(player, TOWERS_3P);
+            } else {
+                towers.put(player, TOWERS_2P);
+            }
             cloudIndex++;
         }
 
         for (int i = 0; i < 12; i++) {
-            islands.put(i, new ArrayList<>());
+            islandsViewMap.put(i, new IslandView());
         }
+
+        motherNaturePosition = 0;
 
         assistants = new ArrayList<>(Arrays.asList(AssistantName.values()));
 
-        if (gameMode.equals("expert")) {
-            coins = 1;
-        }
     }
 
     /**
@@ -94,7 +116,7 @@ public class ClientModel {
                 clouds.get(index).addAll(students);
                 break;
             case ISLAND:
-                islands.get(index).addAll(students);
+                islandsViewMap.get(index).addStudents(students);
         }
     }
 
@@ -136,9 +158,120 @@ public class ClientModel {
                 break;
             case ISLAND:
                 for (Color student : students)
-                    islands.get(index).remove(student);
+                    islandsViewMap.get(index).removeStudent(student);
                 break;
         }
+    }
+
+    /**
+     * Method changeProfessorOwner changes the professor's owner
+     *
+     * @param newOwner  the new professor's owner
+     * @param oldOwner  the old professor's owner
+     * @param professor the color of the professor
+     */
+    public void changeProfessorOwner(String newOwner, String oldOwner, Color professor) {
+        if (oldOwner != null) {
+            professors.get(oldOwner).remove(professor);
+        }
+        professors.get(newOwner).add(professor);
+    }
+
+    /**
+     * Method moveMotherNature moves Mother Nature
+     *
+     * @param newMotherNaturePosition the new Mother Nature position
+     */
+    public void moveMotherNature(int newMotherNaturePosition) {
+        motherNaturePosition = newMotherNaturePosition;
+    }
+
+    /**
+     * @param newOwner
+     * @param oldOwner
+     * @param islandId
+     * @param numberOfTower
+     */
+    public void changeIslandOwner(String newOwner, String oldOwner, int islandId, int numberOfTower) {
+        numberOfTower = islandsViewMap.get(islandId).getNumberOfTower();
+
+        if (oldOwner == null) {
+            towers.replace(newOwner, towers.get(newOwner) - 1);
+            islandsViewMap.get(islandId).setOwner(newOwner);
+            islandsViewMap.get(islandId).addTowers(1);
+        } else {
+            towers.replace(newOwner, towers.get(newOwner) - numberOfTower);
+            towers.replace(oldOwner, towers.get(oldOwner) + numberOfTower);
+            islandsViewMap.get(islandId).setOwner(newOwner);
+        }
+    }
+
+    /**
+     * Method mergeIsland merges the two island
+     *
+     * @param currIsland    the current island
+     * @param islandToMerge the island to merge
+     */
+    public void mergeIsland(int currIsland, int islandToMerge) {
+        List<Color> students;
+        int towersToAdd;
+        int banCards;
+        int nextIsl;
+        int thisIsl;
+        IslandView island;
+
+        if (currIsland > islandToMerge) {
+            nextIsl = currIsland + 1;
+            thisIsl = currIsland;
+            students = islandsViewMap.get(currIsland).getStudents();
+            towersToAdd = islandsViewMap.get(currIsland).getNumberOfTower();
+            banCards = islandsViewMap.get(currIsland).getBanCards();
+            islandsViewMap.get(islandToMerge).addStudents(students);
+            islandsViewMap.get(islandToMerge).addBanCards(banCards);
+            islandsViewMap.get(islandToMerge).addTowers(towersToAdd);
+
+        } else {
+            nextIsl = islandToMerge + 1;
+            thisIsl = islandToMerge;
+            students = islandsViewMap.get(islandToMerge).getStudents();
+            towersToAdd = islandsViewMap.get(islandToMerge).getNumberOfTower();
+            banCards = islandsViewMap.get(islandToMerge).getBanCards();
+            islandsViewMap.get(currIsland).addStudents(students);
+            islandsViewMap.get(currIsland).addBanCards(banCards);
+            islandsViewMap.get(currIsland).addTowers(towersToAdd);
+        }
+
+
+        for (int i = thisIsl, j = nextIsl; i < islandsViewMap.size() - 1; i++, j++) {
+            island = islandsViewMap.get(j);
+            islandsViewMap.replace(i, island);
+        }
+
+        islandsViewMap.remove(islandsViewMap.size() - 1);
+    }
+
+    public void coinsMovement(String nickname, int movement) {
+        coins.replace(nickname, coins.get(nickname) + movement);
+    }
+
+    public void increasePaymentCard(CharacterName name) {
+        cards.get(name).addCoin();
+    }
+
+    public void postmanActivation() {
+        postmanActivation = true;
+    }
+
+    public void resetPostmanActivation() {
+        postmanActivation = false;
+    }
+
+    public int getMaxMotherNatureMove() {
+        int maxMotherNatureMove = lastAssistantPlayed.getMotherNatureMove();
+        if (postmanActivation) {
+            maxMotherNatureMove = maxMotherNatureMove + 2;
+        }
+        return maxMotherNatureMove;
     }
 
     /**
@@ -160,6 +293,18 @@ public class ClientModel {
     }
 
     /**
+     * Method addCharacterCard adds new Character card to the ClientModel
+     *
+     * @param name     the name of the card
+     * @param coins    the coins required to activate
+     * @param type     the type of the card
+     * @param students the students on the card
+     */
+    public void addCharacterCard(CharacterName name, int coins, CharacterCardType type, List<Color> students) {
+        cards.put(name, new CharacterCardView(name, type, coins, students));
+    }
+
+    /**
      * Method getEntrances gets the game's entrances
      *
      * @return the entrances
@@ -178,15 +323,6 @@ public class ClientModel {
     }
 
     /**
-     * Method getIslands gets the game's islands
-     *
-     * @return the islands
-     */
-    public Map<Integer, List<Color>> getIslands() {
-        return islands;
-    }
-
-    /**
      * Method getAssistants gets the player's assistants
      *
      * @return the assistants
@@ -201,5 +337,38 @@ public class ClientModel {
 
     public List<AssistantName> getAssistantsPlayed() {
         return assistantsPlayed;
+    }
+
+    public Map<String, List<Color>> getProfessors() {
+        return professors;
+    }
+
+    public Map<String, Integer> getTowers() {
+        return towers;
+    }
+
+    public Map<CharacterName, CharacterCardView> getCards() {
+        return cards;
+    }
+
+    /**
+     * Method getIslandsViewMap gets the game's islands
+     *
+     * @return the islands
+     */
+    public Map<Integer, IslandView> getIslandsViewMap() {
+        return islandsViewMap;
+    }
+
+    public Map<Integer, List<Color>> getClouds() {
+        return clouds;
+    }
+
+    public Map<String, Integer> getCoins() {
+        return coins;
+    }
+
+    public int getMotherNaturePosition() {
+        return motherNaturePosition;
     }
 }

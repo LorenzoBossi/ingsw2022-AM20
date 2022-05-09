@@ -64,7 +64,7 @@ public class CharacterCardTest {
 
     @Test
     public void InfluenceCardNoTowerEffectTest() {
-        CharacterCard card = new InfluenceCard(CharacterName.CENTAUR,3, new NoTowerInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.CENTAUR,3, new NoTowerInfluence(), CharacterCardType.NORMAL);
 
         island.setOwner(player1);
         professorManager.takeProfessor(player2, Color.PINK);
@@ -81,7 +81,7 @@ public class CharacterCardTest {
 
     @Test
     public  void InfluenceCardNoColorEffectTest() {
-        CharacterCard card = new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence(), CharacterCardType.COLOR_SELECTION);
 
         island.setOwner(player1);
         professorManager.takeProfessor(player2, Color.PINK);
@@ -96,7 +96,7 @@ public class CharacterCardTest {
 
     @Test
     public void InfluenceCard2MorePointsEffectTest() {
-        CharacterCard card = new InfluenceCard(CharacterName.KNIGHT, 3, new MorePointsInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.KNIGHT, 3, new MorePointsInfluence(), CharacterCardType.NORMAL);
 
         island.setOwner(player2);
         professorManager.takeProfessor(player2, Color.PINK);
@@ -112,7 +112,7 @@ public class CharacterCardTest {
 
     @Test
     public void resetGameStrategyTest(){
-        CharacterCard card = new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence());
+        CharacterCard card = new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence(), CharacterCardType.COLOR_SELECTION);
 
         island.setOwner(player1);
         professorManager.takeProfessor(player2, Color.PINK);

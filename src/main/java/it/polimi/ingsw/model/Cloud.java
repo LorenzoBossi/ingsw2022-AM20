@@ -11,7 +11,6 @@ public class Cloud extends ObservableSubject {
 
 
     public Cloud() {
-        chosen = false;
         students = new ArrayList<>();
     }
 

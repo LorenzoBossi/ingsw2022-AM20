@@ -12,7 +12,7 @@ public class Musician extends CharacterCard {
      * Constructor
      */
     public Musician() {
-        super(CharacterName.MUSICIAN, 1);
+        super(CharacterName.MUSICIAN, 1, CharacterCardType.MUSICIAN);
     }
 
 
@@ -55,7 +55,7 @@ public class Musician extends CharacterCard {
         notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.DINING_ROOM, fromEntrance, currPlayer.getNickname(), currPlayer.getNickname()));
         notifyObserver(new MoveStudents(GameComponent.DINING_ROOM, GameComponent.ENTRANCE, fromDiningRoom, currPlayer.getNickname(), currPlayer.getNickname()));
 
-        endActivation();
+        endActivation(currPlayer.getNickname());
     }
 
     /**

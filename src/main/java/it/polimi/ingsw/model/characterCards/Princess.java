@@ -16,7 +16,7 @@ public class Princess extends WithStudents {
      * @param bag the bag of the game to put students on the card
      */
     public Princess(Bag bag) {
-        super(CharacterName.PRINCESS, 2,1);
+        super(CharacterName.PRINCESS, 2, CharacterCardType.PRINCESS, 1);
         setStudents(bag.getStudents(4));
     }
 
@@ -44,7 +44,7 @@ public class Princess extends WithStudents {
             notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.CARD, studentToAdd, null, getName().name()));
             notifyObserver(new MoveStudents(GameComponent.CARD, GameComponent.DINING_ROOM, student, getName().name(), currPlayer.getNickname()));
 
-            endActivation();
+            endActivation(currPlayer.getNickname());
         }
     }
 

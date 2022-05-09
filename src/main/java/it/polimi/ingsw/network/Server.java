@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.messages.serverMessage.*;
 import java.util.*;
 import java.util.Map;
 
+/**
+ * Class Server represents the main class of the Server
+ */
 public class Server {
 
     public static void main(String[] args) {
@@ -54,6 +57,11 @@ public class Server {
 
     private int lobbyId = 0;
 
+    /**
+     * Constructor
+     *
+     * @param port the Server's port
+     */
     public Server(int port) {
         this.serverConnectionHandler = new ServerConnectionHandler(port, this);
         this.port = port;
@@ -85,18 +93,42 @@ public class Server {
         return playerInSameLobby;
     }
 
+    /**
+     * Method getConnectionByPlayer returns the clientConnectionHandler of the selected player
+     *
+     * @param player the nickname of the selected player
+     * @return the clientConnectionHandler of the selected player
+     */
     public ClientConnectionHandler getConnectionByPlayer(String player) {
         return clientConnectionHandlerMap.get(player);
     }
 
+    /**
+     * Method getGameModeByLobbyID returns the game mode of the selected lobbyId
+     *
+     * @param lobbyId the selected lobbyId
+     * @return the game mode of the selected lobbyId
+     */
     public String getGameModeByLobbyID(int lobbyId) {
         return lobbyGameModeMap.get(lobbyId);
     }
 
+    /**
+     * Method getNumberOfPlayersByLobbyID returns the number of player of the selected lobbyId
+     *
+     * @param lobbyId the selected lobby
+     * @return the number of player of the selected lobby
+     */
     public int getNumberOfPlayersByLobbyID(int lobbyId) {
         return lobbyNumberOfPlayersMap.get(lobbyId);
     }
 
+    /**
+     * Method getGameHandlerByLobbyId returns the GameHandler of the selected lobbyId
+     *
+     * @param lobbyId the selected lobby
+     * @return the GameHandler of the selected lobby
+     */
     public GameHandler getGameHandlerByLobbyId(int lobbyId) {
         return activeLobbies.get(lobbyId);
     }
@@ -110,6 +142,11 @@ public class Server {
         return playerTowerColorMap.get(nickname);
     }
 
+    /**
+     * Method getAttendingLobbiesGameModeMap returns a map of the attending lobbies and the relative game mode
+     *
+     * @return a map of the attending lobby and the relative game mode
+     */
     public Map<Integer, String> getAttendingLobbiesGameModeMap() {
         Map<Integer, String> attendingLobbiesGameModeMap = new HashMap<>();
         for (Integer lobbyId : attendingLobbies) {
@@ -120,6 +157,11 @@ public class Server {
         return attendingLobbiesGameModeMap;
     }
 
+    /**
+     * Method getAttendingLobbiesNumberOfPlayerMap returns a map of the attending lobbies and the relative number of players
+     *
+     * @return a map of the attending lobbies and the relative number of players
+     */
     public Map<Integer, Integer> getAttendingLobbiesNumberOfPlayerMap() {
         Map<Integer, Integer> attendingLobbiesNumberOfPlayerMap = new HashMap<>();
         for (Integer lobbyId : attendingLobbies) {
@@ -130,6 +172,13 @@ public class Server {
         return attendingLobbiesNumberOfPlayerMap;
     }
 
+    /**
+     * Method createLobby creates a new lobby and update the Map
+     *
+     * @param nickname        the nickname of the player that creates the new lobby
+     * @param numberOfPlayers the number of players of the lobby that I want to create
+     * @param gameMode        the gameMode of the lobby that I want to create
+     */
     public void createLobby(String nickname, int numberOfPlayers, String gameMode) {
         List<TowerColor> towerColorsAvailable = new ArrayList<>(Arrays.asList(TowerColor.values()));
 
@@ -148,6 +197,12 @@ public class Server {
         lobbyId++;
     }
 
+    /**
+     * Method registerPlayer registers a new player on the Server
+     *
+     * @param nickname                the nickname of the new player
+     * @param clientConnectionHandler the new player's clientConnectionHandler
+     */
     private void registerPlayer(String nickname, ClientConnectionHandler clientConnectionHandler) {
         activePlayers.add(nickname);
         clientConnectionHandlerMap.put(nickname, clientConnectionHandler);
@@ -155,6 +210,12 @@ public class Server {
         clientConnectionHandler.sendMessageToClient(new SendLobbies(getAttendingLobbiesNumberOfPlayerMap(), getAttendingLobbiesGameModeMap()));
     }
 
+    /**
+     * Method joinLobby makes the player joining on the selected lobbyId
+     *
+     * @param nickname player's nickname
+     * @param lobbyId  the selected lobby
+     */
     private void joinLobby(String nickname, Integer lobbyId) {
         if (isLobbyFull(lobbyId)) {
             clientConnectionHandlerMap.get(nickname).sendMessageToClient(new GameError(ErrorType.LOBBY_ERROR, "The selected Lobby is already full"));
@@ -176,19 +237,35 @@ public class Server {
         }
     }
 
+    /**
+     * Method isLobbyFull checks if the selected lobby is full
+     *
+     * @param lobbyId the selected lobby
+     * @return {@code true} if the lobby is full
+     * {@code false} if the lobby isn't full
+     */
     private boolean isLobbyFull(int lobbyId) {
         return getPlayersInSameLobby(lobbyId).size() == getNumberOfPlayersByLobbyID(lobbyId);
     }
 
+    /**
+     * Method closeLobby closes the lobby of the selected player
+     *
+     * @param playerDisconnected the disconnected player
+     */
     public void closeLobby(String playerDisconnected) {
         if (playerLobbyMap.containsKey(playerDisconnected)) {
             int lobby = playerLobbyMap.get(playerDisconnected);
+            playerLobbyMap.remove(playerDisconnected);
+            activePlayers.remove(playerDisconnected);
+
             List<String> players = getPlayersInSameLobby(lobby);
 
             activePlayers.removeAll(players);
-            if(attendingLobbies.contains(lobby))
+            if (attendingLobbies.contains(lobby))
                 attendingLobbies.remove(lobby);
-            activeLobbies.remove(lobby);
+            else if(activeLobbies.containsKey(lobbyId))
+                activeLobbies.remove(lobby);
 
             for (String player : players) {
                 playerLobbyMap.remove(player, lobby);
@@ -201,12 +278,15 @@ public class Server {
         }
     }
 
+    /**
+     * Method startGame initializes a new GameHandler
+     *
+     * @param players the players in the same lobby
+     * @param lobby   the lobbyId
+     */
     private void startGame(List<String> players, Integer lobby) {
         for (String player : players) {
             clientConnectionHandlerMap.get(player).sendMessageToClient(new GameStarting(players, getGameModeByLobbyID(lobby)));
-        }
-        if (lobby == 1) {
-            System.out.println("Uguale a 1");
         }
         System.out.println(attendingLobbies);
         System.out.println(attendingLobbies.contains(lobby));
@@ -249,7 +329,7 @@ public class Server {
         } else if (message instanceof GameMessage) {
             String nickname = clientConnectionHandler.getNickname();
             int lobby = playerLobbyMap.get(nickname);
-            GameHandler gameHandler = activeLobbies.get(lobby);
+            GameHandler gameHandler = getGameHandlerByLobbyId(lobby);
             gameHandler.handleGameMessage(message);
         }
 
