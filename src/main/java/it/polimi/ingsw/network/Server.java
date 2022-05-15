@@ -14,7 +14,6 @@ public class Server {
 
     public static void main(String[] args) {
         int port = 26000;
-
         if (args.length == 1) {
             try {
                 port = Integer.parseInt(args[0]);
@@ -74,6 +73,13 @@ public class Server {
         lobbyTowerColorsAvailableMap = new HashMap<>();
         lobbyNumberOfPlayersMap = new HashMap<>();
         playerLobbyMap = new HashMap<>();
+    }
+
+    /**
+     * Starts a thread to accept connections from clients
+     */
+    public void startConnections(){
+        (new Thread(serverConnectionHandler)).start();
     }
 
     /**
