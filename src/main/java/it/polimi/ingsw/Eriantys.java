@@ -1,6 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.CLI;
+import it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.utils.Screen;
 
@@ -67,6 +68,8 @@ public class Eriantys {
     }
 
     private static void startGUI(String ip, int port){
+        //GUI.main(null);
+
         //Not implemented yet
         /*
         try {

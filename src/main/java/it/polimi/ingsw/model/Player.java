@@ -175,6 +175,7 @@ public class Player extends ObservableSubject {
         return playerChoice;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
