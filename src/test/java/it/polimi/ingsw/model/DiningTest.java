@@ -11,7 +11,7 @@ public class DiningTest {
 
     @Test
     public void addStudent() {
-        int yellow = 0, blue = 1, green = 0, red = 0, pink = 2;
+        int yellow = 0, blue = 1, green = 0, red = 1, pink = 2;
         diningRoom.addStudent(Color.BLUE);
         diningRoom.addStudent(Color.PINK);
         diningRoom.addStudent(Color.PINK);
