@@ -15,6 +15,7 @@ public class DiningTest {
         diningRoom.addStudent(Color.BLUE);
         diningRoom.addStudent(Color.PINK);
         diningRoom.addStudent(Color.PINK);
+        diningRoom.addStudent(Color.RED);
 
         assertEquals(yellow, diningRoom.getNumberOfStudent(0));
         assertEquals(blue, diningRoom.getNumberOfStudent(1));
