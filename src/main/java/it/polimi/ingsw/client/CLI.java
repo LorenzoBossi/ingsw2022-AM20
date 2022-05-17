@@ -3,10 +3,13 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Cloud;
 import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.Entrance;
+import it.polimi.ingsw.model.characterCards.CharacterCard;
 import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.*;
 
+import javax.swing.*;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -150,13 +153,15 @@ public class CLI {
             return;
         }
         String availableActions = actionMovesHandler.getAvailableActions();
-        System.out.println("My turn");
+        System.out.println("\n");
 
-        printPLayerBoards();
+        //printPLayerBoards();
         printLegendActionPhaseCommand();
 
+        if (gameMode.equals("experts"))
+            availableActions = "pc/gc/".concat(availableActions);
+        availableActions = "pe/pd/pt/pi/pp/pcl".concat(availableActions);
         System.out.println("Select one of the available actions : [" + availableActions + "]");
-
         String action = getString(availableActions);
 
         switch (action) {
@@ -170,12 +175,46 @@ public class CLI {
                 selectCloud();
                 break;
             case "et":
-                System.out.println("Ending your action turn");
+                clientModel.resetPostmanActivation();
+                System.out.println("Ending your action turn...");
                 actionMovesHandler.consumeAction(ActionMove.END_TURN);
                 connectionToServer.sendMessageToServer(new EndActionPhase(clientNickname));
                 break;
             case "ac":
                 activateCharacterCard();
+                break;
+            case "pe":
+                printEntrances();
+                actionPhase(clientNickname);
+                break;
+            case "pd":
+                printDiningRooms();
+                actionPhase(clientNickname);
+                break;
+            case "pt":
+                printTowers();
+                actionPhase(clientNickname);
+                break;
+            case "pi":
+                printIslands();
+                actionPhase(clientNickname);
+                break;
+            case "pc":
+                printCharacterCards();
+                actionPhase(clientNickname);
+                break;
+            case "gc":
+                printCoins();
+                actionPhase(clientNickname);
+                break;
+            case "pcl":
+                printClouds();
+                actionPhase(clientNickname);
+                break;
+            case "pp":
+                printProfessors();
+                actionPhase(clientNickname);
+                break;
         }
 
     }
@@ -266,23 +305,153 @@ public class CLI {
 
         CharacterName name = CharacterName.valueOf(choice.toUpperCase());
         CharacterCardType type = card.getType();
+        List<Color> students;
         actionMovesHandler.consumeAction(ActionMove.ACTIVATE_CARD);
-        System.out.println(type);
+
         switch (type) {
             case NORMAL:
+                if (name == CharacterName.POSTMAN)
+                    clientModel.postmanActivation();
                 connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, name));
                 break;
             case ISLAND_SELECTION:
+                if (name == CharacterName.HERBALIST && card.getBanCards() == 0) {
+                    System.out.println("There are no ban card on these card...");
+                    actionMovesHandler.handleError(ActionMove.ACTIVATE_CARD);
+                    actionPhase(clientNickname);
+                    return;
+                }
                 int islandId = islandSelection();
                 connectionToServer.sendMessageToServer(new SelectedIsland(clientNickname, islandId));
                 connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, name));
                 break;
             case COLOR_SELECTION:
-                String color = selectColor();
-                connectionToServer.sendMessageToServer(new SelectedColor(clientNickname, Color.valueOf(color)));
+                System.out.println("Select one color [yellow/blue/green/red/pink]");
+                Color color = Color.valueOf(selectColor());
+                connectionToServer.sendMessageToServer(new SelectedColor(clientNickname, color));
                 connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, name));
                 break;
+            case PRINCESS:
+                students = selectStudentsOnCard(card, 1);
+                connectionToServer.sendMessageToServer(new SelectedStudentsFromCard(clientNickname, students, name));
+                connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, name));
+                break;
+            case MONK:
+                students = selectStudentsOnCard(card, 1);
+                connectionToServer.sendMessageToServer(new SelectedStudentsFromCard(clientNickname, students, name));
+                int islandPosition = islandSelection();
+                connectionToServer.sendMessageToServer(new SelectedIsland(clientNickname, islandPosition));
+                connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, name));
+                break;
+            case JESTER:
+                handleJesterActivation(card);
+                break;
+            case MUSICIAN:
+                handleMusicianActivation();
         }
+    }
+
+    private void handleJesterActivation(CharacterCardView card) {
+        System.out.println("Students on card : " + card.getStudents());
+        System.out.println("Select the number of students you want to swap");
+        int swaps = getInt();
+        while (swaps <= 0 || swaps > 3) {
+            System.out.println("The number of swaps must be at least 3");
+            swaps = getInt();
+        }
+        List<Color> selectedStudents = selectStudentsOnCard(card, swaps);
+        List<Color> studentsFromEntrance = selectStudentsFromEntrance(swaps);
+        connectionToServer.sendMessageToServer(new SelectedStudentsFromCard(clientNickname, selectedStudents, CharacterName.JESTER));
+        connectionToServer.sendMessageToServer(new SelectedStudentsFromEntrance(clientNickname, studentsFromEntrance));
+        connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, CharacterName.JESTER));
+    }
+
+    private void handleMusicianActivation() {
+        System.out.println("Select the number of students you want to swap");
+        int swaps = getInt();
+        while (swaps <= 0 || swaps > 2) {
+            System.out.println("The number of swaps must be at least 2");
+            swaps = getInt();
+        }
+        List<Color> studentsFromDiningRoom = selectStudentsFromDiningRoom(swaps);
+        if (studentsFromDiningRoom == null) {
+            System.out.println("Not enough students in the dining room");
+            actionMovesHandler.handleError(ActionMove.ACTIVATE_CARD);
+            actionPhase(clientNickname);
+            return;
+        }
+        List<Color> studentsFromEntrance = selectStudentsFromEntrance(swaps);
+        connectionToServer.sendMessageToServer(new SelectedStudentsFromEntrance(clientNickname, studentsFromEntrance));
+        connectionToServer.sendMessageToServer(new SelectedStudentsFromCard(clientNickname, studentsFromDiningRoom, CharacterName.MUSICIAN));
+        connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, CharacterName.MUSICIAN));
+    }
+
+    private List<Color> selectStudentsFromDiningRoom(int swaps) {
+        List<Integer> diningRoom = new ArrayList<>(clientModel.getDiningRooms().get(clientNickname));
+        List<Color> selectedStudents = new ArrayList<>();
+
+        int numberOfStudents = 0;
+        for (Color color : Color.values()) {
+            numberOfStudents += diningRoom.get(color.ordinal());
+        }
+        if (numberOfStudents < swaps) {
+            return null;
+        }
+
+        for (int i = 0; i < swaps; i++) {
+            System.out.println("DiningRoom----YELLOW : " + diningRoom.get(0) + "----BLUE : " + diningRoom.get(1) + "----GREEN : " + diningRoom.get(2) + "----RED : " + diningRoom.get(3) + "----PINK : " + diningRoom.get(4));
+            System.out.println("Select color from dining room [yellow/blue/green/red/pink]");
+            Color color = Color.valueOf(selectColor());
+            while (diningRoom.get(color.ordinal()) <= 0) {
+                System.out.println("The student of the chosen color are not present in the diningRoom");
+                System.out.println("DiningRoom----YELLOW : " + diningRoom.get(0) + "----BLUE : " + diningRoom.get(1) + "----GREEN : " + diningRoom.get(2) + "----RED : " + diningRoom.get(3) + "----PINK : " + diningRoom.get(4));
+                System.out.println("Select color from dining room [yellow/blue/green/red/pink]");
+                color = Color.valueOf(selectColor());
+            }
+            selectedStudents.add(color);
+            diningRoom.set(color.ordinal(), diningRoom.get(color.ordinal()) - 1);
+        }
+        return selectedStudents;
+    }
+
+    private List<Color> selectStudentsFromEntrance(int studentsToSelect) {
+        List<Color> selectedStudents = new ArrayList<>();
+        List<Color> studentsInEntrance = new ArrayList<>(clientModel.getEntrances().get(clientNickname));
+
+        for (int i = 0; i < studentsToSelect; i++) {
+            System.out.println("Entrance " + studentsInEntrance);
+            System.out.println("Select student from entrance [yellow/blue/green/red/pink]");
+            Color student = Color.valueOf(selectColor());
+            while (!studentsInEntrance.contains(student)) {
+                System.out.println("The selected student are not in the entrance");
+                System.out.println("Entrance " + studentsInEntrance);
+                System.out.println("Select student from entrance [yellow/blue/green/red/pink]");
+                student = Color.valueOf(selectColor());
+            }
+            selectedStudents.add(student);
+            studentsInEntrance.remove(student);
+        }
+        return selectedStudents;
+    }
+
+    private List<Color> selectStudentsOnCard(CharacterCardView card, int studentsToSelect) {
+        List<Color> selectedStudents = new ArrayList<>();
+        List<Color> studentsOnCard = new ArrayList<>(card.getStudents());
+
+        for (int i = 0; i < studentsToSelect; i++) {
+            System.out.println(studentsOnCard);
+            System.out.println("Select one students from the card");
+            Color student = Color.valueOf(selectColor());
+            while (!studentsOnCard.contains(student)) {
+                System.out.println("The selected student are not on the card");
+                System.out.println(studentsOnCard);
+                System.out.println("Select one students from the card");
+                student = Color.valueOf(selectColor());
+            }
+            selectedStudents.add(student);
+            studentsOnCard.remove(student);
+        }
+        return selectedStudents;
     }
 
     public int islandSelection() {
@@ -383,7 +552,7 @@ public class CLI {
         System.out.println("----DiningRooms----");
         for (String player : diningRooms.keySet()) {
             if (player.equals(clientNickname))
-                System.out.println("Your----DiningRoom----");
+                System.out.println("You----DiningRoom----");
             else
                 System.out.println(player + "----DiningRoom----");
             for (Color color : Color.values()) {
@@ -399,7 +568,7 @@ public class CLI {
         System.out.println("----Entrances----");
         for (String player : entrances.keySet()) {
             if (player.equals(clientNickname)) {
-                System.out.println("Your----Entrance----");
+                System.out.println("You----Entrance----");
             } else {
                 System.out.println(player + "----Entrance----");
             }
@@ -418,7 +587,12 @@ public class CLI {
             if (index == motherNaturePosition)
                 System.out.println("((MOTHER_NATURE))");
             System.out.println("students : " + islands.get(index).getStudents());
-            System.out.println("owner : " + islands.get(index).getOwner());
+            if (islands.get(index).getOwner() == null)
+                System.out.println("owner : Nobody");
+            else if (islands.get(index).getOwner().equals(clientNickname))
+                System.out.println("owner : You");
+            else
+                System.out.println("owner : " + islands.get(index).getOwner());
             System.out.println("number of towers : " + islands.get(index).getNumberOfTower());
             if (clientModel.getCards().containsKey(CharacterName.HERBALIST)) {
                 System.out.println("ban cards : " + islands.get(index).getBanCards());
@@ -433,7 +607,7 @@ public class CLI {
         System.out.println("----Professors----");
         for (String player : professors.keySet()) {
             if (player.equals(clientNickname))
-                System.out.println("Your----Professor----");
+                System.out.println("You----Professor----");
             else
                 System.out.println(player + "----Professor----");
             System.out.println(professors.get(player));
@@ -488,10 +662,19 @@ public class CLI {
     }
 
     public void printLegendActionPhaseCommand() {
+        System.out.println("[pe] to print the entrances");
+        System.out.println("[pd] to print the dining rooms");
+        System.out.println("[pi] to print the islands");
+        System.out.println("[pt] to print the towers");
+        System.out.println("[pp] to print the professor");
+        System.out.println("[pcl] to print the clouds");
         System.out.println("[ms] to move students from entrance");
         System.out.println("[mmn] to move Mother Nature ");
-        if (gameMode.equals("experts"))
+        if (gameMode.equals("experts")) {
             System.out.println("[ac] to activate a character card");
+            System.out.println("[pc] to print the available character cards");
+            System.out.println("[gc] to print the number of coins");
+        }
         System.out.println("[sc] to select a cloud");
         System.out.println("[et] to end the action phase");
     }
