@@ -541,7 +541,7 @@ public class Game extends ObservableSubject implements EndObserver {
                     characterCards.add(new InfluenceCard(CharacterName.CENTAUR, 3, new NoTowerInfluence(), CharacterCardType.NORMAL));
                     break;
                 case SELLER:
-                    characterCards.add(new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence(), CharacterCardType.COLOR_SELECTION));
+                    characterCards.add(new InfluenceCard(CharacterName.SELLER, 1, new NoColorInfluence(), CharacterCardType.COLOR_SELECTION));
                     break;
                 case HERBALIST:
                     characterCards.add(new BanCharacter());
@@ -585,7 +585,7 @@ public class Game extends ObservableSubject implements EndObserver {
         CharacterName extractCharacter;
         boolean find;
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 12; i++) {
             find = true;
             while (find) {
 
@@ -593,7 +593,6 @@ public class Game extends ObservableSubject implements EndObserver {
 
                 if (!extractCharacters.contains(extractCharacter)) {
                     extractCharacters.add(extractCharacter);
-                    numberOfCharacter--;
                     find = false;
                 }
 

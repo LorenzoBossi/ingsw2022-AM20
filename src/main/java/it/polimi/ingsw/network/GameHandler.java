@@ -36,7 +36,7 @@ public class GameHandler {
         addPlayersToModel(server.getPlayersInSameLobby(lobbyId));
         attachObserver();
         model.start();
-        if(server.getGameModeByLobbyID(lobbyId).equals("experts")) {
+        if (server.getGameModeByLobbyID(lobbyId).equals("experts")) {
             model.initCoins();
             model.initCharacterCards();
             attachCardObserver();
@@ -53,7 +53,7 @@ public class GameHandler {
         model.getArchipelago().registerObserver(virtualView);
         model.registerObserver(virtualView);
         model.getProfessorManager().registerObserver(virtualView);
-        for(Player player : players) {
+        for (Player player : players) {
             player.registerObserver(virtualView);
         }
     }
@@ -183,7 +183,6 @@ public class GameHandler {
             int islandPosition = ((SelectedIsland) message).getIslandPosition();
 
             if (!inputChecker.checkIslandPosition(islandPosition)) {
-                sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Island position selected is not valid"));
                 return;
             }
 
@@ -192,29 +191,20 @@ public class GameHandler {
         } else if (message instanceof SelectedStudentsFromEntrance) {
             List<Color> students = ((SelectedStudentsFromEntrance) message).getStudents();
 
-            if (!inputChecker.checkStudentInEntrance(students)) {
-                sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Students chosen are not in the entrance"));
-                return;
-            }
-
             controller.setStudentsSelectedEntrance(students);
 
         } else if (message instanceof SelectedStudentsFromCard) {
-            CharacterName name = ((SelectedStudentsFromCard) message).getName();
+            //CharacterName name = ((SelectedStudentsFromCard) message).getName();
             List<Color> students = ((SelectedStudentsFromCard) message).getStudents();
-
-            if(!inputChecker.checkStudentsOnCard(name, students)) {
-                sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Students chosen from the selected card are not valid"));
-                return;
-            }
 
             controller.setStudentsSelectedFromCard(students);
 
         } else if (message instanceof ActiveEffect) {
             CharacterName name = ((ActiveEffect) message).getName();
 
-            if(!inputChecker.checkCharacterCardActivation(name)) {
-                sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Error during the activation of " + name + "character card"));
+            if (!inputChecker.checkCharacterCardActivation(name)) {
+                model.getCurrPlayer().setPlayerChoice(new PlayerChoice());
+                sendMessageToOneClient(player, new GameError(ErrorType.CARD_REQUIREMENTS_ERROR, "Error during the activation of " + name + " character card"));
                 return;
             }
 

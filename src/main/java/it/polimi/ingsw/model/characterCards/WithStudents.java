@@ -19,9 +19,9 @@ public abstract class WithStudents extends CharacterCard {
      *
      * @param coinsRequired the coins required to activate the card
      */
-    public WithStudents(CharacterName name, int coinsRequired,CharacterCardType type, int MAX_SELECTION) {
+    public WithStudents(CharacterName name, int coinsRequired, CharacterCardType type, int MAX_SELECTION) {
         super(name, coinsRequired, type);
-        this.MAX_SELECTION=MAX_SELECTION;
+        this.MAX_SELECTION = MAX_SELECTION;
     }
 
     @Override
@@ -55,14 +55,15 @@ public abstract class WithStudents extends CharacterCard {
 
     /**
      * checks if every student in the list has a match with a student on the card
+     *
      * @param students the list of students to check
      * @return true if very student in the list has a match with a student on the card,
-     *         false otherwise
+     * false otherwise
      */
-    public boolean containsEveryStudent(List<Color> students){
+    public boolean containsEveryStudent(List<Color> students) {
         List<Color> list = new ArrayList<>(this.students);
-        for(Color color: students){
-            if(!list.contains(color)) {
+        for (Color color : students) {
+            if (!list.contains(color)) {
                 return false;
             }
             list.remove(color);
@@ -73,20 +74,21 @@ public abstract class WithStudents extends CharacterCard {
 
     /**
      * checks if the card contains at least the max selection number of students,
-     *        if the player selected the right number of students and if those students are on the card
+     * if the player selected the right number of students and if those students are on the card
+     *
      * @param player the current player of the game
      * @return true if the requirements are satisfied
-     *         false otherwise
+     * false otherwise
      */
     @Override
-    public boolean checkRequirements(Player player){
-        List<Color> selectedStudents=player.getPlayerChoice().getSelectedStudents();
+    public boolean checkRequirements(Player player) {
+        List<Color> selectedStudents = player.getPlayerChoice().getSelectedStudents();
 
-        if(getStudents().size()< MAX_SELECTION)
+        if (getStudents().size() < MAX_SELECTION)
             return false;
-        if(selectedStudents.size()> MAX_SELECTION || selectedStudents.size()<=0)
+        if (selectedStudents.size() > MAX_SELECTION || selectedStudents.size() <= 0)
             return false;
-        if(!containsEveryStudent(selectedStudents))
+        if (!containsEveryStudent(selectedStudents))
             return false;
         return true;
     }

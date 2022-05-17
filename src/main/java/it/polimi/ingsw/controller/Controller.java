@@ -137,6 +137,7 @@ public class Controller {
 
         game.characterCardPayment(payment);
         card.activateEffect(game);
+        game.getCurrPlayer().setPlayerChoice(new PlayerChoice());
     }
 
     /**

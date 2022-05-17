@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,6 +25,7 @@ public class ServerConnection implements Runnable {
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
     private ExecutorService executorService = Executors.newCachedThreadPool();
+    private BlockingQueue<ServerMessage> queue = new ArrayBlockingQueue<>(1000);
 
     private ServerMessageHandler messageHandler;
 
@@ -60,7 +63,7 @@ public class ServerConnection implements Runnable {
     /**
      * Method receiveFromServer receives the message comes from the Server
      */
-    public synchronized void receiveFromServer() {
+    public void receiveFromServer() {
         try {
             ServerMessage message = (ServerMessage) inputStream.readObject();
             if (message instanceof Disconnection) {
@@ -75,6 +78,14 @@ public class ServerConnection implements Runnable {
             System.err.println("Server Connection Lost...");
             e.printStackTrace();
             System.exit(0);
+        }
+    }
+
+    public void consumeMessage() {
+        try {
+            messageHandler.handleMessage(queue.take());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -118,6 +129,7 @@ public class ServerConnection implements Runnable {
      */
     @Override
     public void run() {
+        //new Thread(this::consumeMessage).start();
         while (status) {
 
             receiveFromServer();

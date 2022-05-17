@@ -10,7 +10,7 @@ public class Vassal extends CharacterCard {
      * Constructor
      */
     public Vassal() {
-        super(CharacterName.VASSAL, 3, CharacterCardType.ISLAND_SELECTION);
+        super(CharacterName.VASSAL, 1, CharacterCardType.ISLAND_SELECTION);
     }
 
 

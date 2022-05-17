@@ -61,7 +61,6 @@ public class ServerMessageHandler {
         } else if (message instanceof StartActionPhase) {
             actionMovesHandler.initializeAction();
             model.getAssistantsPlayed().clear();
-            actionMovesHandler.initializeAction();
             view.actionPhase(((StartActionPhase) message).getTargetPlayer());
         } else if (message instanceof UpdateMessage) {
             handleUpdateMessage(message);
@@ -105,10 +104,10 @@ public class ServerMessageHandler {
             String newOwner = ((ChangeIslandOwner) message).getNewOwner();
             String oldOwner = ((ChangeIslandOwner) message).getOldOwner();
             int islandId = ((ChangeIslandOwner) message).getIslandPosition();
-            int numberOfTowers  = ((ChangeIslandOwner) message).getNumberOfTower();
+            int numberOfTowers = ((ChangeIslandOwner) message).getNumberOfTower();
 
             model.changeIslandOwner(newOwner, oldOwner, islandId, numberOfTowers);
-        } else if(message instanceof MergeIslands) {
+        } else if (message instanceof MergeIslands) {
             int currIsland = ((MergeIslands) message).getCurrIslandPosition();
             int islToMerge = ((MergeIslands) message).getIslandToMergePosition();
 
@@ -122,11 +121,16 @@ public class ServerMessageHandler {
             String player = ((CardActivated) message).getPlayer();
             CharacterName name = ((CardActivated) message).getName();
 
-            System.out.println(player + "has activated " + name + " card");
-        } else if(message instanceof IncreaseCardPrice) {
+            System.out.println(player + " has activated " + name + " card");
+        } else if (message instanceof IncreaseCardPrice) {
             CharacterName name = ((IncreaseCardPrice) message).getCharacterName();
 
             model.increasePaymentCard(name);
+        } else if(message instanceof BanCardEvent) {
+            int islandId = ((BanCardEvent) message).getIslandPosition();
+            String action = ((BanCardEvent) message).getAction();
+
+            model.handleBanCardEvent(islandId, action);
         }
     }
 
@@ -143,12 +147,11 @@ public class ServerMessageHandler {
         Object indexSource = updateMessage.getIndexSource();
         Object indexDestination = updateMessage.getIndexDestination();
 
-        /*
+
         System.out.println(source + "--->" + destination);
         System.out.println(students);
         System.out.println(indexSource + "--->" + indexDestination);
 
-         */
 
         switch (source) {
             case ENTRANCE:
@@ -162,12 +165,19 @@ public class ServerMessageHandler {
                         model.removeStudentsFromGameComponent(source, index, students);
                         model.addStudentsToGameComponent(destination, (int) indexDestination, students);
                         break;
+                    case CARD:
+                        model.removeStudentsFromGameComponent(source, index, students);
+                        model.addStudentsToGameComponent(destination, (String) indexDestination, students);
                 }
                 break;
 
             case DINING_ROOM:
                 switch (destination) {
                     case BAG:
+                        model.removeStudentsFromGameComponent(source, (String) indexSource, students);
+                        break;
+                    case ENTRANCE:
+                        model.addStudentsToGameComponent(destination, (String) indexDestination, students);
                         model.removeStudentsFromGameComponent(source, (String) indexSource, students);
                         break;
                 }
@@ -184,6 +194,8 @@ public class ServerMessageHandler {
                     case ISLAND:
                         model.addStudentsToGameComponent(destination, (int) indexDestination, students);
                         break;
+                    case CARD:
+                        model.addStudentsToGameComponent(destination, (String) indexDestination, students);
                 }
                 break;
 
@@ -195,6 +207,21 @@ public class ServerMessageHandler {
                         break;
                 }
                 break;
+            case CARD:
+                switch (destination) {
+                    case ENTRANCE:
+                        model.addStudentsToGameComponent(destination, (String) indexDestination, students);
+                        model.removeStudentsFromGameComponent(source, (String) indexSource, students);
+                        break;
+                    case ISLAND:
+                        model.addStudentsToGameComponent(destination, (int) indexDestination, students);
+                        model.removeStudentsFromGameComponent(source, (String) indexSource, students);
+                        break;
+                    case DINING_ROOM:
+                        model.addStudentsToGameComponent(destination, (String) indexDestination, students);
+                        model.removeStudentsFromGameComponent(source, (String) indexSource, students);
+                        break;
+                }
         }
 
     }

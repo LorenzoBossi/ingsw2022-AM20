@@ -56,7 +56,6 @@ public class CharacterCardTest {
         card.activateEffect(game);
         card.activateEffect(game);
         card.activateEffect(game);
-        assertFalse(card.checkRequirements(player1));
         assertEquals(4, island.getBanCards());
 
 

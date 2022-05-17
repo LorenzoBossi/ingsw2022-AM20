@@ -13,10 +13,9 @@ public class BanCharacter extends CharacterCard {
      * Constructor
      */
     public BanCharacter() {
-        super(CharacterName.HERBALIST, 2, CharacterCardType.ISLAND_SELECTION);
+        super(CharacterName.HERBALIST, 1, CharacterCardType.ISLAND_SELECTION);
         banCards = INITIAL_BANCARDS;
     }
-
 
 
     /**
@@ -39,16 +38,20 @@ public class BanCharacter extends CharacterCard {
         endActivation(currPlayer.getNickname());
     }
 
-    /**
+
+    /*
      * checks if the card contains at least one ban card
+     *
      * @param player the current player of the game
      * @return true if the requirements are satisfied
-     *         false otherwise
+     * false otherwise
      */
+    /*
     @Override
-    public boolean checkRequirements(Player player){
-        if(banCards==0)
+    public boolean checkRequirements(Player player) {
+        if (banCards == 0)
             return false;
         return true;
     }
+     */
 }

@@ -35,7 +35,7 @@ public class ServerConnectionHandler implements Runnable {
         System.out.println("New Connection");
         ClientConnectionHandler clientConnectionHandler = new ClientConnectionHandler(server, socket);
         executorService.submit(clientConnectionHandler);
-        //executorService.submit(new PingHandler(clientConnectionHandler));
+        executorService.submit(new PingHandler(clientConnectionHandler));
     }
 
     private void close() {

@@ -20,8 +20,25 @@ public class CharacterCardView {
             banCards = 4;
     }
 
+    public void addStudents(List<Color> students) {
+        this.students.addAll(students);
+    }
+
+    public void removeStudents(List<Color> students) {
+        for (Color student : students)
+            this.students.remove(student);
+    }
+
     public void addCoin() {
         coinsRequired++;
+    }
+
+    public void addBanCard() {
+        banCards++;
+    }
+
+    public void removeBanCard() {
+        banCards--;
     }
 
     public CharacterCardType getType() {

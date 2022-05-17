@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.model.characterCards.CharacterCard;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,8 +43,8 @@ public class InputCheckerTest {
 
     @Test
     public void checkValidTurn() {
-       assertTrue(inputChecker.checkValidTurn("Carlo"));
-       assertFalse(inputChecker.checkValidTurn("Simone"));
+        assertTrue(inputChecker.checkValidTurn("Carlo"));
+        assertFalse(inputChecker.checkValidTurn("Simone"));
     }
 
     @Test
@@ -103,4 +104,211 @@ public class InputCheckerTest {
         assertFalse(inputChecker.checkSelectedCloud(4));
         assertFalse(inputChecker.checkSelectedCloud(1));
     }
+
+    @Test
+    public void checkCardActivationCoinIslandTest() {
+        CharacterCard card;
+        game.initCoins();
+        Player currPlayer = game.getCurrPlayer();
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.HERBALIST));
+
+        game.getBag().fillBag(40);
+        while (game.getCharacterCardByName(CharacterName.POSTMAN) == null || game.getCharacterCardByName(CharacterName.VASSAL) == null) {
+            game.initCharacterCards();
+        }
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.VASSAL));
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.POSTMAN));
+
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.VASSAL));
+        currPlayer.getPlayerChoice().selectIsland(game.getArchipelago().getIsland(0));
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.VASSAL));
+
+    }
+
+    @Test
+    public void checkCardActivationBanCards() {
+        CharacterCard card;
+        game.initCoins();
+        Player currPlayer = game.getCurrPlayer();
+
+        game.getBag().fillBag(40);
+        while (game.getCharacterCardByName(CharacterName.HERBALIST) == null) {
+            game.initCharacterCards();
+        }
+        card = game.getCharacterCardByName(CharacterName.HERBALIST);
+
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        currPlayer.getPlayerChoice().selectIsland(game.getArchipelago().getIsland(0));
+
+        card.activateEffect(game);
+        card.activateEffect(game);
+        card.activateEffect(game);
+
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.HERBALIST));
+
+        card.activateEffect(game);
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.HERBALIST));
+    }
+
+    @Test
+    public void checkJesterActivation() {
+        CharacterCard card;
+        game.initCoins();
+        Player currPlayer = game.getCurrPlayer();
+
+        game.getBag().fillBag(40);
+        while (game.getCharacterCardByName(CharacterName.JESTER) == null) {
+            game.initCharacterCards();
+        }
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+
+        card = game.getCharacterCardByName(CharacterName.JESTER);
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.JESTER));
+
+        List<Color> studentsFromCard = new ArrayList<>(card.getStudents().subList(0, 2));
+        List<Color> studentsFromEntrance = new ArrayList<>(Arrays.asList(Color.PINK, Color.PINK));
+        currPlayer.getPlayerChoice().selectStudentFromEntrance(studentsFromEntrance);
+        currPlayer.getPlayerChoice().selectStudents(studentsFromCard);
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.JESTER));
+
+        studentsFromEntrance = new ArrayList<>(Arrays.asList(Color.BLUE, Color.BLUE));
+        currPlayer.getPlayerChoice().selectStudentFromEntrance(studentsFromEntrance);
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.JESTER));
+
+        studentsFromEntrance = new ArrayList<>(Arrays.asList(Color.BLUE));
+        currPlayer.getPlayerChoice().selectStudentFromEntrance(studentsFromEntrance);
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.JESTER));
+    }
+
+    @Test
+    public void checkBankerActivation() {
+        CharacterCard card;
+        game.initCoins();
+        Player currPlayer = game.getCurrPlayer();
+
+        game.getBag().fillBag(40);
+        while (game.getCharacterCardByName(CharacterName.BANKER) == null) {
+            game.initCharacterCards();
+        }
+        card = game.getCharacterCardByName(CharacterName.BANKER);
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.BANKER));
+
+        currPlayer.getPlayerChoice().selectColor(Color.YELLOW);
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.BANKER));
+    }
+
+    @Test
+    public void checkNormalCardActivation() {
+        CharacterCard card;
+        game.initCoins();
+        Player currPlayer = game.getCurrPlayer();
+
+        game.getBag().fillBag(40);
+        while (game.getCharacterCardByName(CharacterName.PROF_CARD) == null) {
+            game.initCharacterCards();
+        }
+        card = game.getCharacterCardByName(CharacterName.PROF_CARD);
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.PROF_CARD));
+    }
+
+    @Test
+    public void checkPrincessActivation() {
+        CharacterCard card;
+        game.initCoins();
+        Player currPlayer = game.getCurrPlayer();
+
+        game.getBag().fillBag(40);
+        while (game.getCharacterCardByName(CharacterName.PRINCESS) == null) {
+            game.initCharacterCards();
+        }
+        card = game.getCharacterCardByName(CharacterName.PRINCESS);
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.PRINCESS));
+
+        List<Color> studentsFromCard = new ArrayList<>(card.getStudents().subList(0, 2));
+        currPlayer.getPlayerChoice().selectStudents(studentsFromCard);
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.PRINCESS));
+
+        studentsFromCard = new ArrayList<>(card.getStudents().subList(0, 1));
+        currPlayer.getPlayerChoice().selectStudents(studentsFromCard);
+
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.PRINCESS));
+    }
+
+    @Test
+    public void checkMonkActivation() {
+        CharacterCard card;
+        game.initCoins();
+        Player currPlayer = game.getCurrPlayer();
+
+        game.getBag().fillBag(40);
+        while (game.getCharacterCardByName(CharacterName.MONK) == null) {
+            game.initCharacterCards();
+        }
+        card = game.getCharacterCardByName(CharacterName.MONK);
+        game.addCoinsToPlayer(currPlayer.getNickname());
+        game.addCoinsToPlayer(currPlayer.getNickname());
+
+        List<Color> studentsFromCard = new ArrayList<>(card.getStudents().subList(0, 1));
+        currPlayer.getPlayerChoice().selectStudents(studentsFromCard);
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.MONK));
+
+        currPlayer.getPlayerChoice().selectIsland(game.getArchipelago().getIsland(1));
+
+        assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.MONK));
+    }
+
+    @Test
+    public void checkMusicianActivation() {
+            CharacterCard card;
+            game.initCoins();
+            Player currPlayer = game.getCurrPlayer();
+            List<Color> studentsToAdd = new ArrayList<>(Arrays.asList(Color.BLUE, Color.RED, Color.BLUE, Color.RED));
+            currPlayer.getPlayerBoard().getDiningRoom().refillDining(studentsToAdd);
+
+            game.getBag().fillBag(40);
+            while (game.getCharacterCardByName(CharacterName.MUSICIAN) == null) {
+                game.initCharacterCards();
+            }
+            game.addCoinsToPlayer(currPlayer.getNickname());
+            game.addCoinsToPlayer(currPlayer.getNickname());
+            game.addCoinsToPlayer(currPlayer.getNickname());
+
+            card = game.getCharacterCardByName(CharacterName.MUSICIAN);
+            assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.MUSICIAN));
+
+            List<Color> studentsFromDining = new ArrayList<>(Arrays.asList(Color.BLUE, Color.PINK));
+            List<Color> studentsFromEntrance = new ArrayList<>(Arrays.asList(Color.PINK, Color.PINK));
+            currPlayer.getPlayerChoice().selectStudentFromEntrance(studentsFromEntrance);
+            currPlayer.getPlayerChoice().selectStudents(studentsFromDining);
+
+            assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.MUSICIAN));
+
+            studentsFromDining.remove(Color.PINK);
+            studentsFromEntrance = new ArrayList<>(Arrays.asList(Color.RED));
+            currPlayer.getPlayerChoice().selectStudentFromEntrance(studentsFromEntrance);
+            currPlayer.getPlayerChoice().selectStudents(studentsFromDining);
+
+            assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.MUSICIAN));
+    }
+
 }

@@ -176,6 +176,10 @@ public class Player extends ObservableSubject {
     }
 
 
+    public void setPlayerChoice(PlayerChoice playerChoice) {
+        this.playerChoice = playerChoice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

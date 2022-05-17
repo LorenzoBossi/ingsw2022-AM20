@@ -100,6 +100,10 @@ public class ClientModel {
                     diningRooms.get(nickname).set(colorIndex, numberOfStudents + 1);
                 }
                 break;
+            case CARD:
+                CharacterName name = CharacterName.valueOf(nickname);
+                cards.get(name).addStudents(students);
+                break;
         }
     }
 
@@ -117,8 +121,10 @@ public class ClientModel {
                 break;
             case ISLAND:
                 islandsViewMap.get(index).addStudents(students);
+                break;
         }
     }
+
 
     /**
      * Method removeStudentsFromGameComponent adds the students to the right Game Component
@@ -139,6 +145,9 @@ public class ClientModel {
                     int numberOfStudents = diningRooms.get(nickname).get(colorIndex);
                     diningRooms.get(nickname).set(colorIndex, numberOfStudents - 1);
                 }
+                break;
+            case CARD:
+                cards.get(CharacterName.valueOf(nickname)).removeStudents(students);
                 break;
         }
     }
@@ -274,6 +283,20 @@ public class ClientModel {
         return maxMotherNatureMove;
     }
 
+    public void handleBanCardEvent(int islandId, String action) {
+        IslandView isl = islandsViewMap.get(islandId);
+        switch (action) {
+            case "ADD" -> {
+                isl.addBanCards(1);
+                cards.get(CharacterName.HERBALIST).removeBanCard();
+            }
+            case "REMOVE" -> {
+                isl.removeBanCards(1);
+                cards.get(CharacterName.HERBALIST).addBanCard();
+            }
+        }
+    }
+
     /**
      * Method removeAssistant removes the assistant played by the player
      *
@@ -302,6 +325,16 @@ public class ClientModel {
      */
     public void addCharacterCard(CharacterName name, int coins, CharacterCardType type, List<Color> students) {
         cards.put(name, new CharacterCardView(name, type, coins, students));
+    }
+
+    public boolean isPresentEntrance(String nickname, List<Color> students) {
+        List<Color> studentsEntrance = new ArrayList<>(entrances.get(nickname));
+        for (Color student : students) {
+            if (studentsEntrance.contains(student))
+                studentsEntrance.remove(student);
+            return false;
+        }
+        return true;
     }
 
     /**

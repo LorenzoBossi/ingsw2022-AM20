@@ -55,30 +55,31 @@ public class Jester extends WithStudents {
 
     /**
      * checks if the card contains at least the max selection number of students,
-     *        if the player selected the right number of students and if those students are on the card,
-     *        if the player selected students in his entrance
+     * if the player selected the right number of students and if those students are on the card,
+     * if the player selected students in his entrance
+     *
      * @param currPlayer the current player of the game
      * @return true if the requirements are satisfied
-     *         false otherwise
+     * false otherwise
      */
     @Override
     public boolean checkRequirements(Player currPlayer) {
-        PlayerChoice playerChoice=currPlayer.getPlayerChoice();
-        List<Color> selectedOnTheCard=playerChoice.getSelectedStudents();
-        Entrance entrance=currPlayer.getPlayerBoard().getEntrance();
-        List<Color> selectedInEntrance=playerChoice.getSelectedStudentFromEntrance();
+        PlayerChoice playerChoice = currPlayer.getPlayerChoice();
+        List<Color> selectedOnTheCard = playerChoice.getSelectedStudents();
+        Entrance entrance = currPlayer.getPlayerBoard().getEntrance();
+        List<Color> selectedInEntrance = playerChoice.getSelectedStudentFromEntrance();
 
-        if(!super.checkRequirements(currPlayer))
+        if (!super.checkRequirements(currPlayer))
             return false;
 
-        if(selectedOnTheCard.size()!=selectedInEntrance.size())
+        if (selectedOnTheCard.size() != selectedInEntrance.size())
             return false;
-        if(!entrance.isPresent(selectedInEntrance))
+
+        if (!entrance.isPresent(selectedInEntrance))
             return false;
 
         return true;
     }
-
 
 
 }

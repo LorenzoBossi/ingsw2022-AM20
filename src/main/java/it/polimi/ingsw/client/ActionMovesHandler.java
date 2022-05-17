@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,9 +27,10 @@ public class ActionMovesHandler {
 
     public void initializeAction() {
         ActionMove moveStudents = ActionMove.MOVE_STUDENTS;
+        ActionMove activateCard = ActionMove.ACTIVATE_CARD;
 
         if (gameMode.equals("experts")) {
-            addAction(ActionMove.ACTIVATE_CARD);
+            actions.set(activateCard.ordinal(), 1);
         }
         if (numberOfPlayer == 2)
             actions.set(moveStudents.ordinal(), MOVE2P);

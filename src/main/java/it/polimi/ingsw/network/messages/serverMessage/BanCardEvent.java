@@ -12,4 +12,8 @@ public class BanCardEvent implements UpdateMessage {
     public int getIslandPosition() {
         return islandPosition;
     }
+
+    public String getAction() {
+        return action;
+    }
 }

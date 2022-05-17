@@ -57,26 +57,50 @@ public class InputChecker {
         return !clouds.get(cloudId).isChosen();
     }
 
-    public boolean checkStudentsOnCard(CharacterName name, List<Color> students) {
-        CharacterCard card = model.getCharacterCardByName(name);
-        if (card == null) {
-            return false;
-        }
-        List<Color> studentsOnCard = new ArrayList<>(card.getStudents());
-        for (Color student : students) {
-            if (!studentsOnCard.contains(student))
-                return false;
-            studentsOnCard.remove(student);
-        }
-        return true;
-    }
-
     public boolean checkCharacterCardActivation(CharacterName name) {
         CharacterCard card = model.getCharacterCardByName(name);
+        IslandsManager islandsManager = model.getArchipelago();
+
         if (card == null)
             return false;
         if (card.getCoinsRequired() > model.getCurrPlayer().getCoins())
             return false;
+        if (!checkPlayerChoice(card))
+            return false;
+        if (card.getName() == CharacterName.HERBALIST && islandsManager.getNumberOfBanCards() == 4)
+            return false;
         return card.checkRequirements(model.getCurrPlayer());
+    }
+
+    private boolean checkPlayerChoice(CharacterCard card) {
+        PlayerChoice playerChoice = model.getCurrPlayer().getPlayerChoice();
+        CharacterCardType type = card.getCharacterCardType();
+
+        boolean result = true;
+
+        switch (type) {
+            case COLOR_SELECTION:
+                if (playerChoice.getSelectedColor() == null)
+                    result = false;
+                break;
+            case ISLAND_SELECTION:
+                if (playerChoice.getSelectedIsland() == null)
+                    result = false;
+                break;
+            case MUSICIAN:
+            case JESTER:
+                if (playerChoice.getSelectedStudentFromEntrance() == null || playerChoice.getSelectedStudents() == null)
+                    result = false;
+                break;
+            case PRINCESS:
+                if (playerChoice.getSelectedStudents() == null)
+                    result = false;
+                break;
+            case MONK:
+                if (playerChoice.getSelectedStudents() == null || playerChoice.getSelectedIsland() == null)
+                    result = false;
+                break;
+        }
+        return result;
     }
 }
