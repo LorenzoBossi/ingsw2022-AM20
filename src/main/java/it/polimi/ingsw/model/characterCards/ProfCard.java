@@ -8,7 +8,7 @@ public class ProfCard extends CharacterCard {
      * Constructor
      */
     public ProfCard() {
-        super(CharacterName.PROF_CARD, 1, CharacterCardType.NORMAL);
+        super(CharacterName.PROF_CARD, 2, CharacterCardType.NORMAL);
     }
 
     /**

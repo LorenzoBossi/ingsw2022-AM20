@@ -585,7 +585,7 @@ public class Game extends ObservableSubject implements EndObserver {
         CharacterName extractCharacter;
         boolean find;
 
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 3; i++) {
             find = true;
             while (find) {
 

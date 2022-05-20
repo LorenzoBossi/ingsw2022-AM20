@@ -12,7 +12,7 @@ public class Banker extends CharacterCard {
      * Constructor
      */
     public Banker() {
-        super(CharacterName.BANKER, 1, CharacterCardType.COLOR_SELECTION);
+        super(CharacterName.BANKER, 3, CharacterCardType.COLOR_SELECTION);
     }
 
     /**

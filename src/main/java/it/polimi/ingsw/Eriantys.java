@@ -4,10 +4,10 @@ import it.polimi.ingsw.client.CLI;
 import it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.utils.Screen;
+import javafx.application.Application;
 
 
-
-public class Eriantys {
+public class Eriantys{
     public static void main(String[] args) {
         Screen.clear();
         printTitle();
@@ -17,7 +17,7 @@ public class Eriantys {
         int numberOfArgs= args.length;
         String arg;
 
-        //more checks on parameters to be added (inValue() not needed
+        //more checks on parameters to be added (intValue() not needed)
         for(int i=0;i<numberOfArgs;i++) {
             arg = args[i];
             if (arg.equals("--cli") || arg.equals("-c")) {
@@ -68,7 +68,8 @@ public class Eriantys {
     }
 
     private static void startGUI(String ip, int port){
-        //GUI.main(null);
+
+        GUI.main(new String[0]);
 
         //Not implemented yet
         /*

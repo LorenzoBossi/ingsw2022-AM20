@@ -13,7 +13,7 @@ public class BanCharacter extends CharacterCard {
      * Constructor
      */
     public BanCharacter() {
-        super(CharacterName.HERBALIST, 1, CharacterCardType.ISLAND_SELECTION);
+        super(CharacterName.HERBALIST, 2, CharacterCardType.ISLAND_SELECTION);
         banCards = INITIAL_BANCARDS;
     }
 
