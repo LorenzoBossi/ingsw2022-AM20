@@ -151,7 +151,9 @@ public class GameHandler {
             }
 
             controller.moveMotherNature(motherNatureMove);
-            sendMessageToOneClient(player, new NextMove());
+
+            if(!model.getPhase().equals(Phase.ENDED))
+                sendMessageToOneClient(player, new NextMove());
 
         } else if (message instanceof SelectedCloud) {
             int cloudId = ((SelectedCloud) message).getCloudId();
@@ -209,7 +211,8 @@ public class GameHandler {
             }
 
             controller.useCharacterCard(name);
-            sendMessageToOneClient(player, new NextMove());
+            if(!model.getPhase().equals(Phase.ENDED))
+                sendMessageToOneClient(player, new NextMove());
         }
     }
 

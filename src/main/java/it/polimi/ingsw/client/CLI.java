@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.characterCards.CharacterCard;
 import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.*;
+import it.polimi.ingsw.utils.Screen;
 
 import javax.swing.*;
 import java.io.PrintStream;
@@ -582,6 +583,7 @@ public class CLI {
         int motherNaturePosition = clientModel.getMotherNaturePosition();
 
         System.out.println("----Islands----");
+
         for (int index : islands.keySet()) {
             System.out.println("Island ID : " + index);
             if (index == motherNaturePosition)
@@ -717,6 +719,74 @@ public class CLI {
                 System.out.println("Number of BanCards : " + card.getBanCards());
             System.out.println("----------------");
         }
+    }
+
+    public void endGame(boolean isADraw,String winner){
+        if(isADraw){
+            printDraw();
+        }else{
+            if(winner.equals(clientNickname)){
+                printWin();
+            }else{
+                printLose(winner);
+            }
+        }
+        endGameChoice();//play again?
+    }
+
+    public void printDraw(){
+        Screen.clear();
+        System.out.println("GAME ENDED IN A DRAW");
+    }
+
+    public void printWin(){
+        Screen.clear();
+        System.out.println("GAME ENDED");
+        System.out.println(Color.ANSI_YELLOW+"CONGRATULATION! YOU WON THE GAME"+Color.ANSI_RESET);
+    }
+    public void printLose(String winner){
+        Screen.clear();
+        System.out.println("GAME ENDED");
+        System.out.println(Color.ANSI_RED+"YOU LOSE"+Color.ANSI_RESET);
+        System.out.println("WINNER: "+winner);
+
+    }
+
+    public void endGameChoice(){
+
+        printGameSummary();
+
+        System.out.println("Select one of the available actions : [/"+Color.ANSI_RED+"exit"+Color.ANSI_RESET+"]");
+        String action = getString("/exit");
+
+        switch (action) {
+            case "exit":
+                Screen.clear();
+                connectionToServer.sendMessageToServer(new EndActionPhase(clientNickname));
+                lobbyRefresh();
+                break;
+            default:
+                System.out.println("Invalid Command");
+                printGameSummary();
+        }
+
+    }
+    public void printGameSummary(){
+        /*
+        System.out.println("[pe] to print the entrances");
+        System.out.println("[pd] to print the dining rooms");
+        System.out.println("[pi] to print the islands");
+        System.out.println("[pt] to print the towers");
+        System.out.println("[pp] to print the professor");
+        System.out.println("[pcl] to print the clouds");
+        if (gameMode.equals("experts")) {
+            System.out.println("[pc] to print the available character cards");
+        }*/
+        System.out.println(Color.ANSI_YELLOW+"---- GAME SUMMARY ----"+Color.ANSI_RESET);
+        printTowers();
+        printProfessors();
+        printDiningRooms();
+        System.out.println("\n["+Color.ANSI_RED+"exit"+Color.ANSI_RESET+"] exit and start a new game");
     }
 
 }

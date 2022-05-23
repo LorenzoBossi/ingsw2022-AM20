@@ -66,6 +66,8 @@ public class ServerMessageHandler {
             handleUpdateMessage(message);
         } else if (message instanceof NextMove) {
             view.actionPhase(view.getClientNickname());
+        } else if(message instanceof GameEnd){
+            view.endGame(((GameEnd) message).isADraw(),((GameEnd) message).getWinner());
         }
     }
 

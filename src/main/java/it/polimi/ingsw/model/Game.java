@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.exceptions.DrawException;
 import it.polimi.ingsw.model.characterCards.*;
 import it.polimi.ingsw.network.messages.serverMessage.ExtractedCard;
+import it.polimi.ingsw.network.messages.serverMessage.GameEnd;
 import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
 import it.polimi.ingsw.network.messages.serverMessage.PlayerCoinsEvent;
 import it.polimi.ingsw.utils.ObservableSubject;
@@ -35,7 +36,7 @@ public class Game extends ObservableSubject implements EndObserver {
     private final int TOTAL_NUMBER_OF_COINS = 20;
     private final int STUDENTS_ENTRANCE_2P = 7;
     private final int STUDENTS_ENTRANCE_3P = 9;
-    private final int TOWERS_2P = 8;
+    private final int TOWERS_2P = 8;//8 modified to test
     private final int TOWERS_3P = 6;
     private final int STUDENTS_CLOUD_2P = 3;
     private final int STUDENTS_CLOUD_3P = 4;
@@ -645,6 +646,12 @@ public class Game extends ObservableSubject implements EndObserver {
 
     public void end() {
         phase = Phase.ENDED;
+        try{
+            Player winner = getWinner();
+            notifyObserver((new GameEnd(winner.getNickname())));
+        }catch (DrawException e){
+        notifyObserver(new GameEnd());
+        }
     }
 
     public void lastRound() {
