@@ -304,6 +304,11 @@ public class Server {
             System.out.println("OutofBound");
             e.printStackTrace();
         }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         GameHandler gameHandler = new GameHandler(this, lobby);
         activeLobbies.put(lobby, gameHandler);
         gameHandler.startGameHandler();

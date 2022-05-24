@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.LobbyController">
+    <children>
+        <ListView fx:id="lobbies" layoutX="4.0" layoutY="80.0" prefHeight="260.0" prefWidth="229.0" />
+        <Label alignment="CENTER" layoutX="-1.0" layoutY="5.0" prefHeight="17.0" prefWidth="600.0" text="Select at existing lobby or create a new one">
+            <font>
+                <Font size="29.0" />
+            </font>
+        </Label>
+        <Button fx:id="joinButton" layoutX="183.0" layoutY="351.0" mnemonicParsing="false" onAction="#join" text="Join">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Button>
+        <Button fx:id="createButton" layoutX="390.0" layoutY="228.0" mnemonicParsing="false" onAction="#createLobby" text="Create">
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Button>
+        <Label alignment="CENTER" layoutX="349.0" layoutY="61.0" prefHeight="17.0" prefWidth="150.0" text="Select Number of Player" />
+        <Label alignment="CENTER" layoutX="344.0" layoutY="142.0" prefHeight="17.0" prefWidth="160.0" text="Select Gamemode" />
+        <ChoiceBox fx:id="numberPlayers" layoutX="349.0" layoutY="97.0" prefWidth="150.0" />
+        <ChoiceBox fx:id="gamemode" layoutX="349.0" layoutY="174.0" prefWidth="150.0" />
+        <Label fx:id="joinConfirm" alignment="CENTER" layoutX="13.0" layoutY="360.0" prefHeight="17.0" prefWidth="160.0" text="Press Join button to confirm" textFill="#f60909" />
+        <Label layoutX="4.0" layoutY="61.0" text="LobbyID" />
+        <Label layoutX="68.0" layoutY="61.0" text="N°Players" />
+        <Label layoutX="157.0" layoutY="61.0" text="GameMode" />
+        <Label fx:id="errorPlayer" alignment="CENTER" layoutX="491.0" layoutY="101.0" prefHeight="17.0" prefWidth="107.0" text="Missing Fields" textFill="#ef0606" />
+        <Label fx:id="errorGamemode" alignment="CENTER" layoutX="499.0" layoutY="178.0" prefHeight="17.0" prefWidth="93.0" text="Missing Fields" textFill="#e90909" />
+      <Button fx:id="refreshButton" layoutX="243.0" layoutY="57.0" mnemonicParsing="false" onAction="#lobbyRefresh" prefHeight="25.0" prefWidth="63.0" text="Refresh" />
+      <Label fx:id="waitingMessage" alignment="CENTER" layoutX="232.0" layoutY="274.0" prefHeight="17.0" prefWidth="367.0" text="Waiting players to start the Game...">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="playerRemaining" layoutX="338.0" layoutY="351.0" text="2">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="playerText" layoutX="365.0" layoutY="355.0" prefHeight="25.0" prefWidth="129.0" text="players remaining">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label fx:id="playerJoined" alignment="CENTER" layoutX="231.0" layoutY="312.0" prefHeight="27.0" prefWidth="367.0" text="Player joined">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

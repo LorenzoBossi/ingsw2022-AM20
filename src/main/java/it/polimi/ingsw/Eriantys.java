@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.CLI;
-import it.polimi.ingsw.client.GUI;
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.network.Server;
 import it.polimi.ingsw.utils.Screen;
 import javafx.application.Application;

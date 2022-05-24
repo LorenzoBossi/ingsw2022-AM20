@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="378.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.SetNameController">
+   <children>
+      <ImageView fitHeight="400.0" fitWidth="470.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../Imagines/eriantys_banner_no_items.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="87.0" layoutY="120.0" text="Insert your Nickname">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="nickname" layoutX="113.0" layoutY="185.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Button layoutX="151.0" layoutY="249.0" mnemonicParsing="false" onAction="#checkName" text="Confirm">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Label fx:id="error" layoutX="293.0" layoutY="191.0" text="Insert the nickname" textFill="#f60505" />
+   </children>
+</AnchorPane>

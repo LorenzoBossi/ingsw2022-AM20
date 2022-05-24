@@ -1,11 +1,13 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.GameComponent;
 import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.serverMessage.*;
+import javafx.application.Platform;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,7 @@ import java.util.Map;
  */
 public class ServerMessageHandler {
     private ClientModel model;
-    private CLI view;
+    private View view;
     private ActionMovesHandler actionMovesHandler;
 
     /**
@@ -24,7 +26,7 @@ public class ServerMessageHandler {
      * @param model the client's model representation
      * @param view  the view
      */
-    public ServerMessageHandler(ClientModel model, CLI view, ActionMovesHandler actionMovesHandler) {
+    public ServerMessageHandler(ClientModel model, View view, ActionMovesHandler actionMovesHandler) {
         this.model = model;
         this.view = view;
         this.actionMovesHandler = actionMovesHandler;
@@ -43,21 +45,31 @@ public class ServerMessageHandler {
         if (message instanceof SendLobbies) {
             Map<Integer, Integer> numberPlayerMap = ((SendLobbies) message).getAttendingLobbiesNumberPlayerMap();
             Map<Integer, String> gameModeMap = ((SendLobbies) message).getAttendingLobbiesGameModeMap();
-            view.lobbySetup(numberPlayerMap, gameModeMap);
+            if (view instanceof GUI) {
+                Platform.runLater(() -> view.lobbySetup(numberPlayerMap, gameModeMap));
+            } else
+                view.lobbySetup(numberPlayerMap, gameModeMap);
         } else if (message instanceof GameError) {
             handleError(message);
         } else if (message instanceof JoiningLobby) {
             String joiningPlayer = ((JoiningLobby) message).getJoiningPlayer();
-            System.out.println(joiningPlayer + " join the lobby");
             int playerRemainingToStartTheGame = ((JoiningLobby) message).getPlayerRemainingToStartTheGame();
-            System.out.println("Remaining " + playerRemainingToStartTheGame + " players to start the game");
+            if (view instanceof GUI)
+                Platform.runLater(() -> ((GUI) view).joiningLobby(joiningPlayer, playerRemainingToStartTheGame));
+            else {
+                System.out.println(joiningPlayer + " join the lobby");
+                System.out.println("Remaining " + playerRemainingToStartTheGame + " players to start the game");
+            }
         } else if (message instanceof GameStarting) {
             List<String> players = ((GameStarting) message).getPlayers();
             String gameMode = ((GameStarting) message).getGameMode();
             view.startGame(players, gameMode);
         } else if (message instanceof StartPianificationPhase) {
             String currPlayer = ((StartPianificationPhase) message).getTargetPlayer();
-            view.pianificationPhase(currPlayer);
+            if (view instanceof GUI)
+                Platform.runLater(() -> view.pianificationPhase(currPlayer));
+            else
+                view.pianificationPhase(currPlayer);
         } else if (message instanceof StartActionPhase) {
             actionMovesHandler.initializeAction();
             model.getAssistantsPlayed().clear();
@@ -128,7 +140,7 @@ public class ServerMessageHandler {
             CharacterName name = ((IncreaseCardPrice) message).getCharacterName();
 
             model.increasePaymentCard(name);
-        } else if(message instanceof BanCardEvent) {
+        } else if (message instanceof BanCardEvent) {
             int islandId = ((BanCardEvent) message).getIslandPosition();
             String action = ((BanCardEvent) message).getAction();
 
@@ -236,24 +248,28 @@ public class ServerMessageHandler {
     public void handleError(ServerMessage message) {
         ErrorType errorType = ((GameError) message).getErrorType();
         String errorText = ((GameError) message).getErrorText();
-        switch (errorType) {
-            case NICKNAME_ALREADY_TAKEN:
-                System.out.println(errorText);
-                view.nicknameSetup();
-                break;
-            case LOBBY_ERROR:
-                System.out.println(errorText);
-                view.lobbyRefresh();
-                break;
-            case ASSISTANT_NOT_PLAYABLE:
-                System.out.println(errorText);
-                model.getAssistants().add(model.getLastAssistantPlayed());
-                view.pianificationPhase(view.getClientNickname());
-                break;
-            case SELECTED_CLOUD_ERROR:
-                System.out.println(errorText);
-                actionMovesHandler.handleError(ActionMove.SELECT_CLOUD);
-                view.actionPhase(view.getClientNickname());
+        if (view instanceof GUI) {
+            Platform.runLater(() -> ((GUI) view).handleError(errorType, errorText));
+        } else {
+            switch (errorType) {
+                case NICKNAME_ALREADY_TAKEN:
+                    System.out.println(errorText);
+                    view.nicknameSetup();
+                    break;
+                case LOBBY_ERROR:
+                    System.out.println(errorText);
+                    view.lobbyRefresh();
+                    break;
+                case ASSISTANT_NOT_PLAYABLE:
+                    System.out.println(errorText);
+                    model.getAssistants().add(model.getLastAssistantPlayed());
+                    view.pianificationPhase(view.getClientNickname());
+                    break;
+                case SELECTED_CLOUD_ERROR:
+                    System.out.println(errorText);
+                    actionMovesHandler.handleError(ActionMove.SELECT_CLOUD);
+                    view.actionPhase(view.getClientNickname());
+            }
         }
     }
 

@@ -10,11 +10,10 @@ import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.*;
 import it.polimi.ingsw.utils.Screen;
 
-import javax.swing.*;
 import java.io.PrintStream;
 import java.util.*;
 
-public class CLI {
+public class CLI implements View{
 
     private String serverIp;
     private int serverPort;
@@ -161,7 +160,7 @@ public class CLI {
 
         if (gameMode.equals("experts"))
             availableActions = "pc/gc/".concat(availableActions);
-        availableActions = "pe/pd/pt/pi/pp/pcl".concat(availableActions);
+        availableActions = "pe/pd/pt/pi/pp/pcl/".concat(availableActions);
         System.out.println("Select one of the available actions : [" + availableActions + "]");
         String action = getString(availableActions);
 

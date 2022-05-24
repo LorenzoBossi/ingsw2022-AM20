@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="378.0" prefWidth="400.0" style="-fx-background-color: lightGreen;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.SetupController">
+   <children>
+      <ImageView fitHeight="117.0" fitWidth="351.0" layoutX="52.0" preserveRatio="true">
+         <image>
+            <Image url="@../Imagines/title.png" />
+         </image>
+      </ImageView>
+      <Label alignment="CENTER" layoutX="-120.0" layoutY="113.0" prefHeight="17.0" prefWidth="640.0" text="Insert Server IP">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="serverIp" layoutX="90.0" layoutY="163.0" prefHeight="25.0" prefWidth="219.0" />
+      <Label alignment="CENTER" layoutX="-120.0" layoutY="198.0" prefHeight="17.0" prefWidth="640.0" text="Insert Server Port">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="serverPort" layoutX="90.0" layoutY="242.0" prefHeight="25.0" prefWidth="219.0" />
+      <Button layoutX="142.0" layoutY="291.0" mnemonicParsing="false" onAction="#setupConnection" prefHeight="51.0" prefWidth="115.0" text="Connect" textAlignment="CENTER">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
+      <Label fx:id="errorPort" layoutX="316.0" layoutY="246.0" prefHeight="17.0" prefWidth="83.0" text="Invalid Format" textFill="#f40404" />
+      <Label fx:id="errorIP" layoutX="316.0" layoutY="167.0" prefHeight="17.0" prefWidth="83.0" text="Invalid Format" textFill="#f40404" />
+   </children>
+</AnchorPane>
