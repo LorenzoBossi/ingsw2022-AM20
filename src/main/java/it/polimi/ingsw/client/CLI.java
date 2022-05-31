@@ -712,6 +712,9 @@ public class CLI implements View {
                 System.out.println("Students : " + card.getStudents());
             if (name == CharacterName.HERBALIST)
                 System.out.println("Number of BanCards : " + card.getBanCards());
+            System.out.println("Description :");
+            System.out.println(cards.get(name).getDescription());
+
             System.out.println("----------------");
         }
     }
