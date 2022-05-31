@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.GameComponent;
+import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.characterCards.CharacterCard;
 import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
@@ -17,6 +18,7 @@ public class ClientModel {
     private final int TOWERS_3P = 6;
     private final int TOWERS_2P = 8;
 
+    private Map<String, TowerColor> towerColorMap;
     private Map<String, List<Color>> entrances;
     private Map<String, List<Integer>> diningRooms;
     private Map<String, List<Color>> professors;
@@ -54,7 +56,7 @@ public class ClientModel {
      * @param players  the players in the game
      * @param gameMode the game's mode
      */
-    public void initGame(List<String> players, String gameMode) {
+    public void initGame(List<String> players, String gameMode, Map<String, TowerColor> towerColorMap) {
         int cloudIndex = 0;
 
         for (String player : players) {
@@ -78,6 +80,8 @@ public class ClientModel {
         motherNaturePosition = 0;
 
         assistants = new ArrayList<>(Arrays.asList(AssistantName.values()));
+
+        this.towerColorMap = towerColorMap;
 
     }
 
@@ -403,5 +407,9 @@ public class ClientModel {
 
     public int getMotherNaturePosition() {
         return motherNaturePosition;
+    }
+
+    public Map<String, TowerColor> getTowerColorMap() {
+        return towerColorMap;
     }
 }

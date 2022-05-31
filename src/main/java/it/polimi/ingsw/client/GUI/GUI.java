@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.GUI;
 import it.polimi.ingsw.client.*;
 import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
+import it.polimi.ingsw.model.TowerColor;
+import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.ClientMessage;
 import it.polimi.ingsw.network.messages.serverMessage.ErrorType;
 import javafx.application.Application;
@@ -10,6 +12,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
@@ -17,17 +20,23 @@ import java.io.IOException;
 import java.util.*;
 
 public class GUI extends Application implements View {
-    private final String CONNECTION_SCENE = "/Scene/connectionScene.fxml";
-    private final String LOBBY_SCENE = "/Scene/lobbyScene.fxml";
-    private final String NAME_SCENE = "/Scene/nameScene.fxml";
+    private final String CONNECTION = "/Scene/connectionScene.fxml";
+    private final String LOBBY = "/Scene/lobbyScene.fxml";
+    private final String NAME = "/Scene/nameScene.fxml";
     private final String PIANIFICATION = "/Scene/pianificationScene.fxml";
     private final String PLAYERBOARD = "/Scene/playerBoardScene.fxml";
+    private final String ISLANDS = "/Scene/islandsScene.fxml";
+    private final String ACTION = "/Scene/actionScene.fxml";
+    private final String MOVE = "/Scene/moveScene.fxml";
+    private final String CLOUDS = "/Scene/cloudsScene.fxml";
+    private final String CHARACTER = "/Scene/characterScene.fxml";
 
     private ServerConnection connectionToServer;
     private ClientModel clientModel;
     private ActionMovesHandler actionMovesHandler;
     private String clientNickname;
     private String gameMode;
+
 
     private Map<String, GUIController> controllerMap = new HashMap<>();
     private Map<String, Scene> sceneMap = new HashMap<>();
@@ -44,11 +53,11 @@ public class GUI extends Application implements View {
         connectionToServer = new ServerConnection(serverIp, serverPort, new ServerMessageHandler(clientModel, this, actionMovesHandler));
         connectionToServer.setupConnection();
         (new Thread(connectionToServer)).start();
-        changeScene(NAME_SCENE);
+        changeScene(NAME);
     }
 
     public void init() {
-        List<String> scenes = new ArrayList<>(Arrays.asList(CONNECTION_SCENE, NAME_SCENE, LOBBY_SCENE, PIANIFICATION, PLAYERBOARD));
+        List<String> scenes = new ArrayList<>(Arrays.asList(CONNECTION, NAME, LOBBY, PIANIFICATION, PLAYERBOARD, ISLANDS, ACTION, MOVE, CLOUDS, CHARACTER));
         for (String scene : scenes) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(scene));
             try {
@@ -59,7 +68,7 @@ public class GUI extends Application implements View {
             GUIController controller = loader.getController();
             controller.setGui(this);
             controllerMap.put(scene, controller);
-            currentScene = sceneMap.get(CONNECTION_SCENE);
+            currentScene = sceneMap.get(CONNECTION);
         }
     }
 
@@ -77,7 +86,13 @@ public class GUI extends Application implements View {
         stage.show();
     }
 
+
     public void changeScene(String newScene) {
+        if (newScene.equals(PIANIFICATION)) {
+            stage.setResizable(true);
+            stage.setMaximized(true);
+            stage.setResizable(false);
+        }
         currentScene = sceneMap.get(newScene);
         stage.setScene(currentScene);
         stage.show();
@@ -95,22 +110,33 @@ public class GUI extends Application implements View {
         this.gameMode = gameMode;
     }
 
+    public String getGameMode() {
+        return gameMode;
+    }
+
     @Override
     public void lobbySetup(Map<Integer, Integer> attendingLobbiesNumberOfPlayerMap, Map<Integer, String> attendingLobbiesGameModeMap) {
-        ((LobbyController) controllerMap.get(LOBBY_SCENE)).setup(attendingLobbiesNumberOfPlayerMap, attendingLobbiesGameModeMap);
-        changeScene(LOBBY_SCENE);
+        ((LobbyController) controllerMap.get(LOBBY)).setup(attendingLobbiesNumberOfPlayerMap, attendingLobbiesGameModeMap);
+        changeScene(LOBBY);
     }
 
     public void joiningLobby(String player, int playerRemaining) {
-        ((LobbyController) controllerMap.get(LOBBY_SCENE)).playerJoining(player, playerRemaining);
+        ((LobbyController) controllerMap.get(LOBBY)).playerJoining(player, playerRemaining);
     }
 
     @Override
-    public void startGame(List<String> players, String gameMode) {
+    public void startGame(List<String> players, String gameMode, Map<String, TowerColor> towerColorMap) {
         System.out.println("The game is Starting....");
         System.out.println("Participants : " + players);
-        Platform.runLater(() -> ((PianificationController)controllerMap.get(PIANIFICATION)).initButton(players));
-        clientModel.initGame(players, gameMode);
+
+        actionMovesHandler.setGameMode(gameMode);
+        actionMovesHandler.setNumberOfPlayer(players.size());
+
+        ((PianificationController) controllerMap.get(PIANIFICATION)).initButton(players);
+        ((ActionController) controllerMap.get(ACTION)).initActionButton(players);
+        ((CloudsController) controllerMap.get(CLOUDS)).initClouds(players.size());
+
+        clientModel.initGame(players, gameMode, towerColorMap);
     }
 
     @Override
@@ -118,21 +144,114 @@ public class GUI extends Application implements View {
         List<AssistantName> assistantToPlay = clientModel.getAssistants();
         List<AssistantName> assistantPlayed = clientModel.getAssistantsPlayed();
         PianificationController controller = ((PianificationController) controllerMap.get(PIANIFICATION));
-        ((PlayerBoardController)controllerMap.get(PLAYERBOARD)).clear();
 
         controller.update(assistantToPlay, assistantPlayed, targetPlayer);
         changeScene(PIANIFICATION);
     }
 
     public void showPlayerBoard(String nickname) {
-        ((PlayerBoardController)controllerMap.get(PLAYERBOARD)).setPreviousScene(currentScene);
-        ((PlayerBoardController)controllerMap.get(PLAYERBOARD)).update(nickname);
-        changeScene(PLAYERBOARD);
+        Scene playerBoard = sceneMap.get(PLAYERBOARD);
+        Stage newStage = new Stage();
+        newStage.setTitle(nickname + "'s PlayerBoard");
+        newStage.setScene(playerBoard);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.initOwner(stage);
+        newStage.setResizable(false);
+
+        ((PlayerBoardController) controllerMap.get(PLAYERBOARD)).clearBoard();
+        ((PlayerBoardController) controllerMap.get(PLAYERBOARD)).updatePlayerBoard(nickname);
+
+        newStage.show();
+    }
+
+    public void showIslands() {
+        Scene islands = sceneMap.get(ISLANDS);
+        Stage newStage = new Stage();
+        newStage.setTitle("Islands");
+        newStage.setScene(islands);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.initOwner(stage);
+        newStage.setResizable(false);
+
+        ((IslandsController) controllerMap.get(ISLANDS)).clear();
+        ((IslandsController) controllerMap.get(ISLANDS)).update();
+
+        newStage.show();
+    }
+
+    public void showClouds(boolean choice) {
+        Scene clouds = sceneMap.get(CLOUDS);
+        Stage newStage = new Stage();
+        newStage.setTitle("Clouds");
+        newStage.setScene(clouds);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.initOwner(stage);
+        newStage.setResizable(false);
+
+        ((CloudsController) controllerMap.get(CLOUDS)).clear();
+        ((CloudsController) controllerMap.get(CLOUDS)).update();
+
+        if(choice)
+            ((CloudsController) controllerMap.get(CLOUDS)).initCloudsButton();
+
+        newStage.show();
+    }
+
+    public void showCharacters(boolean choice) {
+        Scene characters = sceneMap.get(CHARACTER);
+        Stage newStage = new Stage();
+        newStage.setTitle("Characters");
+        newStage.setScene(characters);
+        newStage.initModality(Modality.WINDOW_MODAL);
+        newStage.initOwner(stage);
+        newStage.setResizable(false);
+
+        ((CharacterController) controllerMap.get(CHARACTER)).clear();
+        ((CharacterController) controllerMap.get(CHARACTER)).update();
+
+        if(choice)
+            ((CharacterController) controllerMap.get(CHARACTER)).initCharacterButton();
+
+        newStage.show();
     }
 
     @Override
     public void actionPhase(String targetPlayer) {
+        ((ActionController) controllerMap.get(ACTION)).clearAvailableActions();
+        ((ActionController) controllerMap.get(ACTION)).clearBoard();
+        ((ActionController) controllerMap.get(ACTION)).updatePlayerBoard(clientNickname);
+        ((MoveController) controllerMap.get(MOVE)).clear();
 
+        if(clientNickname.equals(targetPlayer))
+            ((ActionController) controllerMap.get(ACTION)).initAvailableActions(actionMovesHandler.getAvailableActions());
+        changeScene(ACTION);
+    }
+
+    public void updateMyPlayerBoard() {
+        ((ActionController) controllerMap.get(ACTION)).clearBoard();
+        ((ActionController) controllerMap.get(ACTION)).updatePlayerBoard(clientNickname);
+    }
+
+    public void moveStudents() {
+        ((MoveController)controllerMap.get(MOVE)).update();
+        ((MoveController)controllerMap.get(MOVE)).moveStudents();
+        changeScene(MOVE);
+    }
+
+    public void islandSelection(CharacterName name) {
+        ((MoveController)controllerMap.get(MOVE)).initIslandSelection(name);
+        changeScene(MOVE);
+    }
+
+    public void handlePrincessActivation() {
+        CharacterCardView princess = clientModel.getCards().get(CharacterName.PRINCESS);
+        ((MoveController)controllerMap.get(MOVE)).initPrincessActivation(princess.getStudents());
+        changeScene(MOVE);
+    }
+
+
+    public void consumeAction(ActionMove action) {
+        actionMovesHandler.consumeAction(action);
     }
 
     @Override
@@ -142,7 +261,7 @@ public class GUI extends Application implements View {
 
     @Override
     public void lobbyRefresh() {
-        ((LobbyController) controllerMap.get(LOBBY_SCENE)).lobbyRefresh();
+        ((LobbyController) controllerMap.get(LOBBY)).lobbyRefresh();
     }
 
     @Override
@@ -165,18 +284,28 @@ public class GUI extends Application implements View {
                 alertMessage(errorText);
             }
             case ASSISTANT_NOT_PLAYABLE -> {
+                clientModel.getAssistants().add(clientModel.getLastAssistantPlayed());
                 pianificationPhase(clientNickname);
                 alertMessage(errorText);
             }
         }
     }
 
-    public Image getStudentPath(Color color) {
+    public Image getStudentImage(Color color) {
         return new Image(String.valueOf(getClass().getResource("/Imagines/" + color.name().toLowerCase() + ".png")));
     }
 
-    public String getProfPath(Color color) {
-        return String.valueOf(getClass().getResource("Imagines/" + color.name().toLowerCase() + "_prof.png"));
+    public Image getProfImage(Color color) {
+        return new Image(String.valueOf(getClass().getResource("/Imagines/" + color.name().toLowerCase() + "_prof.png")));
+    }
+
+    public Image getTowerImage(String player) {
+        TowerColor color = clientModel.getTowerColorMap().get(player);
+        return new Image(String.valueOf(getClass().getResource("/Imagines/" + color.name().toLowerCase() + "_tower.png")));
+    }
+
+    public Image getCharacterImage(CharacterName name) {
+        return new Image(String.valueOf(getClass().getResource("/Imagines/" + name.name().toLowerCase() + ".jpg")));
     }
 
     public ClientModel getClientModel() {

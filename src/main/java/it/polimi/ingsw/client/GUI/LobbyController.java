@@ -67,6 +67,11 @@ public class LobbyController implements GUIController, Initializable {
         String choice = lobbies.getSelectionModel().getSelectedItem();
         int lobbyId = Integer.parseInt(choice.substring(0, 1));
         int numberOfPlayer = Integer.parseInt(choice.substring(22, 23));
+        if(choice.contains("experts"))
+            gui.setGameMode("experts");
+        else
+            gui.setGameMode("beginners");
+
         System.out.println(lobbyId + "   " + numberOfPlayer);
 
         joinButton.setDisable(true);
@@ -96,6 +101,7 @@ public class LobbyController implements GUIController, Initializable {
             createButton.setDisable(true);
             refreshButton.setDisable(true);
 
+            gui.setGameMode(gamemode.getValue());
             gui.sendMessage(new CreateLobby(numberPlayers.getValue(), gamemode.getValue()));
         }
     }

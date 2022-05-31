@@ -179,7 +179,7 @@ public class Game extends ObservableSubject implements EndObserver {
         List<Color> student;
 
         numberOfIslands = archipelago.getNumberOfIslands();
-        oppositeOfMotherNature = archipelago.getNumberOfIslands() / 2 - 1;
+        oppositeOfMotherNature = archipelago.getNumberOfIslands() / 2;
         bag.fillBag(2);
 
         for (i = 1; i < oppositeOfMotherNature; i++) {
@@ -646,11 +646,11 @@ public class Game extends ObservableSubject implements EndObserver {
 
     public void end() {
         phase = Phase.ENDED;
-        try{
+        try {
             Player winner = getWinner();
             notifyObserver((new GameEnd(winner.getNickname())));
-        }catch (DrawException e){
-        notifyObserver(new GameEnd());
+        } catch (DrawException e) {
+            notifyObserver(new GameEnd());
         }
     }
 

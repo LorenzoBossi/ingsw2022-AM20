@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" style="-fx-background-color: skyblue;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.IslandsController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <AnchorPane fx:id="island0" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="island1" prefHeight="200.0" prefWidth="200.0" />
+      <AnchorPane fx:id="island2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+      <AnchorPane fx:id="island3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+      <AnchorPane fx:id="island4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+      <AnchorPane fx:id="island5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
+      <AnchorPane fx:id="island6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="island7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2" />
+      <AnchorPane fx:id="island8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <AnchorPane fx:id="island9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      <AnchorPane fx:id="island10" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <AnchorPane fx:id="island11" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="2" />
+      <AnchorPane fx:id="island12" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <AnchorPane fx:id="island13" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+   </children>
+</GridPane>

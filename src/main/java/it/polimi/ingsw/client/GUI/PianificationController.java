@@ -14,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 
@@ -26,6 +27,8 @@ public class PianificationController implements GUIController, Initializable {
 
     private ToggleGroup group = new ToggleGroup();
 
+    @FXML
+    private AnchorPane topPane;
     @FXML
     public HBox buttonContainer;
     @FXML
@@ -53,6 +56,24 @@ public class PianificationController implements GUIController, Initializable {
             button.setOnAction(actionEvent -> gui.showPlayerBoard(player));
             buttonContainer.getChildren().add(button);
         }
+
+        if(gui.getGameMode().equals("experts")) {
+            button = new Button();
+            button.setPrefSize(100, 40);
+            button.setLayoutX(887);
+            button.setLayoutY(14);
+            button.setText("Characters");
+            topPane.getChildren().add(button);
+            button.setOnAction(actionEvent -> gui.showCharacters(false));
+        }
+    }
+
+    public void showIslands() {
+        gui.showIslands();
+    }
+
+    public void showClouds() {
+        gui.showClouds(false);
     }
 
     public void clear() {
@@ -109,6 +130,10 @@ public class PianificationController implements GUIController, Initializable {
     public void playAssistant() {
         String choice = (String) group.getSelectedToggle().getUserData();
         AssistantName name = AssistantName.valueOf(choice.toUpperCase());
+
+        gui.getClientModel().setLastAssistantPlayed(name);
+        gui.getClientModel().removeAssistant(name);
+
         gui.sendMessage(new ChosenAssistant(gui.getClientNickname(), name));
     }
 
@@ -121,7 +146,7 @@ public class PianificationController implements GUIController, Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         confirmButton.setDisable(true);
-        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
+        group.selectedToggleProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
                 if (group.getSelectedToggle() != null) {

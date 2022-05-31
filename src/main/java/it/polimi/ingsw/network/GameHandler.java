@@ -128,7 +128,7 @@ public class GameHandler {
             }
 
             controller.moveStudentToDiningRoom(student);
-            sendMessageToOneClient(player, new NextMove());
+            sendMessageToLobby(new NextMove(model.getCurrPlayer().getNickname()));
 
         } else if (message instanceof MoveStudentToIsland) {
             Color student = ((MoveStudentToIsland) message).getStudent();
@@ -140,7 +140,7 @@ public class GameHandler {
             }
 
             controller.moveStudentToIsland(student, islandPosition);
-            sendMessageToOneClient(player, new NextMove());
+            sendMessageToLobby(new NextMove(model.getCurrPlayer().getNickname()));
 
         } else if (message instanceof ChosenMotherNatureMove) {
             int motherNatureMove = ((ChosenMotherNatureMove) message).getMotherNatureMove();
@@ -152,8 +152,8 @@ public class GameHandler {
 
             controller.moveMotherNature(motherNatureMove);
 
-            if(!model.getPhase().equals(Phase.ENDED))
-                sendMessageToOneClient(player, new NextMove());
+            if (!model.getPhase().equals(Phase.ENDED))
+                sendMessageToLobby(new NextMove(model.getCurrPlayer().getNickname()));
 
         } else if (message instanceof SelectedCloud) {
             int cloudId = ((SelectedCloud) message).getCloudId();
@@ -164,7 +164,7 @@ public class GameHandler {
             }
 
             controller.selectCloud(cloudId);
-            sendMessageToOneClient(player, new NextMove());
+            sendMessageToLobby(new NextMove(model.getCurrPlayer().getNickname()));
 
         } else if (message instanceof EndActionPhase) {
             nextPlayerHandler();
@@ -211,8 +211,8 @@ public class GameHandler {
             }
 
             controller.useCharacterCard(name);
-            if(!model.getPhase().equals(Phase.ENDED))
-                sendMessageToOneClient(player, new NextMove());
+            if (!model.getPhase().equals(Phase.ENDED))
+                sendMessageToLobby(new NextMove(model.getCurrPlayer().getNickname()));
         }
     }
 

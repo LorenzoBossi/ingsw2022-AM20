@@ -78,7 +78,7 @@ public class Server {
     /**
      * Starts a thread to accept connections from clients
      */
-    public void startConnections(){
+    public void startConnections() {
         (new Thread(serverConnectionHandler)).start();
     }
 
@@ -270,7 +270,7 @@ public class Server {
             activePlayers.removeAll(players);
             if (attendingLobbies.contains(lobby))
                 attendingLobbies.remove(lobby);
-            else if(activeLobbies.containsKey(lobbyId))
+            else if (activeLobbies.containsKey(lobbyId))
                 activeLobbies.remove(lobby);
 
             for (String player : players) {
@@ -291,24 +291,26 @@ public class Server {
      * @param lobby   the lobbyId
      */
     private void startGame(List<String> players, Integer lobby) {
+        LinkedList<TowerColor> towerColors = new LinkedList<>(Arrays.asList(TowerColor.values()));
+        Map<String, TowerColor> towerColorMap = new HashMap<>();
+
+        for(String player : players) {
+            towerColorMap.put(player, towerColors.getFirst());
+            towerColors.removeFirst();
+        }
+
         for (String player : players) {
-            clientConnectionHandlerMap.get(player).sendMessageToClient(new GameStarting(players, getGameModeByLobbyID(lobby)));
+            clientConnectionHandlerMap.get(player).sendMessageToClient(new GameStarting(towerColorMap, players, getGameModeByLobbyID(lobby)));
         }
-        System.out.println(attendingLobbies);
-        System.out.println(attendingLobbies.contains(lobby));
-        try {
-            System.out.println(attendingLobbies.remove(lobby));
-        } catch (UnsupportedOperationException e) {
-            System.out.println("Operazione non supportata");
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("OutofBound");
-            e.printStackTrace();
-        }
+
+        attendingLobbies.remove(lobby);
+
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         GameHandler gameHandler = new GameHandler(this, lobby);
         activeLobbies.put(lobby, gameHandler);
         gameHandler.startGameHandler();

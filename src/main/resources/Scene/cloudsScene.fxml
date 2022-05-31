@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.GUI.CloudsController">
+   <bottom>
+      <AnchorPane prefHeight="72.0" prefWidth="1100.0" style="-fx-background-color: skyblue;" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="confirmButton" layoutX="483.0" layoutY="2.0" mnemonicParsing="false" onAction="#selectCloud" prefHeight="57.0" prefWidth="133.0" text="Confirm" />
+         </children></AnchorPane>
+   </bottom>
+   <center>
+      <GridPane style="-fx-background-color: skyblue;" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="cloud1P" fitHeight="230.0" fitWidth="270.0" layoutX="69.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagines/cloud_card_1.png" />
+                     </image></ImageView>
+                  <ImageView fx:id="circle1" fitHeight="101.0" fitWidth="103.0" layoutX="97.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagines/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="student14" fitHeight="69.0" fitWidth="69.0" layoutX="114.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student11" fitHeight="69.0" fitWidth="69.0" layoutX="82.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student13" fitHeight="69.0" fitWidth="69.0" layoutX="201.0" layoutY="192.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student12" fitHeight="69.0" fitWidth="69.0" layoutX="171.0" layoutY="308.0" pickOnBounds="true" preserveRatio="true" />
+                  <RadioButton fx:id="button1" layoutX="167.0" layoutY="452.0" mnemonicParsing="false">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <toggleGroup>
+                        <ToggleGroup fx:id="cloudsButton" />
+                     </toggleGroup>
+                  </RadioButton>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <ImageView fx:id="cloud3P" fitHeight="230.0" fitWidth="270.0" layoutX="69.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagines/cloud_card_4.png" />
+                     </image></ImageView>
+                  <ImageView fx:id="circle3" fitHeight="101.0" fitWidth="103.0" layoutX="97.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagines/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="student34" fitHeight="69.0" fitWidth="69.0" layoutX="114.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student33" fitHeight="69.0" fitWidth="69.0" layoutX="201.0" layoutY="188.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student32" fitHeight="69.0" fitWidth="69.0" layoutX="172.0" layoutY="306.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student31" fitHeight="69.0" fitWidth="69.0" layoutX="82.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true" />
+                  <RadioButton fx:id="button3" layoutX="167.0" layoutY="452.0" mnemonicParsing="false" toggleGroup="$cloudsButton">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <ImageView fx:id="cloud2P" fitHeight="230.0" fitWidth="270.0" layoutX="68.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagines/cloud_card_2.png" />
+                     </image></ImageView>
+                  <ImageView fx:id="circle2" fitHeight="101.0" fitWidth="103.0" layoutX="97.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../Imagines/cerchi.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fx:id="student24" fitHeight="69.0" fitWidth="69.0" layoutX="114.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student23" fitHeight="69.0" fitWidth="69.0" layoutX="199.0" layoutY="191.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student22" fitHeight="69.0" fitWidth="69.0" layoutX="170.0" layoutY="309.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="student21" fitHeight="69.0" fitWidth="69.0" layoutX="82.0" layoutY="226.0" pickOnBounds="true" preserveRatio="true" />
+                  <RadioButton fx:id="button2" layoutX="167.0" layoutY="452.0" mnemonicParsing="false" toggleGroup="$cloudsButton">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </RadioButton>
+               </children>
+            </AnchorPane>
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

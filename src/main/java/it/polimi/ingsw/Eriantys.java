@@ -7,18 +7,18 @@ import it.polimi.ingsw.utils.Screen;
 import javafx.application.Application;
 
 
-public class Eriantys{
+public class Eriantys {
     public static void main(String[] args) {
         Screen.clear();
         printTitle();
-        int port=26000;
-        String ip="localhost";
-        boolean startServer=false,startCli=false;
-        int numberOfArgs= args.length;
+        int port = 26000;
+        String ip = "localhost";
+        boolean startServer = false, startCli = false;
+        int numberOfArgs = args.length;
         String arg;
 
         //more checks on parameters to be added (intValue() not needed)
-        for(int i=0;i<numberOfArgs;i++) {
+        for (int i = 0; i < numberOfArgs; i++) {
             arg = args[i];
             if (arg.equals("--cli") || arg.equals("-c")) {
                 startCli = true;
@@ -35,29 +35,29 @@ public class Eriantys{
             }
         }
 
-        if(startServer){
-            System.out.println("STARTING SERVER on port: "+port);
+        if (startServer) {
+            System.out.println("STARTING SERVER on port: " + port);
             startServer(port);
 
-        }else if(startCli){
-            System.out.println("STARTING CLIENT (CLI) , connecting to : ("+ip+" , "+port+")");
-            startCLI(ip,port);
-        }else{
-            System.out.println("STARTING CLIENT (GUI) , connecting to : ("+ip+" , "+port+")");
+        } else if (startCli) {
+            System.out.println("STARTING CLIENT (CLI) , connecting to : (" + ip + " , " + port + ")");
+            startCLI(ip, port);
+        } else {
+            System.out.println("STARTING CLIENT (GUI) , connecting to : (" + ip + " , " + port + ")");
             //GUI gui= new GUI(ip,port);
-            startGUI(ip,port);
+            startGUI(ip, port);
         }
 
     }
 
-    private static void startServer(int port){
+    private static void startServer(int port) {
 
         System.out.println("Server running on port : " + port);
         Server server = new Server(port);
         server.startConnections();
     }
 
-    private static void startCLI(String ip, int port){
+    private static void startCLI(String ip, int port) {
         try {
             CLI cli = new CLI(ip, port);
             cli.nicknameSetup();
@@ -67,7 +67,7 @@ public class Eriantys{
         }
     }
 
-    private static void startGUI(String ip, int port){
+    private static void startGUI(String ip, int port) {
 
         GUI.main(new String[0]);
 

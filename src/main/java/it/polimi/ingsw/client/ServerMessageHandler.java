@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.model.AssistantName;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.GameComponent;
+import it.polimi.ingsw.model.TowerColor;
 import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.serverMessage.*;
@@ -49,8 +50,10 @@ public class ServerMessageHandler {
                 Platform.runLater(() -> view.lobbySetup(numberPlayerMap, gameModeMap));
             } else
                 view.lobbySetup(numberPlayerMap, gameModeMap);
+
         } else if (message instanceof GameError) {
             handleError(message);
+
         } else if (message instanceof JoiningLobby) {
             String joiningPlayer = ((JoiningLobby) message).getJoiningPlayer();
             int playerRemainingToStartTheGame = ((JoiningLobby) message).getPlayerRemainingToStartTheGame();
@@ -60,26 +63,46 @@ public class ServerMessageHandler {
                 System.out.println(joiningPlayer + " join the lobby");
                 System.out.println("Remaining " + playerRemainingToStartTheGame + " players to start the game");
             }
+
         } else if (message instanceof GameStarting) {
+            Map<String, TowerColor> towerColorMap = ((GameStarting) message).getTowerColorMap();
             List<String> players = ((GameStarting) message).getPlayers();
             String gameMode = ((GameStarting) message).getGameMode();
-            view.startGame(players, gameMode);
+            view.startGame(players, gameMode, towerColorMap);
+
         } else if (message instanceof StartPianificationPhase) {
             String currPlayer = ((StartPianificationPhase) message).getTargetPlayer();
             if (view instanceof GUI)
                 Platform.runLater(() -> view.pianificationPhase(currPlayer));
             else
                 view.pianificationPhase(currPlayer);
+
         } else if (message instanceof StartActionPhase) {
+            String currPlayer = ((StartActionPhase) message).getTargetPlayer();
             actionMovesHandler.initializeAction();
             model.getAssistantsPlayed().clear();
-            view.actionPhase(((StartActionPhase) message).getTargetPlayer());
+            if (view instanceof GUI)
+                Platform.runLater(() -> view.actionPhase(currPlayer));
+            else
+                view.actionPhase(currPlayer);
+
         } else if (message instanceof UpdateMessage) {
             handleUpdateMessage(message);
+
         } else if (message instanceof NextMove) {
-            view.actionPhase(view.getClientNickname());
-        } else if(message instanceof GameEnd){
-            view.endGame(((GameEnd) message).isADraw(),((GameEnd) message).getWinner());
+            String currPlayer = ((NextMove) message).getCurrPlayer();
+            if (currPlayer.equals(view.getClientNickname())) {
+                if (view instanceof GUI)
+                    Platform.runLater(() -> view.actionPhase(view.getClientNickname()));
+                else
+                    view.actionPhase(view.getClientNickname());
+            } else {
+                if (view instanceof GUI)
+                    Platform.runLater(() -> ((GUI) view).updateMyPlayerBoard());
+            }
+
+        } else if (message instanceof GameEnd) {
+            view.endGame(((GameEnd) message).isADraw(), ((GameEnd) message).getWinner());
         }
     }
 

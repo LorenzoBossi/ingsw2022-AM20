@@ -17,11 +17,11 @@ public class DiningTest {
         diningRoom.addStudent(Color.PINK);
         diningRoom.addStudent(Color.RED);
 
-        assertEquals(yellow, diningRoom.getNumberOfStudent(0));
-        assertEquals(blue, diningRoom.getNumberOfStudent(1));
-        assertEquals(green, diningRoom.getNumberOfStudent(2));
-        assertEquals(red, diningRoom.getNumberOfStudent(3));
-        assertEquals(pink, diningRoom.getNumberOfStudent(4));
+        assertEquals(yellow, diningRoom.getNumberOfStudent(Color.YELLOW.ordinal()));
+        assertEquals(blue, diningRoom.getNumberOfStudent(Color.BLUE.ordinal()));
+        assertEquals(green, diningRoom.getNumberOfStudent(Color.GREEN.ordinal()));
+        assertEquals(red, diningRoom.getNumberOfStudent(Color.RED.ordinal()));
+        assertEquals(pink, diningRoom.getNumberOfStudent(Color.PINK.ordinal()));
     }
 
     @Test
@@ -33,7 +33,7 @@ public class DiningTest {
         diningRoom.addStudent(Color.PINK);
 
 
-        assertEquals(pink, diningRoom.getNumberOfStudent(4));
+        assertEquals(pink, diningRoom.getNumberOfStudent(Color.PINK));
     }
 
     @Test

@@ -1,10 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.model.AssistantName;
-import it.polimi.ingsw.model.Cloud;
-import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.Entrance;
-import it.polimi.ingsw.model.characterCards.CharacterCard;
+import it.polimi.ingsw.model.*;
 import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.*;
@@ -13,16 +9,16 @@ import it.polimi.ingsw.utils.Screen;
 import java.io.PrintStream;
 import java.util.*;
 
-public class CLI implements View{
+public class CLI implements View {
 
     private String serverIp;
     private int serverPort;
-    private ServerConnection connectionToServer;
-    private Scanner input;
+    private final ServerConnection connectionToServer;
+    private final Scanner input;
     private PrintStream output;
 
-    private ClientModel clientModel;
-    private ActionMovesHandler actionMovesHandler;
+    private final ClientModel clientModel;
+    private final ActionMovesHandler actionMovesHandler;
     private String clientNickname;
     private String gameMode;
 
@@ -123,10 +119,10 @@ public class CLI implements View{
         }
     }
 
-    public void startGame(List<String> players, String gameMode) {
+    public void startGame(List<String> players, String gameMode, Map<String, TowerColor> towerColorMap) {
         System.out.println("The game is Starting....");
         System.out.println("Participants : " + players);
-        clientModel.initGame(players, gameMode);
+        clientModel.initGame(players, gameMode, towerColorMap);
     }
 
     public void pianificationPhase(String targetPlayer) {
@@ -543,7 +539,7 @@ public class CLI implements View{
             System.out.println("\n");
         }
         printIslands();
-        System.out.println("");
+        System.out.println("\n");
     }
 
     private void printDiningRooms() {
@@ -720,42 +716,43 @@ public class CLI implements View{
         }
     }
 
-    public void endGame(boolean isADraw,String winner){
-        if(isADraw){
+    public void endGame(boolean isADraw, String winner) {
+        if (isADraw) {
             printDraw();
-        }else{
-            if(winner.equals(clientNickname)){
+        } else {
+            if (winner.equals(clientNickname)) {
                 printWin();
-            }else{
+            } else {
                 printLose(winner);
             }
         }
         endGameChoice();//play again?
     }
 
-    public void printDraw(){
+    public void printDraw() {
         Screen.clear();
         System.out.println("GAME ENDED IN A DRAW");
     }
 
-    public void printWin(){
+    public void printWin() {
         Screen.clear();
         System.out.println("GAME ENDED");
-        System.out.println(Color.ANSI_YELLOW+"CONGRATULATION! YOU WON THE GAME"+Color.ANSI_RESET);
+        System.out.println(Color.ANSI_YELLOW + "CONGRATULATION! YOU WON THE GAME" + Color.ANSI_RESET);
     }
-    public void printLose(String winner){
+
+    public void printLose(String winner) {
         Screen.clear();
         System.out.println("GAME ENDED");
-        System.out.println(Color.ANSI_RED+"YOU LOSE"+Color.ANSI_RESET);
-        System.out.println("WINNER: "+winner);
+        System.out.println(Color.ANSI_RED + "YOU LOSE" + Color.ANSI_RESET);
+        System.out.println("WINNER: " + winner);
 
     }
 
-    public void endGameChoice(){
+    public void endGameChoice() {
 
         printGameSummary();
 
-        System.out.println("Select one of the available actions : [/"+Color.ANSI_RED+"exit"+Color.ANSI_RESET+"]");
+        System.out.println("Select one of the available actions : [/" + Color.ANSI_RED + "exit" + Color.ANSI_RESET + "]");
         String action = getString("/exit");
 
         switch (action) {
@@ -770,7 +767,8 @@ public class CLI implements View{
         }
 
     }
-    public void printGameSummary(){
+
+    public void printGameSummary() {
         /*
         System.out.println("[pe] to print the entrances");
         System.out.println("[pd] to print the dining rooms");
@@ -781,11 +779,11 @@ public class CLI implements View{
         if (gameMode.equals("experts")) {
             System.out.println("[pc] to print the available character cards");
         }*/
-        System.out.println(Color.ANSI_YELLOW+"---- GAME SUMMARY ----"+Color.ANSI_RESET);
+        System.out.println(Color.ANSI_YELLOW + "---- GAME SUMMARY ----" + Color.ANSI_RESET);
         printTowers();
         printProfessors();
         printDiningRooms();
-        System.out.println("\n["+Color.ANSI_RED+"exit"+Color.ANSI_RESET+"] exit and start a new game");
+        System.out.println("\n[" + Color.ANSI_RED + "exit" + Color.ANSI_RESET + "] exit and start a new game");
     }
 
 }
