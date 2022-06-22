@@ -47,7 +47,7 @@
         </GridPane>
     </center>
     <bottom>
-        <AnchorPane prefHeight="287.0" prefWidth="1280.0" style="-fx-background-color: skyblue;" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="287.0" prefWidth="1280.0" style="-fx-background-color: skyblue;" styleClass="bg-grass" stylesheets="@../css/style.css" BorderPane.alignment="CENTER">
             <children>
                 <ImageView fitHeight="275.0" fitWidth="635.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                <image>

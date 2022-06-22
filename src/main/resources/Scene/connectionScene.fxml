@@ -26,7 +26,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField fx:id="serverPort" layoutX="90.0" layoutY="242.0" prefHeight="25.0" prefWidth="219.0" />
+      <TextField fx:id="serverPort" layoutX="90.0" layoutY="242.0" prefHeight="25.0" prefWidth="219.0" text="26000" />
       <Button layoutX="142.0" layoutY="291.0" mnemonicParsing="false" onAction="#setupConnection" prefHeight="51.0" prefWidth="115.0" text="Connect" textAlignment="CENTER">
          <font>
             <Font size="20.0" />

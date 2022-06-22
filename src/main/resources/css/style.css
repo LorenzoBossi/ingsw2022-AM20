@@ -1,0 +1,14 @@
+.bg-table{
+    -fx-background-image: url("oak-table2-40.png");
+    -fx-background-size: 100% 100%;
+}
+.bg-grass{
+    -fx-background-image: url("grassland1.png");
+    -fx-background-size: 101% 100%;
+}
+.question_mark{
+    -fx-background-image: url("question_mark.png");
+    -fx-background-size: 100% 100%;
+    -fx-background-color: none;
+    -fx-border: none;
+}

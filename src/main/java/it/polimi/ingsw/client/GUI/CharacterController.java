@@ -4,15 +4,10 @@ import it.polimi.ingsw.client.ActionMove;
 import it.polimi.ingsw.client.CharacterCardView;
 import it.polimi.ingsw.client.ClientModel;
 import it.polimi.ingsw.model.Color;
-import it.polimi.ingsw.model.characterCards.CharacterCard;
 import it.polimi.ingsw.model.characterCards.CharacterCardType;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.ActiveEffect;
 import it.polimi.ingsw.network.messages.clientMessage.SelectedColor;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -22,8 +17,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
+import java.io.FileReader;
 import java.net.URL;
 import java.util.*;
 
@@ -64,6 +64,14 @@ public class CharacterController implements GUIController, Initializable {
     private RadioButton card3;
     @FXML
     private Button activateButton;
+    @FXML
+    private Label descrLabel;
+    @FXML
+    private Button descButton1;
+    @FXML
+    private Button descButton2;
+    @FXML
+    private Button descButton3;
 
 
     public void update() {
@@ -247,7 +255,8 @@ public class CharacterController implements GUIController, Initializable {
             addStudents(grid, students);
         if (name.equals(CharacterName.HERBALIST))
             addBanCards(grid, card.getBanCards());
-    }
+
+        }
 
     private void addCoins(int numberOfCoins, int index) {
         Label text = coins.get(index);
@@ -319,4 +328,45 @@ public class CharacterController implements GUIController, Initializable {
 
         cards.selectedToggleProperty().addListener((observableValue, toggle, t1) -> activateButton.setDisable(false));
     }
+
+    public void showDescription() {
+        Map<CharacterName, CharacterCardView> cardmap = gui.getClientModel().getCards();
+        int i = 0;
+        int num = 0;
+        String description = null;
+
+        if (descButton1.isHover())
+            num = 0;
+        if (descButton2.isHover())
+            num = 1;
+        if (descButton3.isHover())
+            num = 2;
+
+        for (CharacterName name : cardmap.keySet()) {
+            if (i == num) {
+                JSONParser parser = new JSONParser();
+                try {
+                    Object obj = parser.parse(new FileReader("src/main/resources/descriptionGUI.json"));
+                    JSONObject jsonObject = (JSONObject) obj;
+                    description = (String) jsonObject.get(name.toString());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            i++;
+        }
+
+        descrLabel.setText(description);
+        descrLabel.setAlignment(Pos.TOP_CENTER);
+        descrLabel.setTextAlignment(TextAlignment.CENTER);
+        descrLabel.setFont(Font.font("Regular", 15));
+        descrLabel.setWrapText(true);
+
+    }
+
+    public void hideDescription() {
+        descrLabel.setText("");
+    }
+
 }
