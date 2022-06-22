@@ -12,6 +12,7 @@ import javafx.application.Platform;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 
 /**
  * Class ServerMessageHandler handles the messages receive from the Server

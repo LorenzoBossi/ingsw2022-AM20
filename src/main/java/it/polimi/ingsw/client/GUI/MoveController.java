@@ -17,12 +17,14 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.TilePane;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MoveController extends BoardUpdater implements GUIController, Initializable {
 
@@ -179,181 +181,6 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
 
     }
 
-    public void moveStudents() {
-        diningButton.setUserData(-1);
-        diningButton.setOpacity(1);
-        diningButton.setDisable(false);
-        studentContainer.getToggles().add(diningButton);
-        Button confirmButton = new Button();
-        Label message = new Label();
-        message.setFont(new Font("system", 13.5));
-        confirmButton.setFont(new Font("system", 24));
-
-
-        message.setLayoutX(8);
-        message.setLayoutY(79);
-        message.setText("Select one student from the entrance and select the island where you want to move or the dining room");
-        messagePane.getChildren().add(message);
-
-
-        confirmButton.setDisable(true);
-        confirmButton.setText("Confirm");
-        confirmButton.setLayoutX(257);
-        confirmButton.setLayoutY(118);
-
-        messagePane.getChildren().add(confirmButton);
-        confirmButton.setOnAction(actionEvent -> {
-            int islandId = (int) studentContainer.getSelectedToggle().getUserData();
-            Color student = (Color) entrance.getSelectedToggle().getUserData();
-            gui.consumeAction(ActionMove.MOVE_STUDENTS);
-            if (islandId == -1) {
-                gui.sendMessage(new MoveStudentOnDiningRoom(gui.getClientNickname(), student));
-            } else {
-                gui.sendMessage(new MoveStudentToIsland(gui.getClientNickname(), islandId, student));
-            }
-        });
-        initToggleGroupMoveStudents(confirmButton);
-    }
-
-    public void initIslandSelection(CharacterName name) {
-        Label message = new Label("Select one island");
-        Button confirmButton = new Button();
-        diningButton.setDisable(true);
-        diningButton.setOpacity(0);
-
-        confirmButton.setFont(new Font("system", 20));
-        confirmButton.setDisable(true);
-        confirmButton.setPrefSize(102, 51);
-        confirmButton.setLayoutX(265);
-        confirmButton.setLayoutY(144);
-        confirmButton.setText("Confirm");
-        confirmButton.setOnAction(actionEvent -> {
-            int islandId = (int) studentContainer.getSelectedToggle().getUserData();
-            gui.sendMessage(new SelectedIsland(gui.getClientNickname(), islandId));
-            gui.consumeAction(ActionMove.ACTIVATE_CARD);
-            gui.sendMessage(new ActiveEffect(gui.getClientNickname(), name));
-        });
-
-        message.setFont(new Font("system", 24));
-        message.setLayoutX(226);
-        message.setLayoutY(63);
-
-        studentContainer.selectedToggleProperty().addListener((observableValue, toggle, t1) -> confirmButton.setDisable(false));
-
-        messagePane.getChildren().addAll(Arrays.asList(message, confirmButton));
-        updatePlayerBoard(gui.getClientNickname());
-        updateIslands(gui.getClientModel().getIslandsViewMap());
-
-    }
-
-    public void initPrincessActivation(List<Color> students) {
-        int i = 0;
-        Button confirmButton = makeConfirmButton();
-        Label message = makeLabel("Select one student to move to the Dining Room");
-        RadioButton button;
-        ImageView studImage;
-        updateIslands(gui.getClientModel().getIslandsViewMap());
-        diningButton.setOpacity(0);
-        studentContainer.getToggles().forEach(t -> {
-            Node node = (Node) t;
-            node.setDisable(true);
-            node.setOpacity(0);
-
-        });
-        studentContainer.getToggles().clear();
-
-        messagePane.getChildren().add(cardPane);
-
-        cardImage.setImage(gui.getCharacterImage(CharacterName.PRINCESS));
-
-
-        for(Color student : students) {
-            studImage = cardStudents.get(i);
-            studImage.setImage(gui.getStudentImage(student));
-            button = cardButtons.get(i);
-            button.setUserData(student);
-            button.setOpacity(1);
-            button.setDisable(false);
-            studentContainer.getToggles().add(button);
-            i++;
-        }
-
-        studentContainer.selectedToggleProperty().addListener((observableValue, toggle, t1) -> confirmButton.setDisable(false));
-
-        confirmButton.setOnAction(actionEvent -> {
-            Color student = (Color) studentContainer.getSelectedToggle().getUserData();
-            List <Color> students1 = new ArrayList<>();
-            students1.add(student);
-            gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), students1, CharacterName.PRINCESS));
-            gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.PRINCESS));
-
-        });
-
-        updatePlayerBoard(gui.getClientNickname());
-
-        messagePane.getChildren().addAll(confirmButton, message);
-    }
-
-    private Button makeConfirmButton() {
-        Button button = new Button();
-        button.setFont(new Font("system", 20));
-        button.setText("Confirm");
-        button.setLayoutX(414);
-        button.setLayoutY(161);
-        button.setDisable(true);
-        return button;
-    }
-
-    private Label makeLabel(String text) {
-        Label label = new Label(text);
-        label.setFont(new Font("system", 15));
-        label.setLayoutX(302);
-        label.setLayoutY(96);
-        return label;
-    }
-
-    public void clear() {
-        clearBoard();
-        if (studentContainer.getSelectedToggle() != null)
-            studentContainer.getSelectedToggle().setSelected(false);
-        if (entrance.getSelectedToggle() != null)
-            entrance.getSelectedToggle().setSelected(false);
-        for (RadioButton button : entranceButtons) {
-            button.setDisable(true);
-            button.setOpacity(0);
-        }
-
-        for(RadioButton button : cardButtons) {
-            button.setDisable(true);
-            button.setOpacity(0);
-        }
-
-        for (AnchorPane island : islands)
-            island.getChildren().clear();
-
-        studentContainer.getToggles().clear();
-        studentContainer.getProperties().clear();
-        entrance.getProperties().clear();
-        messagePane.getChildren().clear();
-    }
-
-    private void initToggleGroupMoveStudents(Button confirmButton) {
-        entrance.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            if (studentContainer.getSelectedToggle() != null)
-                confirmButton.setDisable(false);
-        });
-        studentContainer.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
-            if (entrance.getSelectedToggle() != null)
-                confirmButton.setDisable(false);
-        });
-    }
-
-    public void backScene() {
-        clear();
-        gui.updateMyPlayerBoard();
-        gui.changeScene("/Scene/actionScene.fxml");
-    }
-
     private void updateIslands(Map<Integer, IslandView> islandViewMap) {
         setupIslands(islandViewMap.size());
         IslandView island;
@@ -475,6 +302,441 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         image.setFitHeight(height);
     }
 
+    public void moveStudents() {
+        diningButton.setUserData(-1);
+        diningButton.setOpacity(1);
+        diningButton.setDisable(false);
+        studentContainer.getToggles().add(diningButton);
+        Button confirmButton = new Button();
+        Label message = new Label();
+        message.setFont(new Font("system", 13.5));
+        confirmButton.setFont(new Font("system", 24));
+
+
+        message.setLayoutX(8);
+        message.setLayoutY(79);
+        message.setText("Select one student from the entrance and select the island where you want to move or the dining room");
+        messagePane.getChildren().add(message);
+
+
+        confirmButton.setDisable(true);
+        confirmButton.setText("Confirm");
+        confirmButton.setLayoutX(257);
+        confirmButton.setLayoutY(118);
+
+        messagePane.getChildren().add(confirmButton);
+        confirmButton.setOnAction(actionEvent -> {
+            int islandId = (int) studentContainer.getSelectedToggle().getUserData();
+            Color student = (Color) entrance.getSelectedToggle().getUserData();
+            gui.consumeAction(ActionMove.MOVE_STUDENTS);
+            if (islandId == -1) {
+                gui.sendMessage(new MoveStudentOnDiningRoom(gui.getClientNickname(), student));
+            } else {
+                gui.sendMessage(new MoveStudentToIsland(gui.getClientNickname(), islandId, student));
+            }
+        });
+        initToggleGroupMoveStudents(confirmButton);
+    }
+
+    private void initToggleGroupMoveStudents(Button confirmButton) {
+        entrance.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (studentContainer.getSelectedToggle() != null)
+                confirmButton.setDisable(false);
+        });
+        studentContainer.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (entrance.getSelectedToggle() != null)
+                confirmButton.setDisable(false);
+        });
+    }
+
+    public void initIslandSelection(CharacterName name) {
+        Label message = makeLabel("Select one island");
+        Button confirmButton = makeConfirmButton();
+        diningButton.setDisable(true);
+        diningButton.setOpacity(0);
+        messagePane.getChildren().add(cardPane);
+        cardImage.setImage(gui.getCharacterImage(name));
+
+        updatePlayerBoard(gui.getClientNickname());
+        updateIslands(gui.getClientModel().getIslandsViewMap());
+
+        for (RadioButton button : cardButtons) {
+            button.setDisable(true);
+            button.setOpacity(0);
+        }
+
+        confirmButton.setOnAction(actionEvent -> {
+            int islandId = (int) studentContainer.getSelectedToggle().getUserData();
+            gui.sendMessage(new SelectedIsland(gui.getClientNickname(), islandId));
+            gui.consumeAction(ActionMove.ACTIVATE_CARD);
+            gui.sendMessage(new ActiveEffect(gui.getClientNickname(), name));
+        });
+
+
+        studentContainer.selectedToggleProperty().addListener((observableValue, toggle, t1) -> confirmButton.setDisable(false));
+
+        messagePane.getChildren().addAll(Arrays.asList(message, confirmButton));
+    }
+
+    public void initPrincessActivation(List<Color> students) {
+        Button confirmButton = makeConfirmButton();
+        Label message = makeLabel("Select one student to move to the Dining Room");
+        ToggleGroup cardGroup = new ToggleGroup();
+
+        messagePane.getChildren().add(cardPane);
+        cardImage.setImage(gui.getCharacterImage(CharacterName.PRINCESS));
+        addStudentsToCard(students, cardGroup);
+
+        diningButton.setOpacity(0);
+        studentContainer.getToggles().forEach(t -> {
+            Node node = (Node) t;
+            node.setDisable(true);
+            node.setOpacity(0);
+
+        });
+
+        cardGroup.selectedToggleProperty().addListener((observableValue, toggle, t1) -> confirmButton.setDisable(false));
+
+        confirmButton.setOnAction(actionEvent -> {
+            Color student = (Color) cardGroup.getSelectedToggle().getUserData();
+            List<Color> students1 = new ArrayList<>();
+            students1.add(student);
+            gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), students1, CharacterName.PRINCESS));
+            gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.PRINCESS));
+
+        });
+
+        messagePane.getChildren().addAll(confirmButton, message);
+    }
+
+    public void initJesterActivation(List<Color> students) {
+        Label message = makeLabel("Select how much students you want to\nmove from the card");
+        Button confirmButton = makeConfirmButton();
+        ChoiceBox<String> choiceBox = makeChoiceBoxCards();
+        ToggleGroup cardGroup = new ToggleGroup();
+
+        diningButton.setDisable(true);
+        diningButton.setOpacity(0);
+        messagePane.getChildren().add(cardPane);
+        cardImage.setImage(gui.getCharacterImage(CharacterName.JESTER));
+
+        addStudentsToCard(students, cardGroup);
+
+        messagePane.getChildren().addAll(confirmButton, choiceBox, message);
+        initJesterButtons(cardGroup, choiceBox, confirmButton, message);
+    }
+
+    private void initJesterButtons(ToggleGroup cardGroup, ChoiceBox<String> choiceBox, Button confirmButton, Label message) {
+        AtomicInteger numberOfSwaps = new AtomicInteger();
+
+        cardGroup.getToggles().forEach(t -> {
+            Node node = (Node) t;
+            node.setDisable(true);
+            node.setOpacity(0);
+        });
+        studentContainer.getToggles().forEach(t -> {
+            Node node = (Node) t;
+            node.setDisable(true);
+            node.setOpacity(0);
+        });
+
+        choiceBox.getItems().addAll(Arrays.asList("1", "2", "3"));
+        choiceBox.setOnAction(actionEvent -> confirmButton.setDisable(false));
+
+        confirmButton.setOnAction(actionEvent -> {
+            numberOfSwaps.set(Integer.parseInt(choiceBox.getValue()));
+            confirmButton.setDisable(true);
+            confirmButton.setOpacity(0.5);
+            confirmButton.getProperties().clear();
+            messagePane.getChildren().remove(choiceBox);
+            message.setText("Select one students from the card and one student\n from the entrance");
+
+            selectStudentsJester(numberOfSwaps.get(), confirmButton, cardGroup);
+
+        });
+    }
+
+    private void selectStudentsJester(int swaps, Button confirmButton, ToggleGroup cardGroup) {
+        List<Color> studentsFromCards = new ArrayList<>();
+        List<Color> studentsFromEntrance = new ArrayList<>();
+        AtomicInteger numberOfSwaps = new AtomicInteger(swaps);
+
+        cardGroup.getToggles().forEach(t -> {
+            Node node = (Node) t;
+            node.setDisable(false);
+            node.setOpacity(1);
+        });
+        cardGroup.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (entrance.getSelectedToggle() != null) {
+                confirmButton.setDisable(false);
+                confirmButton.setOpacity(1);
+            }
+        });
+
+        initEntranceButton(gui.getClientModel().getEntrances().get(gui.getClientNickname()));
+        entrance.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (cardGroup.getSelectedToggle() != null) {
+                confirmButton.setDisable(false);
+                confirmButton.setOpacity(1);
+            }
+        });
+
+        confirmButton.setOnAction(actionEvent -> {
+                Toggle cardStudent = cardGroup.getSelectedToggle();
+                Toggle entranceStudent = entrance.getSelectedToggle();
+                cardGroup.getSelectedToggle().setSelected(false);
+                entrance.getSelectedToggle().setSelected(false);
+
+                studentsFromCards.add((Color) cardStudent.getUserData());
+                studentsFromEntrance.add((Color) entranceStudent.getUserData());
+
+                ((Node) cardStudent).setDisable(true);
+                ((Node) entranceStudent).setDisable(true);
+                ((Node) cardStudent).setOpacity(0);
+                ((Node) entranceStudent).setOpacity(0);
+
+                confirmButton.setDisable(true);
+                confirmButton.setOpacity(0.5);
+
+                numberOfSwaps.set(numberOfSwaps.get() - 1);
+
+                if (numberOfSwaps.get() == 0) {
+                    gui.sendMessage(new SelectedStudentsFromEntrance(gui.getClientNickname(), studentsFromEntrance));
+                    gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), studentsFromCards, CharacterName.JESTER));
+                    gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.JESTER));
+                }
+        });
+    }
+
+    public void initMusicianActivation() {
+        String nickname = gui.getClientNickname();
+        Label message = makeLabel("Select how much students you want to\nswap from the entrance");
+        Button confirmButton = makeConfirmButton();
+        ChoiceBox<String> choiceBox = makeChoiceBoxCards();
+        List<Integer> dining = new ArrayList<>(gui.getClientModel().getDiningRooms().get(nickname));
+
+        updatePlayerBoard(gui.getClientNickname());
+        updateIslands(gui.getClientModel().getIslandsViewMap());
+
+
+        diningButton.setDisable(true);
+        diningButton.setOpacity(0);
+        messagePane.getChildren().add(cardPane);
+        cardImage.setImage(gui.getCharacterImage(CharacterName.MUSICIAN));
+
+        messagePane.getChildren().addAll(confirmButton, choiceBox, message);
+
+        initMusicianButtons(choiceBox, confirmButton, message, dining);
+    }
+
+    private void initMusicianButtons(ChoiceBox<String> choiceBox, Button confirmButton, Label message, List<Integer> dining) {
+        AtomicInteger numberOfSwaps = new AtomicInteger();
+        int totalNumberOfStudents = 0;
+
+        for(int students : dining)
+            totalNumberOfStudents+=students;
+
+        choiceBox.getItems().addAll("1", "2");
+        choiceBox.setOnAction(actionEvent -> confirmButton.setDisable(false));
+
+        studentContainer.getToggles().forEach(t -> {
+            Node node = (Node) t;
+            node.setDisable(true);
+            node.setOpacity(0);
+        });
+
+        int finalTotalNumberOfStudents = totalNumberOfStudents;
+        confirmButton.setOnAction(actionEvent -> {
+            numberOfSwaps.set(Integer.parseInt(choiceBox.getValue()));
+            if(numberOfSwaps.get() > finalTotalNumberOfStudents) {
+                gui.alertMessage("You don't have enough students in you dining room");
+                confirmButton.setDisable(true);
+            } else {
+                choiceBox.getItems().clear();
+                choiceBox.getProperties().clear();
+                choiceBox.getItems().addAll(Color.GREEN.name(), Color.RED.name(), Color.YELLOW.name(), Color.PINK.name(), Color.BLUE.name());
+
+                confirmButton.getProperties().clear();
+                confirmButton.setDisable(true);
+                confirmButton.setOpacity(0.5);
+
+                message.setText("Choose the color of the student in the dining room and the student\n in the entrance you want to exchange with");
+                selectStudentsMusician(choiceBox, dining, confirmButton, numberOfSwaps.get());
+            }
+        });
+    }
+
+    public void selectStudentsMusician(ChoiceBox<String> choiceBox, List<Integer> dining, Button confirmButton, int swaps) {
+        AtomicInteger numberOfSwaps = new AtomicInteger(swaps);
+        List<Color> entranceStudents = new ArrayList<>();
+        List<Color> diningStudents = new ArrayList<>();
+
+        initEntranceButton(gui.getClientModel().getEntrances().get(gui.getClientNickname()));
+        entrance.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (choiceBox.getValue() != null) {
+                confirmButton.setDisable(false);
+                confirmButton.setOpacity(1);
+            }
+        });
+
+        choiceBox.setOnAction(actionEvent -> {
+            if(entrance.getSelectedToggle() != null) {
+                confirmButton.setDisable(false);
+                confirmButton.setOpacity(1);
+            }
+        });
+
+        confirmButton.setOnAction(actionEvent -> {
+            Toggle selectedEntrance = entrance.getSelectedToggle();
+            Color colorDin = Color.valueOf(choiceBox.getValue());
+            Color colorEnt = (Color) selectedEntrance.getUserData();
+
+            if(dining.get(colorDin.ordinal()) == 0) {
+                gui.alertMessage("You don't have student of these color in your dining room");
+                confirmButton.setDisable(true);
+                confirmButton.setOpacity(0.5);
+            } else {
+                diningStudents.add(colorDin);
+                dining.set(colorDin.ordinal(), dining.get(colorDin.ordinal()) -  1);
+
+                entranceStudents.add(colorEnt);
+                entrance.getSelectedToggle().setSelected(false);
+                ((Node)selectedEntrance).setDisable(true);
+                ((Node) selectedEntrance).setOpacity(0);
+
+                confirmButton.setDisable(true);
+                confirmButton.setOpacity(0.5);
+
+                clearDining();
+                updateDining(dining);
+                numberOfSwaps.set(numberOfSwaps.get() - 1);
+                if(numberOfSwaps.get() == 0) {
+                    gui.sendMessage(new SelectedStudentsFromEntrance(gui.getClientNickname(), entranceStudents));
+                    gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), diningStudents, CharacterName.MUSICIAN));
+                    gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.MUSICIAN));
+                }
+            }
+        });
+    }
+
+    public void initMonkActivation(List<Color> students) {
+        Label message = makeLabel("Select one island and one student from the card");
+        Button confirmButton = makeConfirmButton();
+        ToggleGroup cardGroup = new ToggleGroup();
+
+        diningButton.setDisable(true);
+        diningButton.setOpacity(0);
+        messagePane.getChildren().add(cardPane);
+        cardImage.setImage(gui.getCharacterImage(CharacterName.MONK));
+
+        addStudentsToCard(students, cardGroup);
+
+        messagePane.getChildren().addAll(confirmButton, message);
+        initMonkButtonProperty(cardGroup, confirmButton);
+    }
+
+    private void initMonkButtonProperty(ToggleGroup cardGroup, Button confirmButton) {
+        cardGroup.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (studentContainer.getSelectedToggle() != null)
+                confirmButton.setDisable(false);
+        });
+
+        studentContainer.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
+            if (cardGroup.getSelectedToggle() != null)
+                confirmButton.setDisable(false);
+        });
+
+        confirmButton.setOnAction(actionEvent -> {
+            List<Color> student = new ArrayList<>();
+            student.add((Color) cardGroup.getSelectedToggle().getUserData());
+            int islandId = (int) studentContainer.getSelectedToggle().getUserData();
+            cardGroup.getToggles().clear();
+            gui.sendMessage(new SelectedIsland(gui.getClientNickname(), islandId));
+            gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), student, CharacterName.MONK));
+            gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.MONK));
+        });
+    }
+
+    private void addStudentsToCard(List<Color> students, ToggleGroup cardGroup) {
+        ImageView studImage;
+        RadioButton button;
+        int i = 0;
+
+        updateIslands(gui.getClientModel().getIslandsViewMap());
+        updatePlayerBoard(gui.getClientNickname());
+
+        for (Color student : students) {
+            studImage = cardStudents.get(i);
+            studImage.setImage(gui.getStudentImage(student));
+            button = cardButtons.get(i);
+            button.setUserData(student);
+            button.setOpacity(1);
+            button.setDisable(false);
+            cardGroup.getToggles().add(button);
+            i++;
+        }
+    }
+
+    private ChoiceBox<String> makeChoiceBoxCards() {
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
+        choiceBox.setPrefWidth(150);
+        choiceBox.setLayoutX(376);
+        choiceBox.setLayoutY(124);
+        choiceBox.setDisable(false);
+        return choiceBox;
+    }
+
+    private Button makeConfirmButton() {
+        Button button = new Button();
+        button.setFont(new Font("system", 20));
+        button.setText("Confirm");
+        button.setLayoutX(402);
+        button.setLayoutY(160);
+        button.setDisable(true);
+        return button;
+    }
+
+    private Label makeLabel(String text) {
+        Label label = new Label(text);
+        label.setFont(new Font("system", 15));
+        label.setAlignment(Pos.CENTER);
+        label.setTextAlignment(TextAlignment.CENTER);
+        label.setPrefSize(360, Region.USE_COMPUTED_SIZE);
+        label.setLayoutX(271);
+        label.setLayoutY(77);
+        return label;
+    }
+
+    public void clear() {
+        clearBoard();
+        if (studentContainer.getSelectedToggle() != null)
+            studentContainer.getSelectedToggle().setSelected(false);
+        if (entrance.getSelectedToggle() != null)
+            entrance.getSelectedToggle().setSelected(false);
+        for (RadioButton button : entranceButtons) {
+            button.setDisable(true);
+            button.setOpacity(0);
+        }
+
+        for (RadioButton button : cardButtons) {
+            button.setDisable(true);
+            button.setOpacity(0);
+        }
+
+        for (AnchorPane island : islands)
+            island.getChildren().clear();
+
+        studentContainer.getToggles().clear();
+        studentContainer.getProperties().clear();
+        entrance.getProperties().clear();
+        messagePane.getChildren().clear();
+    }
+
+    public void backScene() {
+        clear();
+        gui.updateMyPlayerBoard();
+        gui.changeScene("/Scene/actionScene.fxml");
+    }
 
     @Override
     public void setGui(GUI gui) {

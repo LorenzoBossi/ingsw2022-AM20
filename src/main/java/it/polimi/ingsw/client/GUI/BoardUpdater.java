@@ -86,7 +86,7 @@ public abstract class BoardUpdater {
         }
     }
 
-    private void updateDining(List<Integer> dining) {
+    public void updateDining(List<Integer> dining) {
         ImageView student;
         int numberOfStudents;
 
@@ -107,6 +107,11 @@ public abstract class BoardUpdater {
                 }
             }
         }
+    }
+
+    public void clearDining() {
+        for (TilePane pane : diningRooms)
+            pane.getChildren().clear();
     }
 
     public void clearBoard() {

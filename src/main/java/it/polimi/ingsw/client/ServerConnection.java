@@ -72,7 +72,7 @@ public class ServerConnection implements Runnable {
             } else if (message instanceof Ping) {
                 sendMessageToServer(new Pong());
             } else {
-                new Thread(() -> messageHandler.handleMessage(message)).start();
+                queue.add(message);
             }
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Server Connection Lost...");
@@ -82,10 +82,12 @@ public class ServerConnection implements Runnable {
     }
 
     public void consumeMessage() {
-        try {
-            messageHandler.handleMessage(queue.take());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (isConnected()) {
+            try {
+                messageHandler.handleMessage(queue.take());
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -129,7 +131,7 @@ public class ServerConnection implements Runnable {
      */
     @Override
     public void run() {
-        //new Thread(this::consumeMessage).start();
+        new Thread(this::consumeMessage).start();
         while (status) {
 
             receiveFromServer();

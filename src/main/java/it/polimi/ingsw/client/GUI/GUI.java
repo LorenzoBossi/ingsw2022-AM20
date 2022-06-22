@@ -249,6 +249,23 @@ public class GUI extends Application implements View {
         changeScene(MOVE);
     }
 
+    public void handleMonkActivation() {
+        CharacterCardView monk = clientModel.getCards().get(CharacterName.MONK);
+        ((MoveController)controllerMap.get(MOVE)).initMonkActivation(monk.getStudents());
+        changeScene(MOVE);
+    }
+
+    public void handleJesterActivation() {
+        CharacterCardView jester = clientModel.getCards().get(CharacterName.JESTER);
+        ((MoveController)controllerMap.get(MOVE)).initJesterActivation(jester.getStudents());
+        changeScene(MOVE);
+    }
+
+    public void handleMusicianActivation() {
+        CharacterCardView musician = clientModel.getCards().get(CharacterName.MUSICIAN);
+        ((MoveController)controllerMap.get(MOVE)).initMusicianActivation();
+        changeScene(MOVE);
+    }
 
     public void consumeAction(ActionMove action) {
         actionMovesHandler.consumeAction(action);

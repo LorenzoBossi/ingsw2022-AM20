@@ -119,12 +119,7 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
                     button.setPrefSize(130, 40);
                     button.setAlignment(Pos.CENTER);
                     button.setText("     Activate \nCharacterCard");
-                    button.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent actionEvent) {
-                            gui.showCharacters(true);
-                        }
-                    });
+                    button.setOnAction(actionEvent -> gui.showCharacters(true));
                 }
                 case "mmn" -> {
                     button = new Button();

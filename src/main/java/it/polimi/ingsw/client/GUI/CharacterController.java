@@ -34,7 +34,6 @@ public class CharacterController implements GUIController, Initializable {
     private List<AnchorPane> grids;
     private List<ImageView> characters;
     private List<Label> coins;
-    //private List<TilePane> panes;
     private List<RadioButton> buttons;
 
     @FXML
@@ -122,8 +121,10 @@ public class CharacterController implements GUIController, Initializable {
         switch (type) {
             case COLOR_SELECTION -> handleColorSelection(pane, name);
             case NORMAL -> {
-                gui.sendMessage(new ActiveEffect(gui.getClientNickname(), name));
+                if(name.equals(CharacterName.POSTMAN))
+                    gui.getClientModel().postmanActivation();
                 closeWindows();
+                gui.sendMessage(new ActiveEffect(gui.getClientNickname(), name));
             }
             case ISLAND_SELECTION -> {
                 closeWindows();
@@ -132,6 +133,18 @@ public class CharacterController implements GUIController, Initializable {
             case PRINCESS -> {
                 closeWindows();
                 gui.handlePrincessActivation();
+            }
+            case MONK -> {
+                closeWindows();
+                gui.handleMonkActivation();
+            }
+            case JESTER -> {
+                closeWindows();
+                gui.handleJesterActivation();
+            }
+            case MUSICIAN -> {
+                closeWindows();
+                gui.handleMusicianActivation();
             }
         }
     }
@@ -154,7 +167,24 @@ public class CharacterController implements GUIController, Initializable {
             return false;
         }
 
+        if (name.equals(CharacterName.MUSICIAN) && !checkMusicianActivation(gui.getClientNickname())) {
+            activateButton.setDisable(true);
+            gui.alertMessage("You don't have any students in your dining room");
+            return false;
+        }
+
+
         return true;
+    }
+
+    private boolean checkMusicianActivation(String nickname) {
+        int numberOfStudents = 0;
+        List<Integer> dining = gui.getClientModel().getDiningRooms().get(nickname);
+
+        for (int student : dining)
+            numberOfStudents += student;
+
+        return numberOfStudents != 0;
     }
 
     private void handleColorSelection(AnchorPane pane, CharacterName name) {
@@ -281,7 +311,6 @@ public class CharacterController implements GUIController, Initializable {
         grids = new ArrayList<>(Arrays.asList(grid1, grid2, grid3));
         characters = new ArrayList<>(Arrays.asList(character1, character2, character3));
         coins = new ArrayList<>(Arrays.asList(coins1, coins2, coins3));
-        //panes = new ArrayList<>();
         buttons = new ArrayList<>(Arrays.asList(card1, card2, card3));
         elements = new ArrayList<>();
 

@@ -305,11 +305,13 @@ public class Server {
 
         attendingLobbies.remove(lobby);
 
+        /*
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+         */
 
         GameHandler gameHandler = new GameHandler(this, lobby);
         activeLobbies.put(lobby, gameHandler);

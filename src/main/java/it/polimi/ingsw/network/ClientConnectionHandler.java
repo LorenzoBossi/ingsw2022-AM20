@@ -73,7 +73,7 @@ public class ClientConnectionHandler implements Runnable {
             outputStream.flush();
         } catch (IOException e) {
             System.err.println("GameError during sending message to client");
-            //closeConnection();
+            closeConnection();
             e.printStackTrace();
         }
     }
