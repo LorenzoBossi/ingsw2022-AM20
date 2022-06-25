@@ -51,6 +51,7 @@ public class ServerConnection implements Runnable {
     public void setupConnection() {
         try {
             socket = new Socket(serverIp, serverPort);
+            socket.setSoTimeout(20000);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {

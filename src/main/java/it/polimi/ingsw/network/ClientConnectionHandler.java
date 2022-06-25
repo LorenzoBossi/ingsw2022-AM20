@@ -53,11 +53,11 @@ public class ClientConnectionHandler implements Runnable {
             if (nickname != null)
                 server.closeLobby(nickname);
             closeConnection();
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.err.println("Class not found");
             closeConnection();
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         if (message instanceof Pong)
             System.out.println("Pong");

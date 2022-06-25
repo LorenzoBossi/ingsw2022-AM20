@@ -23,6 +23,11 @@ public class CLI implements View {
     private String gameMode;
 
 
+    /**
+     * Constructor
+     * @param serverIp server ip address
+     * @param serverPort server port
+     */
     public CLI(String serverIp, int serverPort) {
         input = new Scanner(System.in);
         output = new PrintStream(System.out);
@@ -50,6 +55,9 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * method nicknameSetup sets Cli nickname
+     */
     public void nicknameSetup() {
         String nickname = null;
         do {
@@ -62,10 +70,18 @@ public class CLI implements View {
         connectionToServer.sendMessageToServer(message);
     }
 
+    /**
+     * method lobbyRefresh updates the list of lobbies
+     */
     public void lobbyRefresh() {
         connectionToServer.sendMessageToServer(new GetLobbies());
     }
 
+    /**
+     * method lobbySetup is used to create or join a lobby
+     * @param attendingLobbiesNumberOfPlayerMap map of lobby id and number of player for that lobby
+     * @param attendingLobbiesGameModeMap map of lobby id and game difficulty
+     */
     public void lobbySetup(Map<Integer, Integer> attendingLobbiesNumberOfPlayerMap, Map<Integer, String> attendingLobbiesGameModeMap) {
         Set<Integer> attendingLobbies = attendingLobbiesNumberOfPlayerMap.keySet();
 
@@ -119,12 +135,22 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * method startGame starts the game
+     * @param players list of player for the game
+     * @param gameMode game mode choice
+     * @param towerColorMap map of player and his/her tower color
+     */
     public void startGame(List<String> players, String gameMode, Map<String, TowerColor> towerColorMap) {
         System.out.println("The game is Starting....");
         System.out.println("Participants : " + players);
         clientModel.initGame(players, gameMode, towerColorMap);
     }
 
+    /**
+     * pianificationPhase method carries out the operations of the pianification phase
+     * @param targetPlayer player's pianification turn
+     */
     public void pianificationPhase(String targetPlayer) {
         if (!clientNickname.equals(targetPlayer)) {
             System.out.println(targetPlayer + " pianification turn");
@@ -143,6 +169,10 @@ public class CLI implements View {
         connectionToServer.sendMessageToServer(new ChosenAssistant(clientNickname, name));
     }
 
+    /**
+     * actionPhase method carries out the operations of the action phase
+     * @param targetPlayer player's action turn
+     */
     public void actionPhase(String targetPlayer) {
         if (!clientNickname.equals(targetPlayer)) {
             System.out.println(targetPlayer + " action turn");
@@ -215,6 +245,9 @@ public class CLI implements View {
 
     }
 
+    /**
+     * method moveStudents moves the selected student from the Entrance to the DiningRoom or to an Island
+     */
     public void moveStudents() {
         printEntrances();
         actionMovesHandler.consumeAction(ActionMove.MOVE_STUDENTS);
@@ -246,6 +279,9 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * method moveMotherNature moves mother nature than indicated
+     */
     public void moveMotherNature() {
         int choice;
         int motherNatureMove = clientModel.getMaxMotherNatureMove();
@@ -265,6 +301,9 @@ public class CLI implements View {
         connectionToServer.sendMessageToServer(new ChosenMotherNatureMove(clientNickname, choice));
     }
 
+    /**
+     * method selectCloud selects a Cloud from which to take the students and place them in the Entrance
+     */
     public void selectCloud() {
         Map<Integer, List<Color>> clouds = clientModel.getClouds();
         actionMovesHandler.consumeAction(ActionMove.SELECT_CLOUD);
@@ -283,6 +322,9 @@ public class CLI implements View {
         connectionToServer.sendMessageToServer(new SelectedCloud(clientNickname, cloudId));
     }
 
+    /**
+     * method activateCharacterCard activates the effect of a Character Card
+     */
     public void activateCharacterCard() {
         printCoins();
         printCharacterCards();
@@ -347,6 +389,10 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * handleJesterActivation handle Jester Character activation
+     * @param card get the Jester Card with its information
+     */
     private void handleJesterActivation(CharacterCardView card) {
         System.out.println("Students on card : " + card.getStudents());
         System.out.println("Select the number of students you want to swap");
@@ -362,6 +408,9 @@ public class CLI implements View {
         connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, CharacterName.JESTER));
     }
 
+    /**
+     * handleMusicianActivation handle Musician Character activation
+     */
     private void handleMusicianActivation() {
         System.out.println("Select the number of students you want to swap");
         int swaps = getInt();
@@ -382,6 +431,11 @@ public class CLI implements View {
         connectionToServer.sendMessageToServer(new ActiveEffect(clientNickname, CharacterName.MUSICIAN));
     }
 
+    /**
+     * selectStudentsFromDiningRoom returns swaps number of students
+     * @param swaps number of students to select
+     * @return selected students
+     */
     private List<Color> selectStudentsFromDiningRoom(int swaps) {
         List<Integer> diningRoom = new ArrayList<>(clientModel.getDiningRooms().get(clientNickname));
         List<Color> selectedStudents = new ArrayList<>();
@@ -410,6 +464,11 @@ public class CLI implements View {
         return selectedStudents;
     }
 
+    /**
+     * selectStudentsFromEntrance returns studentsToSelect number of students
+     * @param studentsToSelect number of students to select
+     * @return selected students
+     */
     private List<Color> selectStudentsFromEntrance(int studentsToSelect) {
         List<Color> selectedStudents = new ArrayList<>();
         List<Color> studentsInEntrance = new ArrayList<>(clientModel.getEntrances().get(clientNickname));
