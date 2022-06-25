@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class ClientConnectionHandler implements Runnable {
     private Server server;
@@ -59,9 +60,9 @@ public class ClientConnectionHandler implements Runnable {
             closeConnection();
             //e.printStackTrace();
         }
-        if (message instanceof Pong)
+        if (message instanceof Pong) {
             System.out.println("Pong");
-        else {
+        }else {
             server.messageDispatcher(message, this);
         }
     }

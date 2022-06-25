@@ -465,9 +465,9 @@ public class CLI implements View {
     }
 
     /**
-     * selectStudentsFromEntrance returns studentsToSelect number of students
-     * @param studentsToSelect number of students to select
-     * @return selected students
+     * Allows the user to select the specified number of students from his entrance, by printing available options and checking user choice.
+     * @param studentsToSelect the number of students the player can select from entrance.
+     * @return the list of Color of the students selected by the user.
      */
     private List<Color> selectStudentsFromEntrance(int studentsToSelect) {
         List<Color> selectedStudents = new ArrayList<>();
@@ -489,6 +489,12 @@ public class CLI implements View {
         return selectedStudents;
     }
 
+    /**
+     * Allows the user to select the specified number of students from the specified card, by printing available options and checking user choice.
+     * @param card The card from which the user can choose students.
+     * @param studentsToSelect The number of students the user can select from the card.
+     * @return The list of Color of the students selected by the user.
+     */
     private List<Color> selectStudentsOnCard(CharacterCardView card, int studentsToSelect) {
         List<Color> selectedStudents = new ArrayList<>();
         List<Color> studentsOnCard = new ArrayList<>(card.getStudents());
@@ -509,6 +515,10 @@ public class CLI implements View {
         return selectedStudents;
     }
 
+    /**
+     * Allows the user to select an island, by printing every island and checking user choice.
+     * @return The id of the selected island.
+     */
     public int islandSelection() {
         printIslands();
         int numberOfIsland = clientModel.getIslandsViewMap().size();
@@ -524,11 +534,21 @@ public class CLI implements View {
         return islandId;
     }
 
+    /**
+     * Allows the user to select a color of students.
+     * @return An uppercase String corresponding to the selected color
+     */
     public String selectColor() {
         String color = getString("yellow/blue/green/red/pink");
         return color.toUpperCase();
     }
 
+    /**
+     * Checks if the given input string, is equals to a word contained in the check string.
+     * @param input The string to check if is valid
+     * @param check A string which contains every accepted word separated by '/'
+     * @return true if input is equals to one word in the String "check", false otherwise.
+     */
     public boolean checkString(String input, String check) {
         String[] tokens = check.split("/");
         for (String token : tokens) {
@@ -538,6 +558,11 @@ public class CLI implements View {
         return false;
     }
 
+    /**
+     * Allows the user to chose a string from one of the words in the given string
+     * @param check A string containing every allowed word separated by '/'
+     * @return The String selected by the user.
+     */
     public String getString(String check) {
         input.reset();
         String choice = input.nextLine().toLowerCase();
@@ -552,6 +577,10 @@ public class CLI implements View {
         return choice;
     }
 
+    /**
+     * Allows the user to chose a number (integer)
+     * @return The number selected by the user.
+     */
     public int getInt() {
         input.reset();
         int number = -1;
@@ -567,10 +596,19 @@ public class CLI implements View {
         return number;
     }
 
+    /**
+     * getter method to obtain the nickname of the client
+     * @return the nickname of the client
+     */
     public String getClientNickname() {
         return clientNickname;
     }
 
+    /**
+     * Prints every available lobby, in order to let the player choose which one to join.
+     * @param attendingLobbiesNumberOfPlayerMap a map containing the lobby id as a key and the number of player as element.
+     * @param attendingLobbiesGameModeMap a map containing the lobby id as a key and the game mode as element.
+     */
     private void printLobbies(Map<Integer, Integer> attendingLobbiesNumberOfPlayerMap, Map<Integer, String> attendingLobbiesGameModeMap) {
         Set<Integer> attendingLobbies = attendingLobbiesNumberOfPlayerMap.keySet();
         System.out.println("----Lobbies----");
@@ -580,6 +618,9 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Prints every useful element of the game board, in order to let the player know the state of the game.
+     */
     private void printPLayerBoards() {
         System.out.println("\n");
         printClouds();
@@ -601,6 +642,9 @@ public class CLI implements View {
         System.out.println("\n");
     }
 
+    /**
+     * Prints the number of students of each color in the dining room of each player.
+     */
     private void printDiningRooms() {
         Map<String, List<Integer>> diningRooms = clientModel.getDiningRooms();
 
@@ -617,6 +661,9 @@ public class CLI implements View {
         System.out.println("----------------");
     }
 
+    /**
+     * Prints the students in the entrance of each player.
+     */
     private void printEntrances() {
         Map<String, List<Color>> entrances = clientModel.getEntrances();
 
@@ -632,6 +679,10 @@ public class CLI implements View {
         System.out.println("----------------");
     }
 
+    /**
+     * Prints every island with useful informations for the game, as the owner, students
+     * and mother nature position.
+     */
     private void printIslands() {
         Map<Integer, IslandView> islands = clientModel.getIslandsViewMap();
         int motherNaturePosition = clientModel.getMotherNaturePosition();
@@ -657,6 +708,9 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Prints professors owned by each player.
+     */
     private void printProfessors() {
         Map<String, List<Color>> professors = clientModel.getProfessors();
 
@@ -671,6 +725,9 @@ public class CLI implements View {
         System.out.println("----------------");
     }
 
+    /**
+     * Prints the number of towers owned by every player.
+     */
     private void printTowers() {
         Map<String, Integer> towers = clientModel.getTowers();
 
@@ -684,6 +741,9 @@ public class CLI implements View {
         System.out.println("----------------");
     }
 
+    /**
+     * Prints every cloud with their students.
+     */
     private void printClouds() {
         Map<Integer, List<Color>> clouds = clientModel.getClouds();
 
@@ -695,6 +755,10 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Creates a string composed by every playable assistant separated by '/'
+     * @return The created String.
+     */
     private String StringCheckAssistants() {
         List<AssistantName> assistants = clientModel.getAssistants();
         StringBuilder check = new StringBuilder();
@@ -705,6 +769,9 @@ public class CLI implements View {
         return check.toString().toLowerCase();
     }
 
+    /**
+     * Prints every available assitant card in the deck of the client.
+     */
     public void printAssistants() {
         List<AssistantName> assistants = clientModel.getAssistants();
 
@@ -717,6 +784,9 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Prints every available command in the actions phase
+     */
     public void printLegendActionPhaseCommand() {
         System.out.println("[pe] to print the entrances");
         System.out.println("[pd] to print the dining rooms");
@@ -735,6 +805,9 @@ public class CLI implements View {
         System.out.println("[et] to end the action phase");
     }
 
+    /**
+     * Print how many coins each player has.
+     */
     public void printCoins() {
         Map<String, Integer> coins = clientModel.getCoins();
 
@@ -748,6 +821,10 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Creates a string composed by names of every character card in the game separated by '/'
+     * @return The created String.
+     */
     private String StringCheckCharacterCard() {
         Set<CharacterName> cards = clientModel.getCards().keySet();
         StringBuilder check = new StringBuilder();
@@ -758,6 +835,9 @@ public class CLI implements View {
         return check.toString().toLowerCase();
     }
 
+    /**
+     * Prints every detail of the availables characters cards: name, price, description, and available choices.
+     */
     public void printCharacterCards() {
         Map<CharacterName, CharacterCardView> cards = clientModel.getCards();
         CharacterCardView card;
@@ -778,6 +858,11 @@ public class CLI implements View {
         }
     }
 
+    /**
+     * Choose the correct end game message for the player, according to the game ending
+     * @param isADraw a boolean telling if the game is ended in a draw
+     * @param winner the nickname of the winner of the game ( ignore if there isn't a winner )
+     */
     public void endGame(boolean isADraw, String winner) {
         if (isADraw) {
             printDraw();
@@ -791,17 +876,27 @@ public class CLI implements View {
         endGameChoice();//play again?
     }
 
+    /**
+     * Print a message to the player when the game end in a draw.
+     */
     public void printDraw() {
         Screen.clear();
         System.out.println("GAME ENDED IN A DRAW");
     }
 
+    /**
+     * Print a message to the player when he win the game.
+     */
     public void printWin() {
         Screen.clear();
         System.out.println("GAME ENDED");
         System.out.println(Color.ANSI_YELLOW + "CONGRATULATION! YOU WON THE GAME" + Color.ANSI_RESET);
     }
 
+    /**
+     * Print a message to the player when he loses the game.
+     * @param winner The nickname of the winner of the game.
+     */
     public void printLose(String winner) {
         Screen.clear();
         System.out.println("GAME ENDED");
@@ -810,6 +905,9 @@ public class CLI implements View {
 
     }
 
+    /**
+     * Print the final messages of the game and manage the coice of the player to exit.
+     */
     public void endGameChoice() {
 
         printGameSummary();
@@ -830,17 +928,10 @@ public class CLI implements View {
 
     }
 
+    /**
+     * Prints the state of the game, and the available options at the end of the game.
+     */
     public void printGameSummary() {
-        /*
-        System.out.println("[pe] to print the entrances");
-        System.out.println("[pd] to print the dining rooms");
-        System.out.println("[pi] to print the islands");
-        System.out.println("[pt] to print the towers");
-        System.out.println("[pp] to print the professor");
-        System.out.println("[pcl] to print the clouds");
-        if (gameMode.equals("experts")) {
-            System.out.println("[pc] to print the available character cards");
-        }*/
         System.out.println(Color.ANSI_YELLOW + "---- GAME SUMMARY ----" + Color.ANSI_RESET);
         printTowers();
         printProfessors();

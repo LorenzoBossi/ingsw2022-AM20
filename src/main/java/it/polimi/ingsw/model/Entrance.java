@@ -121,7 +121,10 @@ public class Entrance {
         }
     }
 
-
+    /**
+     * Getter method, which returns a list of integer corresponding to the number of students of each color in the entrance.
+     * @return a list of integer corresponding to the number of students of each color
+     */
     public List<Integer> getStudents() {
         return students;
     }

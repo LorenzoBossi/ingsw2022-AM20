@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javafx.version>18.0.1</javafx.version>
     <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
-    <sonar.exclusions>**/view/**/*,**/client/**/*,**/network/**/*,**/utils/**/*,**/controller/**/*</sonar.exclusions>
+    <sonar.exclusions>**/client/**/*,**/network/**/*,**/utils/**/*,**/controller/**/*</sonar.exclusions>
   </properties>
 
   <dependencies>
@@ -188,7 +188,6 @@
           <mainClass>it.polimi.ingsw.Eriantys</mainClass>
         </configuration>
       </plugin>
-
       <!--
               <plugin>
               <groupId>org.apache.maven.plugins</groupId>

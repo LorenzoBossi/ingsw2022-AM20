@@ -12,12 +12,19 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.*;
+
+import static javafx.scene.paint.Color.LIGHTSKYBLUE;
+import static javafx.scene.paint.Color.web;
 
 public class GUI extends Application implements View {
     private final String CONNECTION = "/Scene/connectionScene.fxml";
@@ -81,6 +88,14 @@ public class GUI extends Application implements View {
         Image icon = new Image("Imagines/Eriantys.png");
         stage.getIcons().add(icon);
         stage.setTitle("Eriantys");
+        LinearGradient background= new LinearGradient(
+                0, 0, 1, 1, true,    //sizing
+                CycleMethod.NO_CYCLE,                 //cycling
+                new Stop(0, web("#10208b")),
+                //new Stop(1,LIGHTSKYBLUE)  ,   //colors
+                new Stop(1, web("#87ceeb"))
+        );
+        currentScene.setFill(background);
 
         stage.setScene(currentScene);
         stage.show();
