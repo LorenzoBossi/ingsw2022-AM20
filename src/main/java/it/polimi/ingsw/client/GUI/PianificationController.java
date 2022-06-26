@@ -16,6 +16,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.TilePane;
 
 import java.net.URL;
@@ -48,7 +49,7 @@ public class PianificationController implements GUIController, Initializable {
 
         for (String player : players) {
             button = new Button();
-            button.setMinSize(100, 40);
+            button.setPrefSize(Region.USE_COMPUTED_SIZE, 40);
             if (player.equals(nickname))
                 button.setText("Your PlayerBoard");
             else

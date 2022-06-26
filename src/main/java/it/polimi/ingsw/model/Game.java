@@ -505,7 +505,6 @@ public class Game extends ObservableSubject implements EndObserver {
                 }
             }
         }
-
         this.setInfluenceStrategy(new StandardInfluence());
     }
 

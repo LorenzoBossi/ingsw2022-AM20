@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Controller {
-    Game game;
+    private Game game;
 
     /**
      * Constructor
@@ -103,6 +103,7 @@ public class Controller {
         }
 
         game.updateInfluence(currIsland);
+        game.getCurrPlayer().setPlayerChoice(new PlayerChoice());
     }
 
     /**
@@ -137,7 +138,6 @@ public class Controller {
 
         game.characterCardPayment(payment);
         card.activateEffect(game);
-        game.getCurrPlayer().setPlayerChoice(new PlayerChoice());
     }
 
     /**

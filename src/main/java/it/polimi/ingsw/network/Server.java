@@ -275,7 +275,7 @@ public class Server {
 
             for (String player : players) {
                 playerLobbyMap.remove(player, lobby);
-                clientConnectionHandlerMap.get(player).sendMessageToClient(new Disconnection());
+                clientConnectionHandlerMap.get(player).sendMessageToClient(new Disconnection(playerDisconnected));
                 activePlayers.remove(player);
                 clientConnectionHandlerMap.remove(player);
             }

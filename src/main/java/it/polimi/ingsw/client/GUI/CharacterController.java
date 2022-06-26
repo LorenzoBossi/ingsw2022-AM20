@@ -129,9 +129,12 @@ public class CharacterController implements GUIController, Initializable {
         switch (type) {
             case COLOR_SELECTION -> handleColorSelection(pane, name);
             case NORMAL -> {
-                if(name.equals(CharacterName.POSTMAN))
+                if(name.equals(CharacterName.POSTMAN)) {
                     gui.getClientModel().postmanActivation();
+                    gui.handlePostmanActivation();
+                }
                 closeWindows();
+                gui.consumeAction(ActionMove.ACTIVATE_CARD);
                 gui.sendMessage(new ActiveEffect(gui.getClientNickname(), name));
             }
             case ISLAND_SELECTION -> {
@@ -181,8 +184,17 @@ public class CharacterController implements GUIController, Initializable {
             return false;
         }
 
+        if(name.equals(CharacterName.MUSICIAN) && !checkBanCharacterActivation(card)) {
+            activateButton.setDisable(true);
+            gui.alertMessage("You don't have any ban cards on this card");
+            return false;
+        }
 
         return true;
+    }
+
+    private boolean checkBanCharacterActivation(CharacterCardView card) {
+        return card.getBanCards() != 0;
     }
 
     private boolean checkMusicianActivation(String nickname) {
@@ -216,8 +228,8 @@ public class CharacterController implements GUIController, Initializable {
                 return;
             }
             Color color = Color.valueOf(choiceBox.getValue().toUpperCase());
-            gui.consumeAction(ActionMove.ACTIVATE_CARD);
             gui.sendMessage(new SelectedColor(gui.getClientNickname(), color));
+            gui.consumeAction(ActionMove.ACTIVATE_CARD);
             gui.sendMessage(new ActiveEffect(gui.getClientNickname(), name));
             closeWindows();
         });

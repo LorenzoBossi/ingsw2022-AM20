@@ -49,6 +49,7 @@ public class GUI extends Application implements View {
     private Map<String, Scene> sceneMap = new HashMap<>();
     private Stage stage;
     private Scene currentScene;
+    private boolean isEnd = false;
 
     public static void main(String[] args) {
         Application.launch(args);
@@ -234,6 +235,7 @@ public class GUI extends Application implements View {
     public void actionPhase(String targetPlayer) {
         ((ActionController) controllerMap.get(ACTION)).clearAvailableActions();
         ((ActionController) controllerMap.get(ACTION)).clearBoard();
+        ((ActionController) controllerMap.get(ACTION)).updateTurnMessage(targetPlayer);
         ((ActionController) controllerMap.get(ACTION)).updatePlayerBoard(clientNickname);
         ((MoveController) controllerMap.get(MOVE)).clear();
 
@@ -277,9 +279,12 @@ public class GUI extends Application implements View {
     }
 
     public void handleMusicianActivation() {
-        CharacterCardView musician = clientModel.getCards().get(CharacterName.MUSICIAN);
         ((MoveController)controllerMap.get(MOVE)).initMusicianActivation();
         changeScene(MOVE);
+    }
+
+    public void handlePostmanActivation() {
+        ((ActionController)controllerMap.get(ACTION)).updateMotherNatureMove();
     }
 
     public void consumeAction(ActionMove action) {
@@ -303,7 +308,11 @@ public class GUI extends Application implements View {
 
     @Override
     public void endGame(boolean aDraw, String winner) {
-
+        isEnd = true;
+        ((ActionController) controllerMap.get(ACTION)).clearAvailableActions();
+        ((ActionController) controllerMap.get(ACTION)).clearBoard();
+        ((ActionController) controllerMap.get(ACTION)).updatePlayerBoard(clientNickname);
+        ((ActionController) controllerMap.get(ACTION)).endGameVisual(aDraw, winner);
     }
 
     public void handleError(ErrorType type, String errorText) {
@@ -352,6 +361,29 @@ public class GUI extends Application implements View {
         error.showAndWait();
     }
 
+    public void notifyServerDisconnection() {
+        String errorText = "Server connection lost... The application will close...";
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle("Error");
+        error.setHeaderText("Error!");
+        error.setContentText(errorText);
+        error.showAndWait();
+        stop();
+    }
+
+    public void notifyPlayerDisconnection(String playerDisconnected) {
+        String errorText = playerDisconnected + " has lost his connection... The application will close...";
+        Alert error = new Alert(Alert.AlertType.ERROR);
+        error.setTitle("Error");
+        error.setHeaderText("Error!");
+        error.setContentText(errorText);
+        error.showAndWait();
+        stop();
+    }
+
+    public boolean isEnd() {
+        return isEnd;
+    }
 
     public void stop() {
         Platform.exit();

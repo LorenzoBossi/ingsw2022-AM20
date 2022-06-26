@@ -22,4 +22,8 @@ public interface View {
     public String getClientNickname();
 
     public void endGame(boolean aDraw, String winner);
+
+    public boolean isEnd();
+
+    public void stop();
 }

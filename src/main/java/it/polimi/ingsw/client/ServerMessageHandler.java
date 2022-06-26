@@ -103,7 +103,12 @@ public class ServerMessageHandler {
             }
 
         } else if (message instanceof GameEnd) {
-            view.endGame(((GameEnd) message).isADraw(), ((GameEnd) message).getWinner());
+            boolean aDraw = ((GameEnd) message).isADraw();
+            String winner = ((GameEnd) message).getWinner();
+            if (view instanceof GUI)
+                Platform.runLater(() -> ((GUI) view).endGame(aDraw, winner));
+            else
+                view.endGame(aDraw, winner);
         }
     }
 
@@ -297,8 +302,24 @@ public class ServerMessageHandler {
         }
     }
 
-    public void Disconnection() {
-        System.out.println("Disconnection");
-        System.exit(0);
+    public void serverDisconnection() {
+        if(view instanceof GUI) {
+            Platform.runLater(() -> ((GUI) view).notifyServerDisconnection());
+        } else {
+            System.out.println("Server connection lost... The application will close...");
+            view.stop();
+        }
+    }
+
+    public void playerDisconnection(String playerDisconnected) {
+        if (view.isEnd()) {
+            return;
+        }
+        if(view instanceof GUI) {
+            Platform.runLater(() -> ((GUI) view).notifyPlayerDisconnection(playerDisconnected));
+        } else {
+            System.out.println(playerDisconnected + " has lost his connection... The application will close...");
+            view.stop();
+        }
     }
 }

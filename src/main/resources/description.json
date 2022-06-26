@@ -1,6 +1,6 @@
 {
   "MONK": "Take 1 student from this card and place it on an Island of your choice.",
-  "PROF_CARD": "Choose a color of Student: during the influence calculation this turn, that color adds no influence.",
+  "SELLER": "Choose a color of Student: during the influence calculation this turn, that color adds no influence.",
   "VASSAL": "Choose an island and resolve the Island as if Mother Nature had ended her movement there. \nMother Nature will still move and the Island where she ends her movement will also be resolved.",
   "POSTMAN": "You may move Mother Nature up to 2 additional Islands then is indicated by the Assistant card you've played.",
   "HERBALIST": "Place a No Entry tile on an Island of your choice. \nThe first time Mother Nature ends her movement there, put the No Entry tile back onto this card, \nDO NOT calculate influence on that Island, or place any Towers.",
@@ -9,6 +9,6 @@
   "MUSICIAN": "You may exchange up to 2 Students between your Entrance and your Dining Room.",
   "KNIGHT": "During the influence calculation this turn, you count as having 2 more influence.",
   "PRINCESS": "Take 1 Student from this card and place it in your Dining Room.",
-  "SELLER": "During this turn, you take control of any number of professors\neven if you have the same number of Students as the player who currently controls them.",
+  "PROF_CARD": "During this turn, you take control of any number of professors\neven if you have the same number of Students as the player who currently controls them.",
   "BANKER": "Choose a type of Student: every player (including yourself) must return 3 Students of that type from their Dining Room to the bag. \nIf any player has fewer than 3 Students of that type, return as many Students as they have."
 }

@@ -128,7 +128,7 @@
         </AnchorPane>
     </bottom>
     <center>
-        <AnchorPane prefHeight="127.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+        <AnchorPane fx:id="centralPane" prefHeight="127.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
             <children>
                 <HBox fx:id="availableActions" alignment="CENTER" layoutX="299.0" layoutY="35.0" prefHeight="100.0" prefWidth="681.0" spacing="25.0" />
                 <Label layoutX="580.0" layoutY="22.0" text="Available Actions">
@@ -136,6 +136,11 @@
                         <Font size="16.0" />
                     </font>
                 </Label>
+            <Label fx:id="turnMessage" layoutX="28.0" layoutY="20.0">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Label>
             </children>
         </AnchorPane>
     </center>

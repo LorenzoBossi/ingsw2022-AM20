@@ -21,6 +21,7 @@ public class CLI implements View {
     private final ActionMovesHandler actionMovesHandler;
     private String clientNickname;
     private String gameMode;
+    private boolean isEnd = false;
 
 
     /**
@@ -939,4 +940,11 @@ public class CLI implements View {
         System.out.println("\n[" + Color.ANSI_RED + "exit" + Color.ANSI_RESET + "] exit and start a new game");
     }
 
+    public boolean isEnd() {
+        return isEnd;
+    }
+
+    public void stop() {
+        System.exit(0);
+    }
 }

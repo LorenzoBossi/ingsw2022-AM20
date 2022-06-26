@@ -31,10 +31,10 @@
                   <Cursor fx:constant="DEFAULT" />
                </cursor></Label>
             <Label layoutX="555.0" layoutY="208.0" text="Select the card you want to play" />
-            <HBox fx:id="buttonContainer" layoutX="27.0" layoutY="14.0" prefHeight="40.0" prefWidth="382.0" spacing="40.0" />
+            <HBox fx:id="buttonContainer" layoutX="14.0" layoutY="14.0" prefHeight="40.0" prefWidth="461.0" spacing="40.0" />
             <Label fx:id="playerTurn" layoutX="27.0" layoutY="66.0" prefHeight="17.0" prefWidth="235.0" text="Player Turn">
                <font>
-                  <Font size="18.0" />
+                  <Font size="25.0" />
                </font>
             </Label>
             <Button layoutX="1152.0" layoutY="14.0" minHeight="40.0" minWidth="100.0" mnemonicParsing="false" onAction="#showIslands" text="Islands" />

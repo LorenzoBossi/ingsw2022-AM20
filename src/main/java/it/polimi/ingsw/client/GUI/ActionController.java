@@ -16,13 +16,21 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 
 import java.net.URL;
 import java.util.*;
 
 public class ActionController extends BoardUpdater implements GUIController, Initializable {
-    private boolean isMnnActive;
 
+    private boolean isMnnActive;
+    ChoiceBox<Integer> options = new ChoiceBox<>();
+
+    @FXML
+    private AnchorPane centralPane;
+    @FXML
+    private Label turnMessage;
     @FXML
     private AnchorPane topPane;
     @FXML
@@ -160,13 +168,29 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
         gui.showClouds(false);
     }
 
-    public void activeMotherNatureMove() {
-        if(isMnnActive)
-            return;
+    public void updateMotherNatureMove() {
         int maxMotherNatureMove = gui.getClientModel().getMaxMotherNatureMove();
+        options.getItems().clear();
+        for (int i = 1; i <= maxMotherNatureMove; i++) {
+            options.getItems().add(i);
+        }
+    }
+
+    public void updateTurnMessage(String player) {
+        if(player.equals(gui.getClientNickname())) {
+            turnMessage.setText("It's your turn");
+        } else {
+            turnMessage.setText("It's "+ player + " turn");
+        }
+    }
+
+    public void activeMotherNatureMove() {
         Label message = new Label("Select how much you want to move MotherNature");
-        ChoiceBox<Integer> options = new ChoiceBox<>();
         Button confirm = new Button();
+
+        if(isMnnActive) {
+            return;
+        }
 
         message.setLayoutX(506);
         message.setLayoutY(17);
@@ -186,12 +210,39 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
         options.setLayoutY(59);
         options.setPrefWidth(150);
         options.setOnAction(actionEvent -> confirm.setDisable(false));
-        for (int i = 1; i <= maxMotherNatureMove; i++) {
-            options.getItems().add(i);
-        }
+        updateMotherNatureMove();
 
         isMnnActive = true;
         topPane.getChildren().addAll(Arrays.asList(message, options, confirm));
+    }
+
+    public void endGameVisual(boolean isDraw, String winner) {
+        Button closeButton = new Button();
+        Label closeMessage = new Label("Press the button to close the application");
+        Label winnerMessage = new Label();
+
+        closeButton.setText("Close");
+        closeButton.setLayoutX(617);
+        closeButton.setLayoutY(77);
+        closeButton.setOnAction(actionEvent -> gui.stop());
+
+        closeMessage.setLayoutX(533);
+        closeMessage.setLayoutY(50);
+
+        winnerMessage.setAlignment(Pos.CENTER);
+        winnerMessage.setPrefWidth(519);
+        winnerMessage.setTextAlignment(TextAlignment.CENTER);
+        winnerMessage.setLayoutX(380);
+        winnerMessage.setLayoutY(0);
+        winnerMessage.setFont(new Font("system", 30));
+        if(isDraw) {
+            winnerMessage.setText("There is a Draw");
+        } else {
+            winnerMessage.setText("The winner is " + winner);
+        }
+
+        centralPane.getChildren().clear();
+        centralPane.getChildren().addAll(closeButton, closeMessage, winnerMessage);
     }
 
     @Override

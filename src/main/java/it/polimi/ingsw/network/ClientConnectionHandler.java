@@ -60,12 +60,33 @@ public class ClientConnectionHandler implements Runnable {
             closeConnection();
             //e.printStackTrace();
         }
+
+        /*
+        if (message instanceof Pong)
         if (message instanceof Pong) {
             System.out.println("Pong");
-        }else {
+
+         */
+        //else {
+        //}else {
             server.messageDispatcher(message, this);
+        //}
+    }
+
+
+    /*
+    public void sendPing(ServerMessage serverMessage) {
+        try {
+            outputStream.reset();
+            outputStream.writeObject(serverMessage);
+            outputStream.flush();
+        } catch (IOException e) {
+            System.err.println("GameError during sending message to client");
+            closeConnection();
+            e.printStackTrace();
         }
     }
+     */
 
     public void sendMessageToClient(ServerMessage serverMessage) {
         try {

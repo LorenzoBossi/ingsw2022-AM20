@@ -402,6 +402,7 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
             List<Color> students1 = new ArrayList<>();
             students1.add(student);
             gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), students1, CharacterName.PRINCESS));
+            gui.consumeAction(ActionMove.ACTIVATE_CARD);
             gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.PRINCESS));
 
         });
@@ -503,6 +504,7 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
                 if (numberOfSwaps.get() == 0) {
                     gui.sendMessage(new SelectedStudentsFromEntrance(gui.getClientNickname(), studentsFromEntrance));
                     gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), studentsFromCards, CharacterName.JESTER));
+                    gui.consumeAction(ActionMove.ACTIVATE_CARD);
                     gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.JESTER));
                 }
         });
@@ -613,6 +615,7 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
                 if(numberOfSwaps.get() == 0) {
                     gui.sendMessage(new SelectedStudentsFromEntrance(gui.getClientNickname(), entranceStudents));
                     gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), diningStudents, CharacterName.MUSICIAN));
+                    gui.consumeAction(ActionMove.ACTIVATE_CARD);
                     gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.MUSICIAN));
                 }
             }
@@ -653,6 +656,7 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
             cardGroup.getToggles().clear();
             gui.sendMessage(new SelectedIsland(gui.getClientNickname(), islandId));
             gui.sendMessage(new SelectedStudentsFromCard(gui.getClientNickname(), student, CharacterName.MONK));
+            gui.consumeAction(ActionMove.ACTIVATE_CARD);
             gui.sendMessage(new ActiveEffect(gui.getClientNickname(), CharacterName.MONK));
         });
     }

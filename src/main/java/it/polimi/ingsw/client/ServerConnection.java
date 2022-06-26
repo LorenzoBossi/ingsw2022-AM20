@@ -1,10 +1,12 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.client.GUI.GUI;
 import it.polimi.ingsw.network.messages.clientMessage.ClientMessage;
 import it.polimi.ingsw.network.messages.clientMessage.Pong;
 import it.polimi.ingsw.network.messages.serverMessage.Disconnection;
 import it.polimi.ingsw.network.messages.serverMessage.Ping;
 import it.polimi.ingsw.network.messages.serverMessage.ServerMessage;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -70,7 +72,7 @@ public class ServerConnection implements Runnable {
         try {
             ServerMessage message = (ServerMessage) inputStream.readObject();
             if (message instanceof Disconnection) {
-                messageHandler.Disconnection();
+                messageHandler.playerDisconnection(((Disconnection) message).getPlayerDisconnected());
                 close();
             } else if (message instanceof Ping) {
                 sendMessageToServer(new Pong());
@@ -78,9 +80,13 @@ public class ServerConnection implements Runnable {
                 queue.add(message);
             }
         } catch (IOException | ClassNotFoundException e) {
+            close();
+            messageHandler.serverDisconnection();
+            /*
             System.err.println("Server Connection Lost...");
             e.printStackTrace();
             System.exit(0);
+             */
         }
     }
 
