@@ -24,6 +24,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 
@@ -358,8 +360,8 @@ public class CharacterController implements GUIController, Initializable {
             if (i == num) {
                 JSONParser parser = new JSONParser();
                 try {
-                    Object obj = parser.parse(new FileReader("src/main/resources/descriptionGUI.json"));
-                    JSONObject jsonObject = (JSONObject) obj;
+                    InputStream inputstream = getClass().getResourceAsStream("/json/descriptionGUI.json");
+                    JSONObject jsonObject = (JSONObject) parser.parse(new InputStreamReader(inputstream, "UTF-8"));
                     description = (String) jsonObject.get(name.toString());
 
                 } catch (Exception e) {

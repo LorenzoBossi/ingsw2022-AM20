@@ -7,6 +7,8 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class CharacterCardView {
@@ -70,8 +72,8 @@ public class CharacterCardView {
         JSONParser parser = new JSONParser();
         String desc = null;
         try {
-            Object obj = parser.parse(new FileReader("src/main/resources/description.json"));
-            JSONObject jsonObject = (JSONObject) obj;
+            InputStream inputstream = getClass().getResourceAsStream("/json/descriptionGUI.json");
+            JSONObject jsonObject = (JSONObject) parser.parse(new InputStreamReader(inputstream, "UTF-8"));
             desc = (String) jsonObject.get(name.toString());
 
         } catch (Exception e) {
