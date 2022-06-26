@@ -90,7 +90,6 @@ public class CLI implements View {
 
         System.out.println("Create lobby or join at existing one [create/join]");
         String choice = getString("create/join");
-
         switch (choice) {
             case "create":
                 System.out.println("Select number of player [2/3]");

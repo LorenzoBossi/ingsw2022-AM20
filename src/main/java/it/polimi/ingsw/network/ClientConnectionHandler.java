@@ -50,10 +50,10 @@ public class ClientConnectionHandler implements Runnable {
         try {
             message = (ClientMessage) inputStream.readObject();
         } catch (IOException e) {
+            closeConnection();
             System.err.println(nickname + " disconnection");
             if (nickname != null)
                 server.closeLobby(nickname);
-            closeConnection();
             //e.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.err.println("Class not found");
@@ -106,7 +106,7 @@ public class ClientConnectionHandler implements Runnable {
         while (!stop) {
             receiveMessage();
         }
-        closeConnection();
+        //closeConnection();
     }
 
     public void closeConnection() {
