@@ -18,12 +18,10 @@ import javafx.scene.paint.Stop;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.*;
 
-import static javafx.scene.paint.Color.LIGHTSKYBLUE;
 import static javafx.scene.paint.Color.web;
 
 public class GUI extends Application implements View {
@@ -86,7 +84,7 @@ public class GUI extends Application implements View {
         stage.setResizable(false);
         this.stage = stage;
 
-        Image icon = new Image("Imagines/Eriantys.png");
+        Image icon = new Image("Images/Eriantys.png");
         stage.getIcons().add(icon);
         stage.setTitle("Eriantys");
         LinearGradient background= new LinearGradient(
@@ -333,20 +331,20 @@ public class GUI extends Application implements View {
     }
 
     public Image getStudentImage(Color color) {
-        return new Image(String.valueOf(getClass().getResource("/Imagines/" + color.name().toLowerCase() + ".png")));
+        return new Image(String.valueOf(getClass().getResource("/Images/" + color.name().toLowerCase() + ".png")));
     }
 
     public Image getProfImage(Color color) {
-        return new Image(String.valueOf(getClass().getResource("/Imagines/" + color.name().toLowerCase() + "_prof.png")));
+        return new Image(String.valueOf(getClass().getResource("/Images/" + color.name().toLowerCase() + "_prof.png")));
     }
 
     public Image getTowerImage(String player) {
         TowerColor color = clientModel.getTowerColorMap().get(player);
-        return new Image(String.valueOf(getClass().getResource("/Imagines/" + color.name().toLowerCase() + "_tower.png")));
+        return new Image(String.valueOf(getClass().getResource("/Images/" + color.name().toLowerCase() + "_tower.png")));
     }
 
     public Image getCharacterImage(CharacterName name) {
-        return new Image(String.valueOf(getClass().getResource("/Imagines/" + name.name().toLowerCase() + ".jpg")));
+        return new Image(String.valueOf(getClass().getResource("/Images/" + name.name().toLowerCase() + ".jpg")));
     }
 
     public ClientModel getClientModel() {

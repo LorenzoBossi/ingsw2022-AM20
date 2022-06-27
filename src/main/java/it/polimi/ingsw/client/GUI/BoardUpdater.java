@@ -50,7 +50,7 @@ public abstract class BoardUpdater {
 
     private void updateCoins(int coinsNumber) {
         coinsLabel.setText(coinsNumber + " x");
-        coinView.setImage(new Image(String.valueOf(getClass().getResource("/Imagines/coin.png"))));
+        coinView.setImage(new Image(String.valueOf(getClass().getResource("/Images/coin.png"))));
     }
 
     private void updateEntrance(List<Color> studentsEntrance) {

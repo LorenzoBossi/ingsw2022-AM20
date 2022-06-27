@@ -181,8 +181,8 @@ public class IslandsController implements GUIController, Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         islands = new ArrayList<>();
-        islandImage = new Image(String.valueOf(getClass().getResource("/Imagines/island1.png")));
-        motherNature = new Image(String.valueOf(getClass().getResource("/Imagines/mother_nature.png")));
-        banCardImage = new Image(String.valueOf(getClass().getResource("/Imagines/ban_card.png")));
+        islandImage = new Image(String.valueOf(getClass().getResource("/Images/island1.png")));
+        motherNature = new Image(String.valueOf(getClass().getResource("/Images/mother_nature.png")));
+        banCardImage = new Image(String.valueOf(getClass().getResource("/Images/ban_card.png")));
     }
 }

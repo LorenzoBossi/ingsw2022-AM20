@@ -5,10 +5,6 @@ import it.polimi.ingsw.client.IslandView;
 import it.polimi.ingsw.model.Color;
 import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.*;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -751,9 +747,9 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
     public void initialize(URL url, ResourceBundle resourceBundle) {
         studentContainer = new ToggleGroup();
         islands = new ArrayList<>();
-        islandImage = new Image(String.valueOf(getClass().getResource("/Imagines/island1.png")));
-        motherNature = new Image(String.valueOf(getClass().getResource("/Imagines/mother_nature.png")));
-        banCardImage = new Image(String.valueOf(getClass().getResource("/Imagines/ban_card.png")));
+        islandImage = new Image(String.valueOf(getClass().getResource("/Images/island1.png")));
+        motherNature = new Image(String.valueOf(getClass().getResource("/Images/mother_nature.png")));
+        banCardImage = new Image(String.valueOf(getClass().getResource("/Images/ban_card.png")));
 
         students = new ArrayList<>(Arrays.asList(student0, student1, student2, student3, student4, student5, student6, student7, student8));
         profs = new ArrayList<>(Arrays.asList(greenProf, redProf, yellowProf, pinkProf, blueProf));

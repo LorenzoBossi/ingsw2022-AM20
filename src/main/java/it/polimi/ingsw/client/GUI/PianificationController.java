@@ -1,13 +1,9 @@
 package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.model.AssistantName;
-import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.network.messages.clientMessage.ChosenAssistant;
-import it.polimi.ingsw.network.messages.serverMessage.AssistantPlayed;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -90,7 +86,7 @@ public class PianificationController implements GUIController, Initializable {
 
         clear();
         for (AssistantName name : assistants) {
-            ImageView imageView = new ImageView(new Image(String.valueOf(getClass().getResource("/Imagines/" + name.name().toLowerCase() + ".png"))));
+            ImageView imageView = new ImageView(new Image(String.valueOf(getClass().getResource("/Images/" + name.name().toLowerCase() + ".png"))));
             imageView.setFitWidth(110);
             imageView.setFitHeight(146);
             imageView.smoothProperty();
@@ -102,7 +98,7 @@ public class PianificationController implements GUIController, Initializable {
             assistantsToPlay.getChildren().add(toggle);
         }
         for (AssistantName name : assistantsPlayed) {
-            ImageView imageView = new ImageView(new Image(String.valueOf(getClass().getResource("/Imagines/" + name.name().toLowerCase() + ".png"))));
+            ImageView imageView = new ImageView(new Image(String.valueOf(getClass().getResource("/Images/" + name.name().toLowerCase() + ".png"))));
             imageView.setFitWidth(200);
             imageView.setFitHeight(150);
             imageView.smoothProperty();
@@ -152,7 +148,7 @@ public class PianificationController implements GUIController, Initializable {
             public void changed(ObservableValue<? extends Toggle> observableValue, Toggle toggle, Toggle t1) {
                 if (group.getSelectedToggle() != null) {
                     confirmButton.setDisable(false);
-                    assistantSelect.setImage(new Image(String.valueOf(getClass().getResource("/Imagines/" + ((String) group.getSelectedToggle().getUserData()) + ".png"))));
+                    assistantSelect.setImage(new Image(String.valueOf(getClass().getResource("/Images/" + ((String) group.getSelectedToggle().getUserData()) + ".png"))));
                 }
             }
         });

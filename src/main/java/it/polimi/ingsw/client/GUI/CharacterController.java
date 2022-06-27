@@ -315,7 +315,7 @@ public class CharacterController implements GUIController, Initializable {
         elements.add(pane);
 
         for (int i = 0; i < bancards; i++) {
-            banCard = new ImageView(new Image(String.valueOf(getClass().getResource("/Imagines/ban_card.png"))));
+            banCard = new ImageView(new Image(String.valueOf(getClass().getResource("/Images/ban_card.png"))));
             banCard.setPreserveRatio(true);
             banCard.smoothProperty();
             banCard.setFitWidth(48);

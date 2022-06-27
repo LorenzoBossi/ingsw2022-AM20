@@ -51,7 +51,7 @@
             <children>
                 <ImageView fitHeight="275.0" fitWidth="635.0" layoutX="14.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Imagines/Plancia_DEF3.png" />
+                  <Image url="@../Images/Plancia_DEF3.png" />
                </image></ImageView>
                 <ImageView fx:id="student0" fitHeight="30.0" fitWidth="30.0" layoutX="71.0" layoutY="38.0" pickOnBounds="true" preserveRatio="true" />
                 <RadioButton fx:id="entrance0" layoutX="78.0" layoutY="59.0" mnemonicParsing="false">

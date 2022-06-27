@@ -34,11 +34,11 @@
                <children>
                   <ImageView fx:id="cloud1P" fitHeight="230.0" fitWidth="270.0" layoutX="69.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/cloud_card_1.png" />
+                        <Image url="@../Images/cloud_card_1.png" />
                      </image></ImageView>
                   <ImageView fx:id="circle1" fitHeight="101.0" fitWidth="103.0" layoutX="97.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/cerchi.png" />
+                        <Image url="@../Images/cerchi.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="student14" fitHeight="69.0" fitWidth="69.0" layoutX="114.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
@@ -59,11 +59,11 @@
                <children>
                   <ImageView fx:id="cloud3P" fitHeight="230.0" fitWidth="270.0" layoutX="69.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/cloud_card_4.png" />
+                        <Image url="@../Images/cloud_card_4.png" />
                      </image></ImageView>
                   <ImageView fx:id="circle3" fitHeight="101.0" fitWidth="103.0" layoutX="97.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/cerchi.png" />
+                        <Image url="@../Images/cerchi.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="student34" fitHeight="69.0" fitWidth="69.0" layoutX="114.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />
@@ -81,11 +81,11 @@
                <children>
                   <ImageView fx:id="cloud2P" fitHeight="230.0" fitWidth="270.0" layoutX="68.0" layoutY="158.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/cloud_card_2.png" />
+                        <Image url="@../Images/cloud_card_2.png" />
                      </image></ImageView>
                   <ImageView fx:id="circle2" fitHeight="101.0" fitWidth="103.0" layoutX="97.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/cerchi.png" />
+                        <Image url="@../Images/cerchi.png" />
                      </image>
                   </ImageView>
                   <ImageView fx:id="student24" fitHeight="69.0" fitWidth="69.0" layoutX="114.0" layoutY="128.0" pickOnBounds="true" preserveRatio="true" />

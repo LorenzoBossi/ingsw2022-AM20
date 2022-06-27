@@ -30,7 +30,7 @@
                   <ImageView fx:id="character1" fitHeight="314.0" fitWidth="201.0" layoutX="83.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="176.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/coin.png" />
+                        <Image url="@../Images/coin.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="coins1" layoutX="132.0" layoutY="11.0">
@@ -54,7 +54,7 @@
                   <ImageView fx:id="character2" fitHeight="314.0" fitWidth="201.0" layoutX="83.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="176.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/coin.png" />
+                        <Image url="@../Images/coin.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="coins2" layoutX="132.0" layoutY="11.0">
@@ -80,7 +80,7 @@
                   <ImageView fx:id="character3" fitHeight="314.0" fitWidth="201.0" layoutX="83.0" layoutY="63.0" pickOnBounds="true" preserveRatio="true" />
                   <ImageView fitHeight="48.0" fitWidth="48.0" layoutX="176.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../Imagines/coin.png" />
+                        <Image url="@../Images/coin.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="coins3" layoutX="132.0" layoutY="11.0">

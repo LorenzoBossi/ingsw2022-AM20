@@ -12,7 +12,7 @@
    <children>
       <ImageView fitHeight="400.0" fitWidth="470.0" opacity="0.5" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Imagines/eriantys_banner_no_items.png" />
+            <Image url="@../Images/eriantys_banner_no_items.png" />
          </image>
       </ImageView>
       <Label layoutX="87.0" layoutY="120.0" text="Insert your Nickname">

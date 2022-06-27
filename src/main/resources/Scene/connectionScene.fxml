@@ -13,7 +13,7 @@
    <children>
       <ImageView fitHeight="117.0" fitWidth="351.0" layoutX="52.0" preserveRatio="true">
          <image>
-            <Image url="@../Imagines/title.png" />
+            <Image url="@../Images/title.png" />
          </image>
       </ImageView>
       <Label alignment="CENTER" layoutX="-120.0" layoutY="113.0" prefHeight="17.0" prefWidth="640.0" text="Insert Server IP">
