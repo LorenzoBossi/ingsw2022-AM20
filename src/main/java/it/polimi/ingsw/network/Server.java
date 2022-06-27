@@ -6,6 +6,8 @@ import it.polimi.ingsw.network.messages.serverMessage.*;
 
 import java.util.*;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Class Server represents the main class of the Server
@@ -36,15 +38,11 @@ public class Server {
 
     private ServerConnectionHandler serverConnectionHandler;
 
-    private List<String> activePlayers;
+    private Queue<String> activePlayers;
 
     private Map<String, ClientConnectionHandler> clientConnectionHandlerMap;
 
-    private List<Integer> attendingLobbies;
-
-    private Map<Integer, List<TowerColor>> lobbyTowerColorsAvailableMap;
-
-    private Map<String, TowerColor> playerTowerColorMap;
+    private Queue<Integer> attendingLobbies;
 
     private Map<Integer, String> lobbyGameModeMap;
 
@@ -54,7 +52,7 @@ public class Server {
 
     private Map<String, Integer> playerLobbyMap;
 
-    private int lobbyId = 0;
+    private Integer lobbyId = 0;
 
     /**
      * Constructor
@@ -64,15 +62,13 @@ public class Server {
     public Server(int port) {
         this.serverConnectionHandler = new ServerConnectionHandler(port, this);
         this.port = port;
-        activePlayers = new ArrayList<>();
-        clientConnectionHandlerMap = new HashMap<>();
-        attendingLobbies = new ArrayList<>();
-        activeLobbies = new HashMap<>();
-        lobbyGameModeMap = new HashMap<>();
-        playerTowerColorMap = new HashMap<>();
-        lobbyTowerColorsAvailableMap = new HashMap<>();
-        lobbyNumberOfPlayersMap = new HashMap<>();
-        playerLobbyMap = new HashMap<>();
+        activePlayers = new ConcurrentLinkedQueue<>();
+        clientConnectionHandlerMap = new ConcurrentHashMap<>();
+        attendingLobbies = new ConcurrentLinkedQueue<>();
+        activeLobbies = new ConcurrentHashMap<>();
+        lobbyGameModeMap = new ConcurrentHashMap<>();
+        lobbyNumberOfPlayersMap = new ConcurrentHashMap<>();
+        playerLobbyMap = new ConcurrentHashMap<>();
     }
 
     /**
@@ -139,15 +135,6 @@ public class Server {
         return activeLobbies.get(lobbyId);
     }
 
-
-    public List<TowerColor> getTowerColorsAvailableByLobbyId(int lobbyId) {
-        return lobbyTowerColorsAvailableMap.get(lobbyId);
-    }
-
-    public TowerColor getTowerColorByPlayer(String nickname) {
-        return playerTowerColorMap.get(nickname);
-    }
-
     /**
      * Method getAttendingLobbiesGameModeMap returns a map of the attending lobbies and the relative game mode
      *
@@ -186,15 +173,9 @@ public class Server {
      * @param gameMode        the gameMode of the lobby that I want to create
      */
     public void createLobby(String nickname, int numberOfPlayers, String gameMode) {
-        List<TowerColor> towerColorsAvailable = new ArrayList<>(Arrays.asList(TowerColor.values()));
-
-        List<String> player = new ArrayList<>();
-        player.add(nickname);
-
         playerLobbyMap.put(nickname, lobbyId);
 
         attendingLobbies.add(lobbyId);
-        lobbyTowerColorsAvailableMap.put(lobbyId, towerColorsAvailable);
         lobbyNumberOfPlayersMap.put(lobbyId, numberOfPlayers);
         lobbyGameModeMap.put(lobbyId, gameMode);
 
@@ -268,9 +249,9 @@ public class Server {
             List<String> players = getPlayersInSameLobby(lobby);
 
             activePlayers.removeAll(players);
-            if (attendingLobbies.contains(lobby))
+            if (attendingLobbies.contains(lobby)) {
                 attendingLobbies.remove(lobby);
-            else if (activeLobbies.containsKey(lobbyId))
+            } else if (activeLobbies.containsKey(lobbyId))
                 activeLobbies.remove(lobby);
 
             for (String player : players) {
@@ -294,7 +275,7 @@ public class Server {
         LinkedList<TowerColor> towerColors = new LinkedList<>(Arrays.asList(TowerColor.values()));
         Map<String, TowerColor> towerColorMap = new HashMap<>();
 
-        for(String player : players) {
+        for (String player : players) {
             towerColorMap.put(player, towerColors.getFirst());
             towerColors.removeFirst();
         }
