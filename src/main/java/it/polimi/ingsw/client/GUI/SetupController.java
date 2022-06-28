@@ -2,14 +2,16 @@ package it.polimi.ingsw.client.GUI;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetupController implements Initializable, GUIController {
+/**
+ * Class SetupController is the controller of the Connection Scene
+ */
+public class SetupController implements GUIController {
     @FXML
     public TextField serverIp;
     @FXML
@@ -25,6 +27,10 @@ public class SetupController implements Initializable, GUIController {
         this.gui = gui;
     }
 
+    /**
+     * Set up the connection scene
+     * @param e the event
+     */
     public void setupConnection(ActionEvent e) {
         if(serverIp.getText().equals("")) {
             errorIP.setOpacity(1);

@@ -82,14 +82,12 @@ public class ServerConnection implements Runnable {
         } catch (IOException | ClassNotFoundException e) {
             close();
             messageHandler.serverDisconnection();
-            /*
-            System.err.println("Server Connection Lost...");
-            e.printStackTrace();
-            System.exit(0);
-             */
         }
     }
 
+    /**
+     * Consume the message received from the server
+     */
     public void consumeMessage() {
         while (isConnected()) {
             try {

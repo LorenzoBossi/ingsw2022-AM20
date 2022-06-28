@@ -19,7 +19,10 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class PianificationController implements GUIController, Initializable {
+/**
+ * Class PianificationController is the controller of the Pianification Scene
+ */
+public class PianificationController implements GUIController {
     private GUI gui;
 
     private ToggleGroup group = new ToggleGroup();
@@ -39,6 +42,10 @@ public class PianificationController implements GUIController, Initializable {
     @FXML
     private Label playerTurn;
 
+    /**
+     * Init all the buttons in the pianification scene
+     * @param players the players in the game
+     */
     public void initButton(List<String> players) {
         String nickname = gui.getClientNickname();
         Button button;
@@ -65,14 +72,23 @@ public class PianificationController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Show islands
+     */
     public void showIslands() {
         gui.showIslands();
     }
 
+    /**
+     * Show clouds
+     */
     public void showClouds() {
         gui.showClouds(false);
     }
 
+    /**
+     * Clear the Pianification Scene
+     */
     public void clear() {
         confirmButton.setDisable(true);
         group.getToggles().clear();
@@ -81,6 +97,12 @@ public class PianificationController implements GUIController, Initializable {
         assistantsPlayed.getChildren().clear();
     }
 
+    /**
+     * Update the pianification scene with the client assistant and the assistant played during this turn
+     * @param assistants player assistants
+     * @param assistantsPlayed assistants played during this turn
+     * @param currPlayer the current player
+     */
     public void update(List<AssistantName> assistants, List<AssistantName> assistantsPlayed, String currPlayer) {
         ToggleButton toggle;
 
@@ -124,6 +146,9 @@ public class PianificationController implements GUIController, Initializable {
     }
 
 
+    /**
+     * Sends the ChosenAssistant message to the server
+     */
     public void playAssistant() {
         String choice = (String) group.getSelectedToggle().getUserData();
         AssistantName name = AssistantName.valueOf(choice.toUpperCase());

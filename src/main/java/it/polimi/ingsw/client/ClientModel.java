@@ -200,10 +200,11 @@ public class ClientModel {
     }
 
     /**
-     * @param newOwner
-     * @param oldOwner
-     * @param islandId
-     * @param numberOfTower
+     * Method changeIslandOwner changes the island
+     * @param newOwner the new owner of the island
+     * @param oldOwner the old owner of the island
+     * @param islandId the islandId of the island
+     * @param numberOfTower the number of towers on the island
      */
     public void changeIslandOwner(String newOwner, String oldOwner, int islandId, int numberOfTower) {
         numberOfTower = islandsViewMap.get(islandId).getNumberOfTower();
@@ -263,22 +264,41 @@ public class ClientModel {
         islandsViewMap.remove(islandsViewMap.size() - 1);
     }
 
+    /**
+     * Decreases the number of coins owned by the player
+     * @param nickname the nickname of the player
+     * @param movement amount of money for payment
+     */
     public void coinsMovement(String nickname, int movement) {
         coins.replace(nickname, coins.get(nickname) + movement);
     }
 
+    /**
+     * Increases the coins to activate the character card
+     * @param name the card of which to increase the payment
+     */
     public void increasePaymentCard(CharacterName name) {
         cards.get(name).addCoin();
     }
 
+    /**
+     * Activate the postman activation
+     */
     public void postmanActivation() {
         postmanActivation = true;
     }
 
+    /**
+     * Reset the postman activation
+     */
     public void resetPostmanActivation() {
         postmanActivation = false;
     }
 
+    /**
+     * Gets how much the client can move mother nature
+     * @return how much the client can move mother nature
+     */
     public int getMaxMotherNatureMove() {
         int maxMotherNatureMove = lastAssistantPlayed.getMotherNatureMove();
         if (postmanActivation) {
@@ -287,6 +307,11 @@ public class ClientModel {
         return maxMotherNatureMove;
     }
 
+    /**
+     * handles the addition or removal of a ban card
+     * @param islandId the id of the island
+     * @param action the action to perform
+     */
     public void handleBanCardEvent(int islandId, String action) {
         IslandView isl = islandsViewMap.get(islandId);
         switch (action) {
@@ -331,16 +356,6 @@ public class ClientModel {
         cards.put(name, new CharacterCardView(name, type, coins, students));
     }
 
-    public boolean isPresentEntrance(String nickname, List<Color> students) {
-        List<Color> studentsEntrance = new ArrayList<>(entrances.get(nickname));
-        for (Color student : students) {
-            if (studentsEntrance.contains(student))
-                studentsEntrance.remove(student);
-            return false;
-        }
-        return true;
-    }
-
     /**
      * Method getEntrances gets the game's entrances
      *
@@ -368,22 +383,42 @@ public class ClientModel {
         return assistants;
     }
 
+    /**
+     * Gets the last assistant played by the client
+     * @return the last assistant played by the client
+     */
     public AssistantName getLastAssistantPlayed() {
         return lastAssistantPlayed;
     }
 
+    /**
+     * Get the assistants played during the turn
+     * @return the assistants played during the turn
+     */
     public List<AssistantName> getAssistantsPlayed() {
         return assistantsPlayed;
     }
 
+    /**
+     * Gets the professorsMap
+     * @return the professorsMap
+     */
     public Map<String, List<Color>> getProfessors() {
         return professors;
     }
 
+    /**
+     * Gets the towerMap
+     * @return the towerMap
+     */
     public Map<String, Integer> getTowers() {
         return towers;
     }
 
+    /**
+     * Gets the characterCards map
+     * @return the characterCards map
+     */
     public Map<CharacterName, CharacterCardView> getCards() {
         return cards;
     }
@@ -397,18 +432,36 @@ public class ClientModel {
         return islandsViewMap;
     }
 
+    /**
+     * Method getClouds gets the clouds map
+     *
+     * @return the clouds map
+     */
     public Map<Integer, List<Color>> getClouds() {
         return clouds;
     }
 
+    /**
+     * Gets the coins map
+     *
+     * @return the coins map
+     */
     public Map<String, Integer> getCoins() {
         return coins;
     }
 
+    /**
+     * Gets the mother nature position
+     * @return the mother nature position
+     */
     public int getMotherNaturePosition() {
         return motherNaturePosition;
     }
 
+    /**
+     * Gets the towerColorMap
+     * @return the towerColorMap
+     */
     public Map<String, TowerColor> getTowerColorMap() {
         return towerColorMap;
     }

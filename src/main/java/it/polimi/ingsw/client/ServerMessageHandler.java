@@ -298,10 +298,29 @@ public class ServerMessageHandler {
                     System.out.println(errorText);
                     actionMovesHandler.handleError(ActionMove.SELECT_CLOUD);
                     view.actionPhase(view.getClientNickname());
+                    break;
+                case INVALID_INPUT:
+                    System.out.println(errorText);
+                    actionMovesHandler.handleError(ActionMove.MOVE_STUDENTS);
+                    break;
+                case CARD_REQUIREMENTS_ERROR:
+                    System.out.println(errorText);
+                    actionMovesHandler.handleError(ActionMove.ACTIVATE_CARD);
+                    break;
+                case MOTHER_NATURE_MOVE_INVALID:
+                    System.out.println(errorText);
+                    actionMovesHandler.handleError(ActionMove.MOVE_MOTHER_NATURE);
+                    break;
+                case NOT_YOUR_TURN:
+                    System.out.println(errorText);
+                    break;
             }
         }
     }
 
+    /**
+     * Handles the server disconnection
+     */
     public void serverDisconnection() {
         if(view instanceof GUI) {
             Platform.runLater(() -> ((GUI) view).notifyServerDisconnection());
@@ -311,6 +330,10 @@ public class ServerMessageHandler {
         }
     }
 
+    /**
+     * Handles the player disconnection
+     * @param playerDisconnected the player disconnected
+     */
     public void playerDisconnection(String playerDisconnected) {
         if (view.isEnd()) {
             return;

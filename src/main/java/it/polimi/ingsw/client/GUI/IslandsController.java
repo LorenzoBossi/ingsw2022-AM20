@@ -13,7 +13,10 @@ import javafx.scene.layout.TilePane;
 import java.net.URL;
 import java.util.*;
 
-public class IslandsController implements GUIController, Initializable {
+/**
+ * The controller of the islands scene
+ */
+public class IslandsController implements GUIController {
 
     private GUI gui;
 
@@ -51,6 +54,9 @@ public class IslandsController implements GUIController, Initializable {
     @FXML
     private AnchorPane island13;
 
+    /**
+     * Updates the islands scene
+     */
     public void update() {
         Map<Integer, IslandView> islandViewMap = gui.getClientModel().getIslandsViewMap();
         setupIslands(islandViewMap.size());
@@ -62,6 +68,14 @@ public class IslandsController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Make one island
+     * @param islandId the id of the island to make
+     * @param students the students on the islands
+     * @param owner the owner of the island
+     * @param numberOfTowers the number of towers on the island
+     * @param bancards the number of ban cards on the island
+     */
     private void buildIsland(int islandId, List<Color> students, String owner, int numberOfTowers, int bancards) {
         AnchorPane island = islands.get(islandId);
         ImageView image = new ImageView(islandImage);
@@ -80,6 +94,11 @@ public class IslandsController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Adds students to the island
+     * @param island the pane where island is
+     * @param students the students to add on the island
+     */
     private void addStudents(AnchorPane island, List<Color> students) {
         ImageView student;
         TilePane space = new TilePane();
@@ -98,6 +117,12 @@ public class IslandsController implements GUIController, Initializable {
 
     }
 
+    /**
+     * Adds towers to the islands
+     * @param island the pane where island is
+     * @param owner the owner of the island
+     * @param numberOfTowers the number of towers on the islands
+     */
     private void addTowers(AnchorPane island, String owner, int numberOfTowers) {
         if(owner == null)
             return;
@@ -119,6 +144,11 @@ public class IslandsController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Adds ban cards to the island
+     * @param island the pane where island is
+     * @param banCards the ban cards to add on the island
+     */
     private void addBanCards(AnchorPane island, int banCards) {
         TilePane space = new TilePane();
         ImageView banCard;
@@ -136,6 +166,14 @@ public class IslandsController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Make an image view
+     * @param image the image
+     * @param width the width
+     * @param height the height
+     * @param x the x-position
+     * @param y the y-position
+     */
     private void setImageView(ImageView image, double width, double height, double x, double y) {
         image.smoothProperty();
         image.setPreserveRatio(true);
@@ -145,6 +183,12 @@ public class IslandsController implements GUIController, Initializable {
         image.setFitHeight(height);
     }
 
+    /**
+     * Make an image view
+     * @param image the image
+     * @param width the width
+     * @param height the height
+     */
     private void setImageView(ImageView image, double width, double height) {
         image.smoothProperty();
         image.setPreserveRatio(true);
@@ -153,6 +197,10 @@ public class IslandsController implements GUIController, Initializable {
     }
 
 
+    /**
+     * Adds the IslandPane to the list of the pane where to put the islands
+     * @param numberOfIslands the number of islands
+     */
     private void setupIslands(int numberOfIslands) {
         switch (numberOfIslands) {
             case 12 -> islands = new ArrayList<>(Arrays.asList(island0, island1, island2, island3, island4, island5, island6, island7, island8, island9, island10, island11));
@@ -167,6 +215,9 @@ public class IslandsController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Clear the islands
+     */
     public void clear() {
         for (AnchorPane pane : islands) {
             pane.getChildren().clear();

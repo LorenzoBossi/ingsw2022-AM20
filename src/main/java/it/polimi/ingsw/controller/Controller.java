@@ -11,6 +11,9 @@ import it.polimi.ingsw.utils.ObservableSubject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class Controller calls the methods of the model to modify it
+ */
 public class Controller {
     private Game game;
 
@@ -33,7 +36,6 @@ public class Controller {
         Assistant assistant = game.getAssistantByName(assistantName);
 
         currPlayer.playAssistant(assistant);
-        //notifyObserver(new AssistantPlayed(currPlayer.getNickname(), assistantName));
     }
 
     /**
@@ -46,12 +48,6 @@ public class Controller {
         PlayerBoard board = currPlayer.getPlayerBoard();
         String nickname = currPlayer.getNickname();
         ProfessorManager professorManager = game.getProfessorManager();
-        /*
-        List<Color> studentToAdd = new ArrayList<>();
-        studentToAdd.add(student);
-
-        board.moveStudentFromEntranceToDiningRoom(student);
-        */
         currPlayer.moveStudentToDiningRoom(student);
 
         if (board.getDiningRoom().isAddCoin(student) && game.hasEnoughCoins()) {
@@ -76,16 +72,6 @@ public class Controller {
 
         board.getEntrance().removeStudent(student);
         islandsManager.addStudentOnIsland(student, islandPosition, currPlayer.getNickname());
-        /*
-        Island island = islandsManager.getIsland(islandPosition);
-        PlayerBoard board = currPlayer.getPlayerBoard();
-        List<Color> studentToAdd = new ArrayList<>();
-        studentToAdd.add(student);
-
-        board.getEntrance().removeStudent(student);
-        island.addStudent(student);
-        notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.ISLAND, studentToAdd, currPlayer.getNickname(), islandPosition));
-         */
     }
 
     /**
@@ -117,14 +103,6 @@ public class Controller {
         Cloud chosenCloud = game.getClouds().get(cloudID);
 
         currPlayer.addStudentFromCloud(chosenCloud, cloudID);
-        /*
-        List<Color> studentsToAdd;
-
-        studentsToAdd = chosenCloud.getStudents();
-        entrance.addStudentFromCloud(chosenCloud);
-        chosenCloud.setChosen(true);
-        notifyObserver(new MoveStudents(GameComponent.CLOUD, GameComponent.ENTRANCE, studentsToAdd, cloudID, currPlayer.getNickname()));
-         */
     }
 
     /**

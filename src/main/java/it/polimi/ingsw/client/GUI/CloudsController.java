@@ -18,7 +18,10 @@ import javafx.stage.Stage;
 import java.net.URL;
 import java.util.*;
 
-public class CloudsController implements GUIController, Initializable {
+/**
+ * Class CloudsController the controller of the Clouds Scene
+ */
+public class CloudsController implements GUIController {
     private GUI gui;
 
     private List<ImageView> circles;
@@ -73,6 +76,10 @@ public class CloudsController implements GUIController, Initializable {
     private Button confirmButton;
 
 
+    /**
+     * Initializes the clouds scene
+     * @param numberOfPlayer the number of the player in the game
+     */
     public void initClouds(int numberOfPlayer) {
         if (numberOfPlayer == 2) {
             cloud3P.setImage(null);
@@ -88,6 +95,9 @@ public class CloudsController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Updates the clouds scene
+     */
     public void update() {
         Map<Integer, List<Color>> clouds = gui.getClientModel().getClouds();
 
@@ -95,6 +105,11 @@ public class CloudsController implements GUIController, Initializable {
             updateCloud(cloudId, clouds.get(cloudId));
     }
 
+    /**
+     * Update one single cloud
+     * @param cloudId the id of the cloud to update
+     * @param students the students on the cloud
+     */
     private void updateCloud(Integer cloudId, List<Color> students) {
         List<ImageView> studentView = clouds.get(cloudId);
         int i = 0;
@@ -105,6 +120,9 @@ public class CloudsController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Initializes the button to select the cloud
+     */
     public void initCloudsButton() {
         Map<Integer, List<Color>> cloudsMap = gui.getClientModel().getClouds();
         if(cloudsButton.getSelectedToggle() != null)
@@ -121,6 +139,9 @@ public class CloudsController implements GUIController, Initializable {
         confirmButton.setOpacity(1);
     }
 
+    /**
+     * The selection of the cloud
+     */
     public void selectCloud() {
         int cloudId = (int) cloudsButton.getSelectedToggle().getUserData();
         gui.consumeAction(ActionMove.SELECT_CLOUD);
@@ -130,6 +151,9 @@ public class CloudsController implements GUIController, Initializable {
         stage.close();
     }
 
+    /**
+     * Clears the scene
+     */
     public void clear() {
         List<ImageView> images;
 

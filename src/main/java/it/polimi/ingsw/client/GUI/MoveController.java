@@ -22,6 +22,10 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Class MoveController is the controller of the Move Scene where the client perform the action that involved
+ * the move of students or the selection of the island
+ */
 public class MoveController extends BoardUpdater implements GUIController, Initializable {
 
     private Image banCardImage;
@@ -156,6 +160,9 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
     private RadioButton cardButton5;
 
 
+    /**
+     * Update the Move Scene
+     */
     public void update() {
         String nickname = gui.getClientNickname();
         updatePlayerBoard(nickname);
@@ -163,6 +170,11 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         updateIslands(gui.getClientModel().getIslandsViewMap());
     }
 
+    /**
+     * Init the student entrance button
+     *
+     * @param students the student in the entrance
+     */
     public void initEntranceButton(List<Color> students) {
         int i = 0;
         RadioButton button;
@@ -177,6 +189,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
 
     }
 
+    /**
+     * Updates the island
+     * @param islandViewMap the islands map
+     */
     private void updateIslands(Map<Integer, IslandView> islandViewMap) {
         setupIslands(islandViewMap.size());
         IslandView island;
@@ -187,6 +203,14 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         }
     }
 
+    /**
+     * Make one island
+     * @param islandId the id of the island to make
+     * @param students the students on the islands
+     * @param owner the owner of the island
+     * @param numberOfTowers the number of towers on the island
+     * @param bancards the number of ban cards on the island
+     */
     private void buildIsland(int islandId, List<Color> students, String owner, int numberOfTowers, int bancards) {
         RadioButton button = new RadioButton();
         AnchorPane island = islands.get(islandId);
@@ -212,6 +236,11 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         }
     }
 
+    /**
+     * Adds students to the island
+     * @param island the pane where island is
+     * @param students the students to add on the island
+     */
     private void addStudents(AnchorPane island, List<Color> students) {
         ImageView student;
         TilePane space = new TilePane();
@@ -230,6 +259,12 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
 
     }
 
+    /**
+     * Adds towers to the islands
+     * @param island the pane where island is
+     * @param owner the owner of the island
+     * @param numberOfTowers the number of towers on the islands
+     */
     private void addTowers(AnchorPane island, String owner, int numberOfTowers) {
         if (owner == null)
             return;
@@ -251,6 +286,11 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         }
     }
 
+    /**
+     * Adds ban cards to the island
+     * @param island the pane where island is
+     * @param banCards the ban cards to add on the island
+     */
     private void addBanCards(AnchorPane island, int banCards) {
         TilePane space = new TilePane();
         ImageView banCard;
@@ -268,6 +308,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         }
     }
 
+    /**
+     * Adds the IslandPane to the list of the pane where to put the islands
+     * @param numberOfIslands the number of islands
+     */
     private void setupIslands(int numberOfIslands) {
         switch (numberOfIslands) {
             case 12 -> islands = new ArrayList<>(Arrays.asList(island0, island1, island2, island3, island4, island5, island6, island7, island8, island9, island10, island11));
@@ -282,6 +326,14 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         }
     }
 
+    /**
+     * Make an image view
+     * @param image the image
+     * @param width the width
+     * @param height the height
+     * @param x the x-position
+     * @param y the y-position
+     */
     private void setImageView(ImageView image, double width, double height, double x, double y) {
         image.smoothProperty();
         image.setPreserveRatio(true);
@@ -291,6 +343,12 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         image.setFitHeight(height);
     }
 
+    /**
+     * Make an image view
+     * @param image the image
+     * @param width the width
+     * @param height the height
+     */
     private void setImageView(ImageView image, double width, double height) {
         image.smoothProperty();
         image.setPreserveRatio(true);
@@ -298,6 +356,9 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         image.setFitHeight(height);
     }
 
+    /**
+     * Handle the MOVE_STUDENTS action
+     */
     public void moveStudents() {
         diningButton.setUserData(-1);
         diningButton.setOpacity(1);
@@ -334,6 +395,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         initToggleGroupMoveStudents(confirmButton);
     }
 
+    /**
+     * Init the button to perform the MOVE_STUDENTS action
+     * @param confirmButton the button to confirm the action
+     */
     private void initToggleGroupMoveStudents(Button confirmButton) {
         entrance.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
             if (studentContainer.getSelectedToggle() != null)
@@ -345,6 +410,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         });
     }
 
+    /**
+     * Init the button to select one island
+     * @param name the name of the character card
+     */
     public void initIslandSelection(CharacterName name) {
         Label message = makeLabel("Select one island");
         Button confirmButton = makeConfirmButton();
@@ -374,6 +443,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         messagePane.getChildren().addAll(Arrays.asList(message, confirmButton));
     }
 
+    /**
+     * Handles the activation of the princess
+     * @param students the students on the princess
+     */
     public void initPrincessActivation(List<Color> students) {
         Button confirmButton = makeConfirmButton();
         Label message = makeLabel("Select one student to move to the Dining Room");
@@ -406,6 +479,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         messagePane.getChildren().addAll(confirmButton, message);
     }
 
+    /**
+     * Handles the activation of the jester
+     * @param students the students on the jester
+     */
     public void initJesterActivation(List<Color> students) {
         Label message = makeLabel("Select how much students you want to\nmove from the card");
         Button confirmButton = makeConfirmButton();
@@ -423,6 +500,13 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         initJesterButtons(cardGroup, choiceBox, confirmButton, message);
     }
 
+    /**
+     * Init the button to choose how much switch the client want to do
+     * @param cardGroup  the toggle group of the students on the card
+     * @param choiceBox the choiceBox to choose how many switch the client wants to do
+     * @param confirmButton the button to confirm how many switch the client wants to do
+     * @param message the message to show to the client
+     */
     private void initJesterButtons(ToggleGroup cardGroup, ChoiceBox<String> choiceBox, Button confirmButton, Label message) {
         AtomicInteger numberOfSwaps = new AtomicInteger();
 
@@ -453,6 +537,12 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         });
     }
 
+    /**
+     * Handles the switch of students from the jester to the entrance
+     * @param swaps the number of swaps the client need to perform
+     * @param confirmButton the button to confirm the switch
+     * @param cardGroup the toggle group of the students on the card
+     */
     private void selectStudentsJester(int swaps, Button confirmButton, ToggleGroup cardGroup) {
         List<Color> studentsFromCards = new ArrayList<>();
         List<Color> studentsFromEntrance = new ArrayList<>();
@@ -506,6 +596,9 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         });
     }
 
+    /**
+     * Init the Musician activation
+     */
     public void initMusicianActivation() {
         String nickname = gui.getClientNickname();
         Label message = makeLabel("Select how much students you want to\nswap from the entrance");
@@ -527,6 +620,13 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         initMusicianButtons(choiceBox, confirmButton, message, dining);
     }
 
+    /**
+     * Init the button to choose how many student you want to switch with the student in the dining room
+     * @param choiceBox the choiceBox to make the client choose how many switch he wants to perform
+     * @param confirmButton the button to confirm how many switch the client want to perform
+     * @param message the message to show to the client
+     * @param dining the dining
+     */
     private void initMusicianButtons(ChoiceBox<String> choiceBox, Button confirmButton, Label message, List<Integer> dining) {
         AtomicInteger numberOfSwaps = new AtomicInteger();
         int totalNumberOfStudents = 0;
@@ -564,6 +664,14 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         });
     }
 
+    /**
+     * Handles the switch of students from the entrance to the dining room
+     *
+     * @param choiceBox the choiceBox to make the client choose the color of the student in the dining room
+     * @param dining the dining
+     * @param confirmButton the button to confirm the switch
+     * @param swaps the number of swaps
+     */
     public void selectStudentsMusician(ChoiceBox<String> choiceBox, List<Integer> dining, Button confirmButton, int swaps) {
         AtomicInteger numberOfSwaps = new AtomicInteger(swaps);
         List<Color> entranceStudents = new ArrayList<>();
@@ -618,6 +726,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         });
     }
 
+    /**
+     * Init the monk activation
+     * @param students the students on the card
+     */
     public void initMonkActivation(List<Color> students) {
         Label message = makeLabel("Select one island and one student from the card");
         Button confirmButton = makeConfirmButton();
@@ -634,6 +746,11 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         initMonkButtonProperty(cardGroup, confirmButton);
     }
 
+    /**
+     * Init the button to activate the Monk
+     * @param cardGroup the toggle group of the student on the card
+     * @param confirmButton the button to confirm the action
+     */
     private void initMonkButtonProperty(ToggleGroup cardGroup, Button confirmButton) {
         cardGroup.selectedToggleProperty().addListener((observableValue, toggle, t1) -> {
             if (studentContainer.getSelectedToggle() != null)
@@ -657,6 +774,11 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         });
     }
 
+    /**
+     * Adds student to the card
+     * @param students the students to add
+     * @param cardGroup the toggle group of the student on the card
+     */
     private void addStudentsToCard(List<Color> students, ToggleGroup cardGroup) {
         ImageView studImage;
         RadioButton button;
@@ -677,6 +799,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         }
     }
 
+    /**
+     * Make the choiceBox for the character card
+     * @return the choiceBox
+     */
     private ChoiceBox<String> makeChoiceBoxCards() {
         ChoiceBox<String> choiceBox = new ChoiceBox<>();
         choiceBox.setPrefWidth(150);
@@ -686,6 +812,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         return choiceBox;
     }
 
+    /**
+     * Make one confirm button
+     * @return the button
+     */
     private Button makeConfirmButton() {
         Button button = new Button();
         button.setFont(new Font("system", 20));
@@ -696,6 +826,11 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         return button;
     }
 
+    /**
+     * Make the character label
+     * @param text the text to show to the client
+     * @return the label
+     */
     private Label makeLabel(String text) {
         Label label = new Label(text);
         label.setFont(new Font("system", 15));
@@ -707,6 +842,9 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         return label;
     }
 
+    /**
+     * Clears the Move Scene
+     */
     public void clear() {
         clearBoard();
         if (studentContainer.getSelectedToggle() != null)
@@ -716,6 +854,10 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         for (RadioButton button : entranceButtons) {
             button.setDisable(true);
             button.setOpacity(0);
+        }
+
+        for(ImageView student : cardStudents) {
+            student.setImage(null);
         }
 
         for (RadioButton button : cardButtons) {
@@ -732,6 +874,9 @@ public class MoveController extends BoardUpdater implements GUIController, Initi
         messagePane.getChildren().clear();
     }
 
+    /**
+     * Permits the client to return to the previous scene
+     */
     public void backScene() {
         clear();
         gui.updateMyPlayerBoard();

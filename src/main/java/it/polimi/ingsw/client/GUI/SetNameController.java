@@ -2,14 +2,16 @@ package it.polimi.ingsw.client.GUI;
 
 import it.polimi.ingsw.network.messages.clientMessage.NicknameRequest;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SetNameController implements GUIController, Initializable {
+/**
+ * Class SetNameController is the controller of the Name Scene
+ */
+public class SetNameController implements GUIController {
     private GUI gui;
 
     @FXML
@@ -17,6 +19,9 @@ public class SetNameController implements GUIController, Initializable {
     @FXML
     private TextField nickname;
 
+    /**
+     * Checks if the name insert by the client is valid and sends the chosen nickname to the server
+     */
     public void checkName() {
         error.setOpacity(0);
         if(nickname.getText().equals("")) {

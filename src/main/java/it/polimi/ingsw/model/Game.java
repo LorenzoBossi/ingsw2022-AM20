@@ -13,6 +13,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The container of all the elements of the game
+ */
 public class Game extends ObservableSubject implements EndObserver {
     private List<Cloud> clouds;
     private final IslandsManager archipelago;
@@ -491,7 +494,6 @@ public class Game extends ObservableSubject implements EndObserver {
 
         if (currentOwner != null) {
             if (island.getOwner() == null) {
-                //island.setOwner(currentOwner);
                 currentOwner.getPlayerBoard().removeTowers(1);
                 island.setNumberOfTowers(1);
                 archipelago.changeIslandOwner(currentOwner, island);
@@ -525,42 +527,18 @@ public class Game extends ObservableSubject implements EndObserver {
 
         for (CharacterName extractCard : extractCards) {
             switch (extractCard) {
-                case BANKER:
-                    characterCards.add(new Banker());
-                    break;
-                case POSTMAN:
-                    characterCards.add(new PostMan());
-                    break;
-                case PROF_CARD:
-                    characterCards.add(new ProfCard());
-                    break;
-                case KNIGHT:
-                    characterCards.add(new InfluenceCard(CharacterName.KNIGHT, 2, new MorePointsInfluence(), CharacterCardType.NORMAL));
-                    break;
-                case CENTAUR:
-                    characterCards.add(new InfluenceCard(CharacterName.CENTAUR, 3, new NoTowerInfluence(), CharacterCardType.NORMAL));
-                    break;
-                case SELLER:
-                    characterCards.add(new InfluenceCard(CharacterName.SELLER, 1, new NoColorInfluence(), CharacterCardType.COLOR_SELECTION));
-                    break;
-                case HERBALIST:
-                    characterCards.add(new BanCharacter());
-                    break;
-                case VASSAL:
-                    characterCards.add(new Vassal());
-                    break;
-                case MUSICIAN:
-                    characterCards.add(new Musician());
-                    break;
-                case JESTER:
-                    characterCards.add(new Jester(bag));
-                    break;
-                case PRINCESS:
-                    characterCards.add(new Princess(bag));
-                    break;
-                case MONK:
-                    characterCards.add(new Monk(bag));
-                    break;
+                case BANKER -> characterCards.add(new Banker());
+                case POSTMAN -> characterCards.add(new PostMan());
+                case PROF_CARD -> characterCards.add(new ProfCard());
+                case KNIGHT -> characterCards.add(new InfluenceCard(CharacterName.KNIGHT, 2, new MorePointsInfluence(), CharacterCardType.NORMAL));
+                case CENTAUR -> characterCards.add(new InfluenceCard(CharacterName.CENTAUR, 3, new NoTowerInfluence(), CharacterCardType.NORMAL));
+                case SELLER -> characterCards.add(new InfluenceCard(CharacterName.SELLER, 3, new NoColorInfluence(), CharacterCardType.COLOR_SELECTION));
+                case HERBALIST -> characterCards.add(new BanCharacter());
+                case VASSAL -> characterCards.add(new Vassal());
+                case MUSICIAN -> characterCards.add(new Musician());
+                case JESTER -> characterCards.add(new Jester(bag));
+                case PRINCESS -> characterCards.add(new Princess(bag));
+                case MONK -> characterCards.add(new Monk(bag));
             }
         }
     }

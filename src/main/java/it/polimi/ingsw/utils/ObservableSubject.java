@@ -6,20 +6,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ObservableSubject {
-    private List<EventObserver> views;
+    private final List<EventObserver> views;
 
+    /**
+     * Constructor
+     */
     public ObservableSubject() {
         this.views = new ArrayList<>();
     }
 
+    /**
+     * Registers observers to the object
+     * @param eventObserver
+     */
     public void registerObserver(EventObserver eventObserver) {
         views.add(eventObserver);
     }
 
-    public void removeObserver(EventObserver eventObserver) {
-        views.remove(eventObserver);
-    }
-
+    /**
+     * Notify all the observers with the update message
+     * @param message
+     */
     public void notifyObserver(ServerMessage message) {
         for (EventObserver observer : views) {
             observer.update(message);

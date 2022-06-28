@@ -1,14 +1,14 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.network.messages.serverMessage.Ping;
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Class ServerConnectionHandler manages the connection of clients
+ */
 public class ServerConnectionHandler implements Runnable {
     private ServerSocket serverSocket;
     private int serverPort;
@@ -16,6 +16,11 @@ public class ServerConnectionHandler implements Runnable {
     private boolean stop = false;
     private ExecutorService executorService = Executors.newCachedThreadPool();
 
+    /**
+     * Constructor
+     * @param serverPort the port of the server
+     * @param server the server
+     */
     public ServerConnectionHandler(int serverPort, Server server) {
         try {
             serverSocket = new ServerSocket(serverPort);
@@ -29,6 +34,10 @@ public class ServerConnectionHandler implements Runnable {
         this.server = server;
     }
 
+    /**
+     * Accepts the client connection
+     * @throws IOException launch by the serverSocket accept
+     */
     public void acceptClientConnection() throws IOException {
         System.out.println("Server ready to accept connection...");
         Socket socket = serverSocket.accept();
@@ -39,6 +48,9 @@ public class ServerConnectionHandler implements Runnable {
         executorService.submit(new PingHandler(clientConnectionHandler));
     }
 
+    /**
+     * Close the executorService and close the server Socket
+     */
     private void close() {
         if(!stop) {
             stop = true;
@@ -53,6 +65,9 @@ public class ServerConnectionHandler implements Runnable {
         }
     }
 
+    /**
+     * Continues to accept client connection
+     */
     @Override
     public void run() {
         while (!stop) {

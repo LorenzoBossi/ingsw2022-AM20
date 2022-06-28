@@ -8,6 +8,9 @@ import javafx.scene.layout.TilePane;
 
 import java.util.List;
 
+/**
+ * Class that contains the method to update the playerboard
+ */
 public abstract class BoardUpdater {
 
     protected GUI gui;
@@ -33,6 +36,10 @@ public abstract class BoardUpdater {
     protected double studentY;
 
 
+    /**
+     * Updates the playerBoard
+     * @param nickname the owner of the playerBoard
+     */
     public void updatePlayerBoard(String nickname) {
         List<Color> studentsEntrance = gui.getClientModel().getEntrances().get(nickname);
         List<Integer> studentsDin = gui.getClientModel().getDiningRooms().get(nickname);
@@ -48,11 +55,19 @@ public abstract class BoardUpdater {
         updateTowers(numberTowers, nickname);
     }
 
+    /**
+     * Updates the number of coins of the player
+     * @param coinsNumber the number of coins of the player
+     */
     private void updateCoins(int coinsNumber) {
         coinsLabel.setText(coinsNumber + " x");
         coinView.setImage(new Image(String.valueOf(getClass().getResource("/Images/coin.png"))));
     }
 
+    /**
+     * Update the students in the entrance
+     * @param studentsEntrance the students in the entrance
+     */
     private void updateEntrance(List<Color> studentsEntrance) {
         int i = 0;
         for (Color stud : studentsEntrance) {
@@ -61,6 +76,10 @@ public abstract class BoardUpdater {
         }
     }
 
+    /**
+     * Updates the professors
+     * @param professors the professors
+     */
     private void updateProf(List<Color> professors) {
         for (Color color : professors) {
             switch (color) {
@@ -73,6 +92,11 @@ public abstract class BoardUpdater {
         }
     }
 
+    /**
+     * Updates the towers
+     * @param numberOfTowers the number of towers
+     * @param nickname the nickname of the players
+     */
     private void updateTowers(int numberOfTowers, String nickname) {
         ImageView tower;
 
@@ -86,6 +110,10 @@ public abstract class BoardUpdater {
         }
     }
 
+    /**
+     * Updates the dining
+     * @param dining the dining to update
+     */
     public void updateDining(List<Integer> dining) {
         ImageView student;
         int numberOfStudents;
@@ -109,11 +137,17 @@ public abstract class BoardUpdater {
         }
     }
 
+    /**
+     * Clears the dining
+     */
     public void clearDining() {
         for (TilePane pane : diningRooms)
             pane.getChildren().clear();
     }
 
+    /**
+     * Clear the playerBoard
+     */
     public void clearBoard() {
         for (ImageView student : students)
             student.setImage(null);

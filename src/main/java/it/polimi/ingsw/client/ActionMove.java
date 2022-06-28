@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client;
 
+/**
+ * Class ActionMove enumerates the possible actions of the client
+ */
 public enum ActionMove {
     MOVE_STUDENTS("ms"),
     MOVE_MOTHER_NATURE("mmn"),

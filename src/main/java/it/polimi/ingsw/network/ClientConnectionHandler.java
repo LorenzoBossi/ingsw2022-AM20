@@ -10,6 +10,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
+/**
+ * Class ClientConnectionHandler handles the connection between the server and the client
+ */
 public class ClientConnectionHandler implements Runnable {
     private Server server;
     private Socket socket;
@@ -20,6 +23,12 @@ public class ClientConnectionHandler implements Runnable {
 
     private boolean stop = false;
 
+    /**
+     * Constructor
+     *
+     * @param server the server
+     * @param socket the socket to communicate with the client
+     */
     public ClientConnectionHandler(Server server, Socket socket) {
         this.server = server;
         this.socket = socket;
@@ -33,18 +42,33 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
+    /**
+     * Method isConnected communicate if the connection to the client is active
+     * @return true if the server is connected, false otherwise
+     */
     public boolean isConnected() {
         return !stop;
     }
 
+    /**
+     * Sets the nickname of the client to the socket
+     * @param nickname the nickname of the client
+     */
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
 
+    /**
+     * Gets the client nickname
+     * @return the client nickname
+     */
     public String getNickname() {
         return nickname;
     }
 
+    /**
+     * Receives the message from the client and closes the lobby if the connection drops
+     */
     public synchronized void receiveMessage() {
         ClientMessage message = null;
         try {
@@ -54,40 +78,18 @@ public class ClientConnectionHandler implements Runnable {
             System.err.println(nickname + " disconnection");
             if (nickname != null)
                 server.closeLobby(nickname);
-            //e.printStackTrace();
         } catch (ClassNotFoundException e) {
             System.err.println("Class not found");
             closeConnection();
-            //e.printStackTrace();
         }
 
-        /*
-        if (message instanceof Pong)
-        if (message instanceof Pong) {
-            System.out.println("Pong");
-
-         */
-        //else {
-        //}else {
-            server.messageDispatcher(message, this);
-        //}
+        server.messageDispatcher(message, this);
     }
 
-
-    /*
-    public void sendPing(ServerMessage serverMessage) {
-        try {
-            outputStream.reset();
-            outputStream.writeObject(serverMessage);
-            outputStream.flush();
-        } catch (IOException e) {
-            System.err.println("GameError during sending message to client");
-            closeConnection();
-            e.printStackTrace();
-        }
-    }
+    /**
+     * Sends the server message to the client
+     * @param serverMessage the server message to be sent to the client
      */
-
     public void sendMessageToClient(ServerMessage serverMessage) {
         try {
             outputStream.reset();
@@ -101,14 +103,19 @@ public class ClientConnectionHandler implements Runnable {
     }
 
 
+    /**
+     * Continues to receive messages from the client as long as the connection is open
+     */
     @Override
     public void run() {
         while (!stop) {
             receiveMessage();
         }
-        //closeConnection();
     }
 
+    /**
+     * Close the connection to the client
+     */
     public void closeConnection() {
         if (isConnected()) {
             stop = true;

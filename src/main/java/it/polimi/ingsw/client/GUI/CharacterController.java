@@ -9,7 +9,6 @@ import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.ActiveEffect;
 import it.polimi.ingsw.network.messages.clientMessage.SelectedColor;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -23,13 +22,15 @@ import javafx.stage.Stage;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.*;
 
-public class CharacterController implements GUIController, Initializable {
+/**
+ * Class CharacterController the controller of the Character Scene
+ */
+public class CharacterController implements GUIController{
     private GUI gui;
 
     private List<Node> elements;
@@ -76,6 +77,9 @@ public class CharacterController implements GUIController, Initializable {
     private Button descButton3;
 
 
+    /**
+     * Updates the character scene
+     */
     public void update() {
         Map<CharacterName, CharacterCardView> cards = gui.getClientModel().getCards();
         int i = 0;
@@ -87,6 +91,9 @@ public class CharacterController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Clears the character scene
+     */
     public void clear() {
         for (AnchorPane grid : grids) {
             for (Node element : elements) {
@@ -103,8 +110,10 @@ public class CharacterController implements GUIController, Initializable {
         activateButton.setOpacity(0);
     }
 
+    /**
+     * Initializes the character card button to activate the cards
+     */
     public void initCharacterButton() {
-        Map<CharacterName, CharacterCardView> cardViewMap = gui.getClientModel().getCards();
 
         if (cards.getSelectedToggle() != null)
             cards.getSelectedToggle().setSelected(false);
@@ -118,6 +127,9 @@ public class CharacterController implements GUIController, Initializable {
         activateButton.setOpacity(1);
     }
 
+    /**
+     * Handles the character cards activation
+     */
     public void activateCard() {
         CharacterName name = (CharacterName) cards.getSelectedToggle().getUserData();
         AnchorPane pane = searchGrid();
@@ -162,12 +174,19 @@ public class CharacterController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Closes the stage of the character scene
+     */
     private void closeWindows() {
         Stage stage = (Stage) activateButton.getScene().getWindow();
         stage.close();
     }
 
-
+    /**
+     * Check if the client can activate the character card
+     * @param name the name of the character card
+     * @return true if the client can activate the cards, false otherwise
+     */
     private boolean checkActivation(CharacterName name) {
         String nickname = gui.getClientNickname();
         ClientModel model = gui.getClientModel();
@@ -186,7 +205,7 @@ public class CharacterController implements GUIController, Initializable {
             return false;
         }
 
-        if(name.equals(CharacterName.MUSICIAN) && !checkBanCharacterActivation(card)) {
+        if(name.equals(CharacterName.HERBALIST) && !checkBanCharacterActivation(card)) {
             activateButton.setDisable(true);
             gui.alertMessage("You don't have any ban cards on this card");
             return false;
@@ -195,10 +214,20 @@ public class CharacterController implements GUIController, Initializable {
         return true;
     }
 
+    /**
+     * Checks if the client can activate the ban character
+     * @param card the character card
+     * @return true if the client can activate the ban character, false otherwise
+     */
     private boolean checkBanCharacterActivation(CharacterCardView card) {
         return card.getBanCards() != 0;
     }
 
+    /**
+     * Checks if the client can activate the musician character card
+     * @param nickname the nickname of the player
+     * @return true if the client can activate the musician character, false otherwise
+     */
     private boolean checkMusicianActivation(String nickname) {
         int numberOfStudents = 0;
         List<Integer> dining = gui.getClientModel().getDiningRooms().get(nickname);
@@ -209,8 +238,13 @@ public class CharacterController implements GUIController, Initializable {
         return numberOfStudents != 0;
     }
 
+    /**
+     * Handles the color selection to activate a card of the type COLOR_SELECTION
+     * @param pane the pane where the character card is
+     * @param name the name of the character card
+     */
     private void handleColorSelection(AnchorPane pane, CharacterName name) {
-        ChoiceBox<String> choiceBox = new ChoiceBox<String>();
+        ChoiceBox<String> choiceBox = new ChoiceBox<>();
         Label message = new Label("Select one of the following color");
         Button confirmButton = new Button();
 
@@ -248,6 +282,10 @@ public class CharacterController implements GUIController, Initializable {
         pane.getChildren().addAll(Arrays.asList(choiceBox, confirmButton, message));
     }
 
+    /**
+     * Searches the pane where the card activated is
+     * @return the pane where the card activated is
+     */
     private AnchorPane searchGrid() {
         for (AnchorPane grid : grids) {
             if (grid.getChildren().contains(cards.getSelectedToggle()))
@@ -257,6 +295,13 @@ public class CharacterController implements GUIController, Initializable {
     }
 
 
+    /**
+     * Adds the character cards into the scene
+     * @param grid the grids where the character card is
+     * @param name the name of the character card
+     * @param card the card
+     * @param index the index of the character card
+     */
     private void buildCard(AnchorPane grid, CharacterName name, CharacterCardView card, int index) {
         int numberOfCoins = card.getCoinsRequired();
         List<Color> students = card.getStudents();
@@ -272,11 +317,21 @@ public class CharacterController implements GUIController, Initializable {
 
         }
 
+    /**
+     * Set to the label how much coins the card required
+     * @param numberOfCoins the number of coins required to activate the card
+     * @param index the index of the card
+     */
     private void addCoins(int numberOfCoins, int index) {
         Label text = coins.get(index);
         text.setText(numberOfCoins + " x");
     }
 
+    /**
+     * Adds students under the character card
+     * @param grid the grid where the character card is
+     * @param students the students to add under the character cards
+     */
     private void addStudents(AnchorPane grid, List<Color> students) {
         ImageView student;
         TilePane pane = new TilePane();
@@ -301,6 +356,11 @@ public class CharacterController implements GUIController, Initializable {
 
     }
 
+    /**
+     * Adds ban cards under the character card
+     * @param grid the grid where the character card is
+     * @param bancards the ban cards to add under the card
+     */
     private void addBanCards(AnchorPane grid, int bancards) {
         ImageView banCard;
         TilePane pane = new TilePane();
@@ -343,6 +403,9 @@ public class CharacterController implements GUIController, Initializable {
         cards.selectedToggleProperty().addListener((observableValue, toggle, t1) -> activateButton.setDisable(false));
     }
 
+    /**
+     * Shows the description of the character card
+     */
     public void showDescription() {
         Map<CharacterName, CharacterCardView> cardmap = gui.getClientModel().getCards();
         int i = 0;
@@ -379,6 +442,9 @@ public class CharacterController implements GUIController, Initializable {
 
     }
 
+    /**
+     * Hide the character card description
+     */
     public void hideDescription() {
         descrLabel.setText("");
     }

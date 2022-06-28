@@ -1,17 +1,17 @@
 package it.polimi.ingsw.client.GUI;
 
-import it.polimi.ingsw.model.Color;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 
 import java.net.URL;
 import java.util.*;
 
-public class PlayerBoardController extends BoardUpdater implements GUIController, Initializable {
+/**
+ * Class PlayerBoardController is the controller of the PlayerBoard Scene
+ */
+public class PlayerBoardController extends BoardUpdater implements GUIController {
 
     @FXML
     private ImageView student0;

@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.TowerColor;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The interface of the view
+ */
 public interface View {
 
     public void lobbySetup(Map<Integer, Integer> attendingLobbiesNumberOfPlayerMap, Map<Integer, String> attendingLobbiesGameModeMap);

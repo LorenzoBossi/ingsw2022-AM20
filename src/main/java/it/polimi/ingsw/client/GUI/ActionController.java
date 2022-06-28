@@ -22,10 +22,13 @@ import javafx.scene.text.TextAlignment;
 import java.net.URL;
 import java.util.*;
 
-public class ActionController extends BoardUpdater implements GUIController, Initializable {
+/**
+ * Class ActionsController is the controller of the Action scene
+ */
+public class ActionController extends BoardUpdater implements GUIController {
 
     private boolean isMnnActive;
-    ChoiceBox<Integer> options = new ChoiceBox<>();
+    private ChoiceBox<Integer> options = new ChoiceBox<>();
 
     @FXML
     private AnchorPane centralPane;
@@ -82,6 +85,9 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
     @FXML
     private ImageView coin;
 
+    /**
+     * Init the button to show the character cards
+     */
     private void initCharacterButton() {
         Button button = new Button();
         button.setPrefSize(90, 50);
@@ -93,6 +99,10 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
         button.setOnAction(actionEvent -> gui.showCharacters(false));
     }
 
+    /**
+     * Init all the button of the Action scene
+     * @param players
+     */
     public void initActionButton(List<String> players) {
         List<String> opponents = new ArrayList<>(players);
         opponents.remove(gui.getClientNickname());
@@ -110,6 +120,10 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
             initCharacterButton();
     }
 
+    /**
+     * Init the button in order to perform the available actions of the client
+     * @param availableActions the available actions
+     */
     public void initAvailableActions(String availableActions) {
         String[] actions = availableActions.split("/");
         Button button = null;
@@ -156,18 +170,30 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
         }
     }
 
+    /**
+     * Clears the available actions
+     */
     public void clearAvailableActions() {
         availableActions.getChildren().clear();
     }
 
+    /**
+     * Shows the islands
+     */
     public void showIslands() {
         gui.showIslands();
     }
 
+    /**
+     * Shows the clouds
+     */
     public void showClouds() {
         gui.showClouds(false);
     }
 
+    /**
+     * Updates how much you can move mother nature
+     */
     public void updateMotherNatureMove() {
         int maxMotherNatureMove = gui.getClientModel().getMaxMotherNatureMove();
         options.getItems().clear();
@@ -176,6 +202,10 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
         }
     }
 
+    /**
+     * Update the label that says whose turn it is
+     * @param player the current player
+     */
     public void updateTurnMessage(String player) {
         if(player.equals(gui.getClientNickname())) {
             turnMessage.setText("It's your turn");
@@ -184,6 +214,9 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
         }
     }
 
+    /**
+     * activates the possibility to move mother nature
+     */
     public void activeMotherNatureMove() {
         Label message = new Label("Select how much you want to move MotherNature");
         Button confirm = new Button();
@@ -216,6 +249,11 @@ public class ActionController extends BoardUpdater implements GUIController, Ini
         topPane.getChildren().addAll(Arrays.asList(message, options, confirm));
     }
 
+    /**
+     * Updates the view with the end message of the game
+     * @param isDraw true if the game finishes with a draw, false otherwise
+     * @param winner the nickname of the winner
+     */
     public void endGameVisual(boolean isDraw, String winner) {
         Button closeButton = new Button();
         Label closeMessage = new Label("Press the button to close the application");

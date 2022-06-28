@@ -73,6 +73,18 @@ public class InputCheckerTest {
     }
 
     @Test
+    public void checkStudentInDiningRoomTest() {
+        Player currPlayer = game.getCurrPlayer();
+        List<Color> studentsDining = new ArrayList<>(Arrays.asList(Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE, Color.BLUE));
+        currPlayer.getPlayerBoard().getDiningRoom().refillDining(studentsDining);
+
+        assertTrue(inputChecker.checkStudentInTheDiningRoom(Color.BLUE));
+
+        currPlayer.getPlayerBoard().getDiningRoom().addStudent(Color.BLUE);
+        assertFalse(inputChecker.checkStudentInTheDiningRoom(Color.BLUE));
+    }
+
+    @Test
     public void checkMotherNatureMove() {
         Player currPlayer = game.getCurrPlayer();
         currPlayer.playAssistant(game.getAssistantByName(AssistantName.ASSISTANT10));
@@ -251,6 +263,13 @@ public class InputCheckerTest {
         currPlayer.getPlayerChoice().selectStudents(studentsFromCard);
 
         assertTrue(inputChecker.checkCharacterCardActivation(CharacterName.PRINCESS));
+
+        //Add 10 students of the same color in the dining room and try to activate the Princess
+        studentsFromCard = new ArrayList<>(card.getStudents().subList(0, 1));
+        List<Color> studentsDining = new ArrayList<>(Arrays.asList(studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0), studentsFromCard.get(0)));
+        currPlayer.getPlayerBoard().getDiningRoom().refillDining(studentsDining);
+
+        assertFalse(inputChecker.checkCharacterCardActivation(CharacterName.PRINCESS));
     }
 
     @Test

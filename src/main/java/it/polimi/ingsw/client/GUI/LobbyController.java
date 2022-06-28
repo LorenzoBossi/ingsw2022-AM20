@@ -15,7 +15,10 @@ import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-public class LobbyController implements GUIController, Initializable {
+/**
+ * Class LobbyController is the Lobby Scene controller
+ */
+public class LobbyController implements GUIController {
     private GUI gui;
     @FXML
     private ListView<String> lobbies;
@@ -45,6 +48,12 @@ public class LobbyController implements GUIController, Initializable {
     private Label playerJoined;
 
 
+    /**
+     * Set up the lobby scene
+     *
+     * @param playersMap map of lobby id and number of player for that lobby
+     * @param gameModeMap map of lobby id and game mode
+     */
     public void setup(Map<Integer, Integer> playersMap, Map<Integer, String> gameModeMap) {
         waitingMessage.setOpacity(0);
         playerText.setOpacity(0);
@@ -63,6 +72,10 @@ public class LobbyController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Sends the joining message to the server
+     * @param e the event
+     */
     public void join(ActionEvent e) {
         String choice = lobbies.getSelectionModel().getSelectedItem();
         int lobbyId = Integer.parseInt(choice.substring(0, 1));
@@ -82,6 +95,10 @@ public class LobbyController implements GUIController, Initializable {
     }
 
 
+    /**
+     * Sends the createLobby message to the server
+     * @param e the event
+     */
     public void createLobby(ActionEvent e) {
         if (gamemode.getValue() == null || numberPlayers.getValue() == null) {
             if (gamemode.getValue() == null && numberPlayers.getValue() != null) {
@@ -106,11 +123,19 @@ public class LobbyController implements GUIController, Initializable {
         }
     }
 
+    /**
+     * Refresh the lobby
+     */
     public void lobbyRefresh() {
         lobbies.getItems().clear();
         gui.sendMessage(new GetLobbies());
     }
 
+    /**
+     * Notify on the lobby scene when one player joining the lobby
+     * @param playerJoined the name of the player that joined
+     * @param playersRemaining the number of players remaining in order to start the game
+     */
     public void playerJoining(String playerJoined, int playersRemaining) {
         this.playerRemaining.setText(String.valueOf(playersRemaining));
         this.playerJoined.setText(playerJoined + " joining the lobby");

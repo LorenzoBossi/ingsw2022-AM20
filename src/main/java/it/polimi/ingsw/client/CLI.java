@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.characterCards.CharacterName;
 import it.polimi.ingsw.network.messages.clientMessage.*;
 import it.polimi.ingsw.utils.Screen;
 
-import java.io.PrintStream;
 import java.util.*;
 
 public class CLI implements View {
@@ -15,7 +14,6 @@ public class CLI implements View {
     private int serverPort;
     private final ServerConnection connectionToServer;
     private final Scanner input;
-    private PrintStream output;
 
     private final ClientModel clientModel;
     private final ActionMovesHandler actionMovesHandler;
@@ -31,7 +29,6 @@ public class CLI implements View {
      */
     public CLI(String serverIp, int serverPort) {
         input = new Scanner(System.in);
-        output = new PrintStream(System.out);
         this.serverIp = serverIp;
         this.serverPort = serverPort;
         this.clientModel = new ClientModel();
