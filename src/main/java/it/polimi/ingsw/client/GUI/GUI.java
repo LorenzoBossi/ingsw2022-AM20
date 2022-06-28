@@ -57,9 +57,13 @@ public class GUI extends Application implements View {
         clientModel = new ClientModel();
         actionMovesHandler = new ActionMovesHandler();
         connectionToServer = new ServerConnection(serverIp, serverPort, new ServerMessageHandler(clientModel, this, actionMovesHandler));
-        connectionToServer.setupConnection();
-        (new Thread(connectionToServer)).start();
-        changeScene(NAME);
+        if(!connectionToServer.setupConnection()){
+            alertMessage("Unable to reach the server at: ("+serverIp+","+serverPort+")");
+            currentScene = sceneMap.get(CONNECTION);
+        }else{
+            (new Thread(connectionToServer)).start();
+            changeScene(NAME);
+        }
     }
 
     public void init() {

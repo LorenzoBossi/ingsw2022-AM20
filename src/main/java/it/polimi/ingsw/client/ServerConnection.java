@@ -53,14 +53,14 @@ public class ServerConnection implements Runnable {
     public boolean setupConnection() {
         try {
             socket = new Socket(serverIp, serverPort);
-            socket.setSoTimeout(20000);
+            socket.setSoTimeout(5000);
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream = new ObjectInputStream(socket.getInputStream());
             return true;
         } catch (IOException e) {
             System.err.println("Unable to reach the server at: ("+serverIp+ " , "+serverPort+")");
-            e.printStackTrace();
-            System.exit(-1);//da togliere per chiedere nuovi ip e port
+            //e.printStackTrace();
+            //System.exit(-1);
             return false;//per capire che non è andato a buon fine
         }
     }

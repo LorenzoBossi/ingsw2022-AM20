@@ -18,22 +18,28 @@ public class Eriantys {
         String arg;
 
         //more checks on parameters to be added (intValue() not needed)
-        for (int i = 0; i < numberOfArgs; i++) {
-            arg = args[i];
-            if (arg.equals("--cli") || arg.equals("-c")) {
-                startCli = true;
-            } else if (arg.equals("--server") || arg.equals("-s")) {
-                startServer = true;
-            } else if (arg.equals("--ip") || arg.equals("-i")) {
-                if (numberOfArgs >= i + 1) {
-                    ip = args[i + 1];
-                }
-            } else if (arg.equals("--port") || arg.equals("-p")) {
-                if (numberOfArgs >= i + 1) {
-                    port = Integer.valueOf(args[i + 1]).intValue();
+        try {
+            for (int i = 0; i < numberOfArgs; i++) {
+                arg = args[i];
+                if (arg.equals("--cli") || arg.equals("-c")) {
+                    startCli = true;
+                } else if (arg.equals("--server") || arg.equals("-s")) {
+                    startServer = true;
+                } else if (arg.equals("--ip") || arg.equals("-i")) {
+                    if (numberOfArgs >= i + 1) {
+                        ip = args[i + 1];
+                    }
+                } else if (arg.equals("--port") || arg.equals("-p")) {
+                    if (numberOfArgs >= i + 1) {
+                        port = Integer.parseInt(args[i + 1]);
+                    }
                 }
             }
+        }catch(Exception e){
+            System.out.println("Invalid parameters");
+            System.exit(-1);
         }
+
 
         if (startServer) {
             System.out.println("STARTING SERVER on port: " + port);
@@ -43,8 +49,8 @@ public class Eriantys {
             System.out.println("STARTING CLIENT (CLI) , connecting to : (" + ip + " , " + port + ")");
             startCLI(ip, port);
         } else {
-            System.out.println("STARTING CLIENT (GUI) , connecting to : (" + ip + " , " + port + ")");
-            //GUI gui= new GUI(ip,port);
+            System.out.println("STARTING CLIENT (GUI)");
+            //GUI gui= new GUI(ip,port);fitdkcf
             startGUI(ip, port);
         }
 

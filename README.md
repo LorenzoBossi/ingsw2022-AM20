@@ -1,5 +1,6 @@
 # Prova Finale Ingegneria del Software 2022
 ![alt text](src/main/resources/Images/Eriantys-Header.jpg)
+
 La prova finale di ingegneria del software consiste nell'implementazione 
 di un applicazione distribuita del gioco da tavolo [Eriantys](https://www.craniocreations.it/prodotto/eriantys/), 
 attraverso il pattern Model View Controller (MVC). 
@@ -11,16 +12,23 @@ attraverso il pattern Model View Controller (MVC).
 
 ## Esecuzione
 Questo progetto richiede java 17 o superiore per essere eseguito.
-###Jar
-Abbiamo creato un unico jar per client e server, scaricabile qui: [Jar](https://github.com/LorenzoBossi/..).
+Abbiamo creato un unico programma che si può comportare da client o da server in base ai parametri ricevuti.
+Il jar è scaricabile qui: [Jar](https://github.com/LorenzoBossi/..).
+Dopo avere scaricato il jar e aver verificato la propria versione di java, si può eseguire seguendo le istruzioni sottostanti.
 
-###Client
+### Client
+
+####GUI
+
 Di default l'esecuzione del jar fa partire un client (GUI).
 Può essere eseguito attraverso il seguente comando:
 ```
 java -jar AM20-Eriantys.jar
 ```
-Inoltre è possibile utilizzare il client da linea di comando (CLI) aggiungendo 
+Dopo di che verrà richiesto di inserire indirizzo e porta del server a cui collegarsi dall'interfaccia grafica.
+
+#### CLI
+É possibile utilizzare il client da linea di comando (CLI) aggiungendo 
 il parametro --cli, oppure la versione ridotta -c.
 ```
 java -jar AM20-Eriantys.jar --cli
@@ -28,7 +36,17 @@ java -jar AM20-Eriantys.jar --cli
 ```
 java -jar AM20-Eriantys.jar -c
 ```
-###Server
+
+Per specificare l'indirizzo e la porta del serve a cui collegarsi è possibile utilizzare i parametri --ip e --port.
+Se non si specifica il server l'applicazione cercherà di collegarsi a quello di default: (localhost,26000).
+```
+java -jar AM20-Eriantys.jar --cli --ip 129.168.10.5 --port 23456
+```
+Al posto di --ip e --port si possono usare le abbreviazioni -i e -p.
+```
+java -jar AM20-Eriantys.jar -c -i 129.168.10.5 -p 23456
+```
+### Server
 Per utilizzare il jar come server è necessario aggiungere 
 il parametro --server, oppure -s.
 ```

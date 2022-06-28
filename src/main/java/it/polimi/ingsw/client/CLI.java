@@ -37,7 +37,8 @@ public class CLI implements View {
         this.clientModel = new ClientModel();
         this.actionMovesHandler = new ActionMovesHandler();
         connectionToServer = new ServerConnection(serverIp, serverPort, new ServerMessageHandler(clientModel, this, actionMovesHandler));
-        connectionToServer.setupConnection();
+        if(!connectionToServer.setupConnection())
+            System.exit(-1);
         (new Thread(connectionToServer)).start();
     }
 

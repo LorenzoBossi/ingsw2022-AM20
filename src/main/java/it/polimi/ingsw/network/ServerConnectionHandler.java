@@ -32,7 +32,7 @@ public class ServerConnectionHandler implements Runnable {
     public void acceptClientConnection() throws IOException {
         System.out.println("Server ready to accept connection...");
         Socket socket = serverSocket.accept();
-        socket.setSoTimeout(20000);
+        socket.setSoTimeout(5000);
         System.out.println("New Connection");
         ClientConnectionHandler clientConnectionHandler = new ClientConnectionHandler(server, socket);
         executorService.submit(clientConnectionHandler);
