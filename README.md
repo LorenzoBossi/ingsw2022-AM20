@@ -18,7 +18,7 @@ Dopo avere scaricato il jar e aver verificato la propria versione di java, si pu
 
 ### Client
 
-####GUI
+#### GUI
 
 Di default l'esecuzione del jar fa partire un client (GUI).
 Può essere eseguito attraverso il seguente comando:
