@@ -106,7 +106,7 @@ public class ServerMessageHandler {
             boolean aDraw = ((GameEnd) message).isADraw();
             String winner = ((GameEnd) message).getWinner();
             if (view instanceof GUI)
-                Platform.runLater(() -> ((GUI) view).endGame(aDraw, winner));
+                Platform.runLater(() -> view.endGame(aDraw, winner));
             else
                 view.endGame(aDraw, winner);
         }
@@ -163,8 +163,9 @@ public class ServerMessageHandler {
         } else if (message instanceof CardActivated) {
             String player = ((CardActivated) message).getPlayer();
             CharacterName name = ((CardActivated) message).getName();
-
-            System.out.println(player + " has activated " + name + " card");
+            if(view instanceof CLI) {
+                System.out.println(player + " has activated " + name + " card");
+            }
         } else if (message instanceof IncreaseCardPrice) {
             CharacterName name = ((IncreaseCardPrice) message).getCharacterName();
 
@@ -191,9 +192,11 @@ public class ServerMessageHandler {
         Object indexDestination = updateMessage.getIndexDestination();
 
 
+        /*
         System.out.println(source + "--->" + destination);
         System.out.println(students);
         System.out.println(indexSource + "--->" + indexDestination);
+         */
 
 
         switch (source) {

@@ -588,6 +588,7 @@ public class Game extends ObservableSubject implements EndObserver {
                 case MONK -> characterCards.add(new Monk(bag));
             }
         }
+
     }
 
     /**

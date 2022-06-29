@@ -158,6 +158,14 @@ public class InputChecker {
                     result = false;
                 break;
             case MUSICIAN:
+                if (playerChoice.getSelectedStudentFromEntrance() == null || playerChoice.getSelectedStudents() == null)
+                    result = false;
+                else {
+                    result = checkStudentInTheDiningRoom(playerChoice.getSelectedStudentFromEntrance().get(0));
+                    if(playerChoice.getSelectedStudents().size() > 1) {
+                        result = checkStudentInTheDiningRoom(playerChoice.getSelectedStudentFromEntrance().get(0)) && checkStudentInTheDiningRoom(playerChoice.getSelectedStudentFromEntrance().get(1));
+                    }
+                }
             case JESTER:
                 if (playerChoice.getSelectedStudentFromEntrance() == null || playerChoice.getSelectedStudents() == null)
                     result = false;

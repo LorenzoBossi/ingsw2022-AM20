@@ -233,6 +233,10 @@ public class ActionController extends BoardUpdater implements GUIController {
         confirm.setDisable(true);
         confirm.setText("Confirm");
         confirm.setOnAction(actionEvent -> {
+            if(options.getValue() == null) {
+                return;
+            }
+            confirm.setDisable(true);
             isMnnActive = false;
             gui.consumeAction(ActionMove.MOVE_MOTHER_NATURE);
             topPane.getChildren().removeAll(Arrays.asList(message, options, confirm));
