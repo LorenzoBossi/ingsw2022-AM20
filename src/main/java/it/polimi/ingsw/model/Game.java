@@ -305,6 +305,7 @@ public class Game extends ObservableSubject implements EndObserver {
                 currPlayer = next;
                 resetAvailableMoves(currPlayer);
             }
+            professorManager.resetComparator();
         }
     }
 

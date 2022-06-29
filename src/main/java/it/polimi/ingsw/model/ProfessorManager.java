@@ -48,7 +48,7 @@ public class ProfessorManager extends ObservableSubject {
      * Sets the standard comparator used to compare the number of students of the current player with the owner of professors.
      * The standard comparator's compare(x,y) return 1 if x>y, 0 otherwise.
      */
-    private void resetComparator() {
+    public void resetComparator() {
         comparator = standardComparator;
     }
 
