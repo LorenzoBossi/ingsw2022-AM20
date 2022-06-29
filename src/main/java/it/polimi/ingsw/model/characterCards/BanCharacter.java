@@ -10,7 +10,7 @@ public class BanCharacter extends CharacterCard {
     private final int INITIAL_BANCARDS = 4;
 
     /**
-     * Constructor
+     * Constructor similar to the one of CharacterCard with the addition of the initialization of the number of ban cards
      */
     public BanCharacter() {
         super(CharacterName.HERBALIST, 2, CharacterCardType.ISLAND_SELECTION);

@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
+/**
+ * Represents the dining room of a player.
+ */
 public class DiningRoom {
 
     private List<Integer> students;
@@ -57,6 +60,11 @@ public class DiningRoom {
         return this.students.get(indexColor);
     }
 
+    /**
+     * Returns the number of students of the color corresponding to the given index in the entrance
+     * @param index integer corresponding to a color
+     * @return the number of students of the specified color in the entrance
+     */
     public int getNumberOfStudent(int index) {
         return this.students.get(index);
     }
@@ -121,6 +129,10 @@ public class DiningRoom {
 
     }
 
+    /**
+     * Getter of the students in the entrance
+     * @return a list of Integer which represents the number of students of each color
+     */
     public List<Integer> getStudents() {
         return students;
     }

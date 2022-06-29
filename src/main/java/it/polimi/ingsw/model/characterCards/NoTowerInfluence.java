@@ -15,7 +15,6 @@ public class NoTowerInfluence implements InfluenceStrategy {
         super();
         this.currPlayer = null;
     }
-
     @Override
     public void setCurrPlayer(Player currPlayer) {
         this.currPlayer = currPlayer;

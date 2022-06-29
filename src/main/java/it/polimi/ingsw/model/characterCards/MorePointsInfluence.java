@@ -37,7 +37,13 @@ public class MorePointsInfluence implements InfluenceStrategy {
         return influenceStandardCalculate(selectedPlayer, island, professorManager);
     }
 
-
+    /**
+     * Used to calculate the influence of players different from the activator of the card in the standard way
+     * @param selectedPlayer player to calculate influence of
+     * @param island island to calculate influence of
+     * @param professorManager containing informations about professors and their owners
+     * @return the points of influence of the specified player on the specified island
+     */
     private int influenceStandardCalculate(Player selectedPlayer, Island island, ProfessorManager professorManager) {
         List<Color> professorsOwned = professorManager.getProfessorsOwnedBy(selectedPlayer);
         int influence = 0;

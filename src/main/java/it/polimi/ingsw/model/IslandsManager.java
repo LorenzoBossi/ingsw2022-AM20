@@ -5,6 +5,9 @@ import it.polimi.ingsw.utils.ObservableSubject;
 
 import java.util.*;
 
+/**
+ * Contains every island of the game and manages every operation regarding them, like unite multiple islands.
+ */
 public class IslandsManager extends ObservableSubject {
     private List<Island> islands;
     private int motherNature;
@@ -42,6 +45,12 @@ public class IslandsManager extends ObservableSubject {
         notifyObserver(new ChangeIslandOwner(newOwner.getNickname(), oldOwner, islandPosition, numberOfTower));
     }
 
+    /**
+     * Add a new student on the specified island
+     * @param student the color of the student to add
+     * @param islandPosition the id of the island to add the student on
+     * @param playerNickname The nickname of the player who moved the student, null if is moved by the game mechanics.
+     */
     public void addStudentOnIsland(Color student, int islandPosition, String playerNickname) {
         Island island = islands.get(islandPosition);
         List<Color> studentToAdd = new ArrayList<>();
@@ -55,18 +64,28 @@ public class IslandsManager extends ObservableSubject {
             notifyObserver(new MoveStudents(GameComponent.BAG, GameComponent.ISLAND, studentToAdd, null, islandPosition));
     }
 
-
+    /**
+     * Adds a ban card on the specified island
+     * @param island the island to put the ban card on
+     */
     public void addBanCardOnIsland(Island island) {
         island.addBanCard();
         notifyObserver(new BanCardEvent(getPositionByIsland(island), "ADD"));
     }
 
+    /**
+     * Removes a ban card on the specified island
+     * @param island the island to remove the ban card from
+     */
     public void removeBanCardOnIsland(Island island) {
         island.removeBanCard();
         notifyObserver(new BanCardEvent(getPositionByIsland(island), "REMOVE"));
     }
 
-
+    /**
+     * Gets the id of the specified island
+     * @param island the island to the id of
+     */
     public int getPositionByIsland(Island island) {
         return islands.indexOf(island);
     }
@@ -88,15 +107,28 @@ public class IslandsManager extends ObservableSubject {
         return getIsland(motherNature);
     }
 
+    /**
+     * Gets the id of the island on which mother nature is
+     * @return id of the island
+     */
     public int getMotherNature() {
         return motherNature;
     }
 
+    /**
+     * Moves mother nature on the specified island
+     * @param isl island to move mother nature on
+     */
     public void moveMotherNatureOnIsland(Island isl) {
         motherNature = getPositionByIsland(isl);
         notifyObserver(new MotherNatureMove(motherNature));
     }
 
+    /**
+     * Gets the island from its id.
+     * @param islandPosition the id of the island to get
+     * @return the Island in the specified position (id)
+     */
     public Island getIsland(int islandPosition) {
         return islands.get(islandPosition);
     }
@@ -179,6 +211,10 @@ public class IslandsManager extends ObservableSubject {
         return banCards;
     }
 
+    /**
+     * Attatch a EndgameObserver to the island manager in order to know when only 3 or less island are remaining to end the game.
+     * @param endGameObserver Observer of the island manager
+     */
     public void attach(EndGameObserver endGameObserver) {
         this.endGameObserver = endGameObserver;
     }

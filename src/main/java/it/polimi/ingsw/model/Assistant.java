@@ -3,6 +3,9 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents informations about an assistant in a game, like if it has been already played in the current round
+ */
 public class Assistant {
 
 
@@ -10,7 +13,10 @@ public class Assistant {
     private AssistantName assistant;
 
 
-
+    /**
+     * Constructor of assistant
+     * @param assistantName the assistant you want to create
+     */
     public Assistant(AssistantName assistantName){
     assistant=assistantName;
     isAlreadyPlayed=false;
@@ -41,10 +47,18 @@ public class Assistant {
         return assistant;
     }
 
+    /**
+     * Getter of the priority of the card
+     * @return the number of the card which determines the priority
+     */
     public int getValue(){
         return assistant.getValue();
     }
 
+    /**
+     * Getter of the maximum mother nature moves of the card
+     * @return the number of the card which determines the priority
+     */
     public int getMotherNatureMove(){
         return  assistant.getMotherNatureMove();
     }

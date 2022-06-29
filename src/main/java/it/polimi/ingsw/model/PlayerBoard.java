@@ -4,6 +4,9 @@ import java.util.*;
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
+/**
+ * Manage the entrance, the dining room and the towers of a player.
+ */
 public class PlayerBoard {
 
     private Entrance entrance;
@@ -12,6 +15,9 @@ public class PlayerBoard {
     private List<Boolean> professor;
     private EndGameObserver endGameObserver;
 
+    /**
+     * Constructor which initialize every element as empty.
+     */
     public PlayerBoard(){
         this.entrance = new Entrance();
         this.diningRoom = new DiningRoom();
@@ -20,14 +26,22 @@ public class PlayerBoard {
 
     }
 
+    /**
+     * gets the entrance of the player board
+     */
     public Entrance getEntrance(){
         return this.entrance;
     }
-
+    /**
+     * gets the dining room of the player board
+     */
     public DiningRoom getDiningRoom(){
         return this.diningRoom;
     }
 
+    /**
+     * gets the number of towers on the player board.
+     */
     public int getNumberTower() { return this.numberTower; }
 
     /**
@@ -89,6 +103,10 @@ public class PlayerBoard {
         }
     }
 
+    /**
+     * Attach an observer which is notify when the towers are finished in order to end the game.
+     * @param endGameObserver
+     */
     public void attach(EndGameObserver endGameObserver){
         this.endGameObserver=endGameObserver;
     }

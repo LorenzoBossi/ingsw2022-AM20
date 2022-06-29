@@ -16,6 +16,10 @@ public class NoColorInfluence implements InfluenceStrategy {
         this.currPlayer = null;
     }
 
+    /**
+     * Sets the current player of the card as it is relevant for its effect
+     * @param currPlayer player to set as current
+     */
     @Override
     public void setCurrPlayer(Player currPlayer) {
         this.currPlayer = currPlayer;

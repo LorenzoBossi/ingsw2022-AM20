@@ -4,12 +4,17 @@ import it.polimi.ingsw.utils.ObservableSubject;
 
 import java.util.*;
 
+/**
+ * Cloud which contains students for the player to take at the end of every round
+ */
 public class Cloud extends ObservableSubject {
 
     private boolean chosen;
     private List<Color> students;
 
-
+    /**
+     * Contructor which creates an empty list of students
+     */
     public Cloud() {
         students = new ArrayList<>();
     }

@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
+/**
+ * Bag containing all the students of the game
+ */
 public class Bag {
     private List<Color> students;
     private EndGameObserver endGameObserver;
@@ -70,6 +73,10 @@ public class Bag {
         return students.size() == 0;
     }
 
+    /**
+     * Used to attach an observer to observe the end of the game in the case the students are finished
+     * @param endGameObserver
+     */
     public void attach(EndGameObserver endGameObserver){
         this.endGameObserver=endGameObserver;
     }

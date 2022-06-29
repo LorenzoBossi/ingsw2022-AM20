@@ -65,6 +65,10 @@ public class Game extends ObservableSubject implements EndObserver {
         actionOrder = new ArrayList<>();
     }
 
+    /**
+     * Initialize the game by creating every component and filling it with students according to the game mode and rules,
+     * except for character cards.
+     */
     public void initGame() {
         initIslands();
         archipelago.attach(new EndGameObserver(this));
@@ -195,42 +199,72 @@ public class Game extends ObservableSubject implements EndObserver {
         }
     }
 
+    /**
+     * getter method of the bag containing students
+     */
     public Bag getBag() {
         return bag;
     }
 
+    /**
+     * getter method of the clouds of the game
+     */
     public List<Cloud> getClouds() {
         return clouds;
     }
 
+    /**
+     * getter method of the IslandManager which manage every island in the playerboard
+     */
     public IslandsManager getArchipelago() {
         return archipelago;
     }
-
+    /**
+     * getter method of the ProfessorManager which manage all the professors logic
+     */
     public ProfessorManager getProfessorManager() {
         return professorManager;
     }
 
+    /**
+     *getter method of the players in the game
+     */
     public List<Player> getPlayers() {
         return players;
     }
 
+    /**
+     *getter method of the players in the game which is currently playing his turn
+     */
     public Player getCurrPlayer() {
         return currPlayer;
     }
-
+    /**
+     *getter method of the character cards extracted in the game
+     */
     public List<CharacterCard> getCharacterCards() {
         return characterCards;
     }
 
+    /**
+     *getter method of the current phase of the game
+     */
     public Phase getPhase() {
         return phase;
     }
 
+    /**
+     * Setter method of current Player, it set the player who is playing this turn
+     * @param currPlayer the player who has to play now
+     */
     public void setCurrPlayer(Player currPlayer) {
         this.currPlayer = currPlayer;
     }
 
+    /**
+     * Setter method which sets the influenceStrategy to use in the current round to calculate inflence on islands
+     * @param influenceStrategy the strategy to use
+     */
     public void setInfluenceStrategy(InfluenceStrategy influenceStrategy) {
         this.influenceStrategy = influenceStrategy;
     }
@@ -318,6 +352,9 @@ public class Game extends ObservableSubject implements EndObserver {
             return actionOrder.get(indexOfCurrentPlayer + 1);
     }
 
+    /**
+     * This methods change the current phase to ACTION and sets the right player as current player.
+     */
     private void startActionPhase() {
         firstPlayer = actionOrder.get(0);
         currPlayer = firstPlayer;
@@ -325,6 +362,10 @@ public class Game extends ObservableSubject implements EndObserver {
         resetAvailableMoves(currPlayer);
     }
 
+    /**
+     * Starts a pianification phase by refilling all the clouds, selecting the new current player and resetting every assistant
+     * to not already played
+     */
     private void startPianificationPhase() {
         refillClouds();
         actionOrder.clear();
@@ -510,6 +551,11 @@ public class Game extends ObservableSubject implements EndObserver {
         this.setInfluenceStrategy(new StandardInfluence());
     }
 
+    /**
+     * Gets the right character card by giving his CharacterName
+     * @param name the CharacterName corresponding to the card needed
+     * @return the corresponding CharacterCard in the game
+     */
     public CharacterCard getCharacterCardByName(CharacterName name) {
         for (CharacterCard card : characterCards) {
             if (card.getName() == name)
@@ -543,6 +589,9 @@ public class Game extends ObservableSubject implements EndObserver {
         }
     }
 
+    /**
+     * Notify the observer of every extracted card at the beginning of the game
+     */
     public void notifyExtractedCard() {
         for (CharacterCard card : characterCards)
             notifyObserver(new ExtractedCard(card.getName(), card.getCoinsRequired(), card.getCharacterCardType(), card.getStudents()));
@@ -620,7 +669,10 @@ public class Game extends ObservableSubject implements EndObserver {
         return winner;
     }
 
-
+    /**
+     * Ends the game immediately by changing the phase and notifying the observer
+     * with the nickname of the winner if there is one
+     */
     public void end() {
         phase = Phase.ENDED;
         try {
@@ -631,6 +683,9 @@ public class Game extends ObservableSubject implements EndObserver {
         }
     }
 
+    /**
+     * Sets a variable which ends the game at the end of the current round
+     */
     public void lastRound() {
         isLastRound = true;
     }

@@ -2,15 +2,23 @@ package it.polimi.ingsw.model;
 
 import java.util.List;
 
-
+/**
+ * Standard strategy to evaluate players influence on islands
+ */
 public class StandardInfluence implements InfluenceStrategy{
     Player currPlayer;
 
+    /**
+     * Constructor
+     */
     public StandardInfluence(){
         super();
         currPlayer = null;
     }
 
+    /**
+     * Sets the current player of the game
+     */
     @Override
     public void setCurrPlayer(Player currPlayer) {
         this.currPlayer = currPlayer;

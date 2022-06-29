@@ -9,6 +9,9 @@ import it.polimi.ingsw.utils.ObservableSubject;
 import java.util.*;
 import java.util.Objects;
 
+/**
+ * Represents a player of the game containing every component related to him, like playerboard, choices and assistant deck
+ */
 public class Player extends ObservableSubject {
 
     private final String nickname;
@@ -64,7 +67,10 @@ public class Player extends ObservableSubject {
         this.playerChoice = new PlayerChoice();
     }
 
-
+    /**
+     * Gets the nickaname of the player
+     * @return The nickname of the player
+     */
     public String getNickname() {
         return nickname;
     }
@@ -88,6 +94,10 @@ public class Player extends ObservableSubject {
         return false;
     }
 
+    /**
+     * Adds a new student to the dining room of the player
+     * @param student the color of the student to add
+     */
     public void moveStudentToDiningRoom(Color student) {
         List<Color> studentToAdd = new ArrayList<>();
         studentToAdd.add(student);
@@ -96,6 +106,11 @@ public class Player extends ObservableSubject {
         notifyObserver(new MoveStudents(GameComponent.ENTRANCE, GameComponent.DINING_ROOM, studentToAdd, nickname, nickname));
     }
 
+    /**
+     * Moves every student from a cloud to the player entrance
+     * @param chosenCloud The cloud from which the students are taken
+     * @param cloudID The id of the cloud from which the students are taken
+     */
     public void addStudentFromCloud(Cloud chosenCloud, int cloudID) {
         Entrance entrance = playerBoard.getEntrance();
         List<Color> studentsToAdd = new ArrayList<>(chosenCloud.getStudents());
@@ -105,55 +120,105 @@ public class Player extends ObservableSubject {
         notifyObserver(new MoveStudents(GameComponent.CLOUD, GameComponent.ENTRANCE, studentsToAdd, cloudID, nickname));
     }
 
+    /**
+     * Gets the player hand , which contains and manage all the assistants of the player
+     * @return the PlayerHand of the player
+     */
     public PlayerHand getPlayerHand() {
         return playerHand;
     }
 
+    /**
+     * Sets the priotity of the player in the action phase.
+     * @param newPriority numbeber of priority contained on the assistant played during the pianification phase
+     */
     public void setPlayerPriority(int newPriority) {
         this.playerPriority = newPriority;
     }
 
+    /**
+     * Gets the priority of the player in the current round
+     * @return an integer corresponding to the priority of the last assistan player
+     */
     public int getPlayerPriority() {
         return this.playerPriority;
     }
 
+    /**
+     * Sets the max movements of mother nature the player can make in the action phase.
+     * @param MotherNatureMaxMove number of mother nature moves contained on the assistant played during the pianification phase
+     */
     public void setMotherNatureMaxMove(int MotherNatureMaxMove) {
         this.motherNatureMaxMove = MotherNatureMaxMove;
     }
 
+    /**
+     * Gets the max number of movements of mother nature the player can make in the action phase.
+     * @return an integer corresponding to the maximum movements of mother nature the player can make in the action phase.
+     */
     public int getMotherNatureMaxMove() {
         return this.motherNatureMaxMove;
     }
 
+    /**
+     * Gets the playerboard of the player conatining entrance, dining room and tower.
+     * @return The PlayerBoard of the player
+     */
     public PlayerBoard getPlayerBoard() {
         return this.playerBoard;
     }
 
+    /**
+     * Sets the number of coins owned by the player
+     * @param amount number of coins to set
+     */
     public void setCoins(int amount) {
         this.coins = amount;
     }
-
+    /**
+     * Gets the number of coins owned by the player
+     * @return number of coins
+     */
     public int getCoins() {
         return this.coins;
     }
 
+    /**
+     * Gives the player one more coin
+     */
     public void addCoin() {
         this.coins++;
     }
 
+    /**
+     * Gets the number of students movements the player can still do in the current round
+     * @return number of movements the player can do
+     */
     public int getAvailableMoves() {
         return availableMoves;
     }
 
+    /**
+     * Sets the number of students movements the player can still do in the current round
+     */
     public void setAvailableMoves(int availableMoves) {
         this.availableMoves = availableMoves;
     }
 
+    /**
+     * Remove from the player the specified number of coins if he has enough. Otherwise it do nothing.
+     * @param payment number of coins to take
+     */
     public void useCoins(int payment) {
         if (isEnoughCoin(payment))
             this.coins = this.coins - payment;
     }
 
+    /**
+     * Tells if the player has more or equals coins than the specified number
+     * @param coinRequired number of coins to compare with the player coins
+     * @return true if the player has enough coins, false otherwise
+     */
     private boolean isEnoughCoin(int coinRequired) {
         return this.coins >= coinRequired;
     }
@@ -171,15 +236,28 @@ public class Player extends ObservableSubject {
     }
 
 
+    /**
+     * Gets the player choice containing all the choices made by the player regarding character cards.
+     * @return a PlayerCoice object containing all the player choices.
+     */
     public PlayerChoice getPlayerChoice() {
         return playerChoice;
     }
 
-
+    /**
+     * Sets the player choice used by character cards
+     * @param playerChoice PlayerChoice object to set
+     */
     public void setPlayerChoice(PlayerChoice playerChoice) {
         this.playerChoice = playerChoice;
     }
 
+    /**
+     * Tells if the player is equals to the specified object.
+     * In our case two players are equals if they has the same nickname
+     * @param o object to compare with the player
+     * @return true if equals, false otherwise
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

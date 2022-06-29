@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Interface of classes which can determines how to calculate influence on islands ( strategy pattern ).
+ */
 public interface InfluenceStrategy {
 
     /**
@@ -12,6 +15,10 @@ public interface InfluenceStrategy {
      */
     int calculateInfluence(Player player, Island island, ProfessorManager professorManager);
 
+    /**
+     * Sets the current player, which is usefull to know for some cards.
+     * @param currPlayer
+     */
     void setCurrPlayer(Player currPlayer);
 
 }

@@ -1,6 +1,9 @@
 package it.polimi.ingsw.model;
 import java.util.*;
 
+/**
+ * Class representing a single island or more island connected together
+ */
 public class Island {
     private final int COLOR_NUMBER = 5;
     private List<Integer> students;
@@ -19,18 +22,36 @@ public class Island {
         banCards = 0;
     }
 
+    /**
+     * Getter method of the owner of the island. It determines the player who controls it and so the color of towers.
+     * Can be null if is not owned by anyone
+     * @return The player who owns the island or null
+     */
     public Player getOwner() {
         return owner;
     }
 
+    /**
+     * Sets the owner of the island.
+     * @param newOwner the player to set as owner
+     */
     public void setOwner(Player newOwner) {
         this.owner = newOwner;
     }
 
+    /**
+     * Gets the number of towers on the island.
+     * If the number is more than one it means the island is composed by more islands connected
+     * @return the number of towers on the island
+     */
     public int getNumberOfTowers() {
         return numberOfTowers;
     }
 
+    /**
+     * Sets the number of towers on the island.
+     * @param numberOfTowers number of isalnds to set.
+     */
     public void setNumberOfTowers(int numberOfTowers) {
         this.numberOfTowers = numberOfTowers;
     }
@@ -43,10 +64,17 @@ public class Island {
         this.numberOfTowers = 0;
     }
 
+    /**
+     * gets the number of ban cards on the island
+     * @return the number of ban cards on the island
+     */
     public int getBanCards() {
         return banCards;
     }
-
+    /**
+     * Sets the number of ban cards on the island
+     * @return the number of ban cards to set
+     */
     public void setBanCards(int banCards) {
         this.banCards = banCards;
     }

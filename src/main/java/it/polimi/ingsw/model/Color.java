@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.characterCards.Banker;
 
+/**
+ * Enumeration of the colors of the students
+ */
 public enum Color {
     YELLOW,
     BLUE,
@@ -16,6 +19,10 @@ public enum Color {
     public static final String ANSI_RED = "\u001B[31m";
     public static final String ANSI_PINK = "\u001B[95m";
 
+    /**
+     * Override of the method toString in order to print colored text
+     * @return
+     */
     @Override
     public String toString() {
         String ANSI_COLOR=ANSI_RESET;

@@ -8,12 +8,18 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Manages professors ownership and acquisition
+ */
 public class ProfessorManager extends ObservableSubject {
     private List<Integer> maxStudents;
     private List<Player> owners;
     private Comparator<Integer> comparator;
     private Comparator<Integer> standardComparator;
 
+    /**
+     * Constructor which initialize every professor as not owned and set the strategy to evaluate acquisitions as standard
+     */
     public ProfessorManager() {
         super();
         owners = new ArrayList<>();
@@ -121,6 +127,11 @@ public class ProfessorManager extends ObservableSubject {
         return professors;
     }
 
+    /**
+     * Gets the player who owns the professor of a specified color
+     * @param color color of the professor of which you get the owner
+     * @return The Player who owns the professor
+     */
     public Player ownerOf(Color color){
         return owners.get(color.ordinal());
     }

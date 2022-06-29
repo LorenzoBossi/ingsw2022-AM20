@@ -1,0 +1,12 @@
+module:it.polimi.ingsw
+it.polimi.ingsw
+it.polimi.ingsw.client
+it.polimi.ingsw.client.GUI
+it.polimi.ingsw.controller
+it.polimi.ingsw.model
+it.polimi.ingsw.model.characterCards
+it.polimi.ingsw.model.exceptions
+it.polimi.ingsw.network
+it.polimi.ingsw.network.messages.clientMessage
+it.polimi.ingsw.network.messages.serverMessage
+it.polimi.ingsw.utils

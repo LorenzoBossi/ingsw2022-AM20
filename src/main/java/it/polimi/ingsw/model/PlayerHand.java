@@ -1,10 +1,17 @@
 package it.polimi.ingsw.model;
 import java.util.*;
+
+/**
+ * Manages the deck of the player containing assistant cards
+ */
 public class PlayerHand {
 
     private List<Assistant> assistantCards;
 
-
+    /**
+     * Constructor of the PlayerHand, which initialize the deck with the list of assistants given as parameter.
+     * @param assistants list of assistants to add
+     */
     public PlayerHand(List<Assistant> assistants){
         assistantCards = new LinkedList<>();
         if(assistants!=null) {
@@ -35,6 +42,7 @@ public class PlayerHand {
         return assistantCards.contains(assistantCard);
     }
 
+
     /**
      * get the assistants the player can play during his pianification phase
      * @return list containing the assistants the player
@@ -55,6 +63,7 @@ public class PlayerHand {
 
         return playable;
     }
+
 
     /**
      * tells if the player can play the specified assistant
@@ -79,6 +88,7 @@ public class PlayerHand {
         }
     }
 
+
     /**
      * tells if every assistant in the player hand has been already played in the current round
      * @return
@@ -95,8 +105,10 @@ public class PlayerHand {
     }
 
 
-
-
+    /**
+     * Gets the number of assistant cards are there in the deck
+     * @return
+     */
     public int size(){
         return assistantCards.size();
     }

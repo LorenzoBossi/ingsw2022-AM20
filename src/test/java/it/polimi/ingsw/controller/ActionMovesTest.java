@@ -72,7 +72,6 @@ public class ActionMovesTest {
         Map<Integer, String> map = new HashMap<>();
         map.put(0, "Simone");
         map.replace(0, "Paolo");
-        System.out.println(map.get(0));
 
     }
 }

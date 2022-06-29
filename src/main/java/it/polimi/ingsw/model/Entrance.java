@@ -2,10 +2,16 @@ package it.polimi.ingsw.model;
 
 import java.util.*;
 
+/**
+ * Represents the enrance of a player
+ */
 public class Entrance {
 
     private List<Integer> students;
 
+    /**
+     * Constructor which initialize the number of students of every color to 0
+     */
     public Entrance() {
         this.students = new ArrayList<>(Arrays.asList(0, 0, 0, 0, 0));
     }

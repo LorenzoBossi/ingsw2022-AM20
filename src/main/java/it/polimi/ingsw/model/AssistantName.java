@@ -1,5 +1,8 @@
 package it.polimi.ingsw.model;
 
+/**
+ * Enumeration of every possible assistant with his priority and mother nature moves
+ */
 public enum AssistantName {
     ASSISTANT1(1,1),
     ASSISTANT2(2,1),
@@ -18,7 +21,11 @@ public enum AssistantName {
     private final int moves;
 
 
-    
+    /**
+     * contstructor of AssistantName
+     * @param value priority of the card
+     * @param moves maximum mother nature moves
+     */
      AssistantName(int value, int moves){
         this.value=value;
         this.moves=moves;

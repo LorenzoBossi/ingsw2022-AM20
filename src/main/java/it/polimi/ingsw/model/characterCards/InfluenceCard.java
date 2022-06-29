@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.characterCards;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.InfluenceStrategy;
 
+/**
+ * Unites three different characters that change the way of evaluate player influence on islands
+ */
 public class InfluenceCard extends CharacterCard {
     private InfluenceStrategy influenceStrategy;
 

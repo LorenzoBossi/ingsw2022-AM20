@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.messages.serverMessage.MoveStudents;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Abstract class which represent the basic structure of every card containing students
+ */
 public abstract class WithStudents extends CharacterCard {
 
 
@@ -24,18 +27,28 @@ public abstract class WithStudents extends CharacterCard {
         this.MAX_SELECTION = MAX_SELECTION;
     }
 
+    /**
+     * Gets the list of students on the card
+     * @return The list of colors of the students on the card
+     */
     @Override
     public List<Color> getStudents() {
         return students;
     }
 
-
+    /**
+     * Sets the students on the card
+     * @param students a list of color to set as students on the card
+     */
     public void setStudents(List<Color> students) {
         this.students = students;
         //notifyObserver(new MoveStudents("BAG", "CARD", students, null, getName().name()));
     }
 
-
+    /**
+     * Removes from the card the specified students
+     * @param students list of colors of students to remove
+     */
     public void remove(List<Color> students) {
         for (Color student : students) {
             this.students.remove(student);
@@ -43,12 +56,10 @@ public abstract class WithStudents extends CharacterCard {
     }
 
 
-   /*
-    public void remove(Color student) {
-        students.remove(student);
-    }
-    */
-
+    /**
+     * Adds on the card the specified students
+     * @param students list of colors of students to add
+     */
     public void add(List<Color> students) {
         this.students.addAll(students);
     }
