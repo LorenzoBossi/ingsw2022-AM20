@@ -10,8 +10,8 @@ import java.util.*;
 
 public class CLI implements View {
 
-    private String serverIp;
-    private int serverPort;
+    private final String serverIp;
+    private final int serverPort;
     private final ServerConnection connectionToServer;
     private final Scanner input;
 
@@ -24,7 +24,8 @@ public class CLI implements View {
 
     /**
      * Constructor
-     * @param serverIp server ip address
+     *
+     * @param serverIp   server ip address
      * @param serverPort server port
      */
     public CLI(String serverIp, int serverPort) {
@@ -34,7 +35,7 @@ public class CLI implements View {
         this.clientModel = new ClientModel();
         this.actionMovesHandler = new ActionMovesHandler();
         connectionToServer = new ServerConnection(serverIp, serverPort, new ServerMessageHandler(clientModel, this, actionMovesHandler));
-        if(!connectionToServer.setupConnection())
+        if (!connectionToServer.setupConnection())
             System.exit(-1);
         (new Thread(connectionToServer)).start();
     }
@@ -78,8 +79,9 @@ public class CLI implements View {
 
     /**
      * method lobbySetup is used to create or join a lobby
+     *
      * @param attendingLobbiesNumberOfPlayerMap map of lobby id and number of player for that lobby
-     * @param attendingLobbiesGameModeMap map of lobby id and game difficulty
+     * @param attendingLobbiesGameModeMap       map of lobby id and game difficulty
      */
     public void lobbySetup(Map<Integer, Integer> attendingLobbiesNumberOfPlayerMap, Map<Integer, String> attendingLobbiesGameModeMap) {
         Set<Integer> attendingLobbies = attendingLobbiesNumberOfPlayerMap.keySet();
@@ -135,8 +137,9 @@ public class CLI implements View {
 
     /**
      * method startGame starts the game
-     * @param players list of player for the game
-     * @param gameMode game mode choice
+     *
+     * @param players       list of player for the game
+     * @param gameMode      game mode choice
      * @param towerColorMap map of player and his/her tower color
      */
     public void startGame(List<String> players, String gameMode, Map<String, TowerColor> towerColorMap) {
@@ -147,6 +150,7 @@ public class CLI implements View {
 
     /**
      * pianificationPhase method carries out the operations of the pianification phase
+     *
      * @param targetPlayer player's pianification turn
      */
     public void pianificationPhase(String targetPlayer) {
@@ -169,6 +173,7 @@ public class CLI implements View {
 
     /**
      * actionPhase method carries out the operations of the action phase
+     *
      * @param targetPlayer player's action turn
      */
     public void actionPhase(String targetPlayer) {
@@ -389,6 +394,7 @@ public class CLI implements View {
 
     /**
      * handleJesterActivation handle Jester Character activation
+     *
      * @param card get the Jester Card with its information
      */
     private void handleJesterActivation(CharacterCardView card) {
@@ -431,6 +437,7 @@ public class CLI implements View {
 
     /**
      * selectStudentsFromDiningRoom returns swaps number of students
+     *
      * @param swaps number of students to select
      * @return selected students
      */
@@ -464,6 +471,7 @@ public class CLI implements View {
 
     /**
      * Allows the user to select the specified number of students from his entrance, by printing available options and checking user choice.
+     *
      * @param studentsToSelect the number of students the player can select from entrance.
      * @return the list of Color of the students selected by the user.
      */
@@ -489,7 +497,8 @@ public class CLI implements View {
 
     /**
      * Allows the user to select the specified number of students from the specified card, by printing available options and checking user choice.
-     * @param card The card from which the user can choose students.
+     *
+     * @param card             The card from which the user can choose students.
      * @param studentsToSelect The number of students the user can select from the card.
      * @return The list of Color of the students selected by the user.
      */
@@ -515,6 +524,7 @@ public class CLI implements View {
 
     /**
      * Allows the user to select an island, by printing every island and checking user choice.
+     *
      * @return The id of the selected island.
      */
     public int islandSelection() {
@@ -534,6 +544,7 @@ public class CLI implements View {
 
     /**
      * Allows the user to select a color of students.
+     *
      * @return An uppercase String corresponding to the selected color
      */
     public String selectColor() {
@@ -543,6 +554,7 @@ public class CLI implements View {
 
     /**
      * Checks if the given input string, is equals to a word contained in the check string.
+     *
      * @param input The string to check if is valid
      * @param check A string which contains every accepted word separated by '/'
      * @return true if input is equals to one word in the String "check", false otherwise.
@@ -558,6 +570,7 @@ public class CLI implements View {
 
     /**
      * Allows the user to chose a string from one of the words in the given string
+     *
      * @param check A string containing every allowed word separated by '/'
      * @return The String selected by the user.
      */
@@ -577,6 +590,7 @@ public class CLI implements View {
 
     /**
      * Allows the user to chose a number (integer)
+     *
      * @return The number selected by the user.
      */
     public int getInt() {
@@ -596,6 +610,7 @@ public class CLI implements View {
 
     /**
      * getter method to obtain the nickname of the client
+     *
      * @return the nickname of the client
      */
     public String getClientNickname() {
@@ -604,8 +619,9 @@ public class CLI implements View {
 
     /**
      * Prints every available lobby, in order to let the player choose which one to join.
+     *
      * @param attendingLobbiesNumberOfPlayerMap a map containing the lobby id as a key and the number of player as element.
-     * @param attendingLobbiesGameModeMap a map containing the lobby id as a key and the game mode as element.
+     * @param attendingLobbiesGameModeMap       a map containing the lobby id as a key and the game mode as element.
      */
     private void printLobbies(Map<Integer, Integer> attendingLobbiesNumberOfPlayerMap, Map<Integer, String> attendingLobbiesGameModeMap) {
         Set<Integer> attendingLobbies = attendingLobbiesNumberOfPlayerMap.keySet();
@@ -755,6 +771,7 @@ public class CLI implements View {
 
     /**
      * Creates a string composed by every playable assistant separated by '/'
+     *
      * @return The created String.
      */
     private String StringCheckAssistants() {
@@ -821,6 +838,7 @@ public class CLI implements View {
 
     /**
      * Creates a string composed by names of every character card in the game separated by '/'
+     *
      * @return The created String.
      */
     private String StringCheckCharacterCard() {
@@ -858,8 +876,9 @@ public class CLI implements View {
 
     /**
      * Choose the correct end game message for the player, according to the game ending
+     *
      * @param isADraw a boolean telling if the game is ended in a draw
-     * @param winner the nickname of the winner of the game ( ignore if there isn't a winner )
+     * @param winner  the nickname of the winner of the game ( ignore if there isn't a winner )
      */
     public void endGame(boolean isADraw, String winner) {
         if (isADraw) {
@@ -893,6 +912,7 @@ public class CLI implements View {
 
     /**
      * Print a message to the player when he loses the game.
+     *
      * @param winner The nickname of the winner of the game.
      */
     public void printLose(String winner) {

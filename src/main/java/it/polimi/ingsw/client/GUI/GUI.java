@@ -50,8 +50,8 @@ public class GUI extends Application implements View {
     private String gameMode;
 
 
-    private Map<String, GUIController> controllerMap = new HashMap<>();
-    private Map<String, Scene> sceneMap = new HashMap<>();
+    private final Map<String, GUIController> controllerMap = new HashMap<>();
+    private final Map<String, Scene> sceneMap = new HashMap<>();
     private Stage stage;
     private Scene currentScene;
     private boolean isEnd = false;

@@ -19,8 +19,8 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class ServerMessageHandler {
     private ClientModel model;
-    private View view;
-    private ActionMovesHandler actionMovesHandler;
+    private final View view;
+    private final ActionMovesHandler actionMovesHandler;
 
     /**
      * Constructor
@@ -121,9 +121,9 @@ public class ServerMessageHandler {
         if (message instanceof AssistantPlayed) {
             String player = ((AssistantPlayed) message).getPlayer();
             String name = ((AssistantPlayed) message).getAssistantName();
-
             model.getAssistantsPlayed().add(AssistantName.valueOf(name));
-            System.out.println(player + " has played " + name);
+            if(view instanceof CLI)
+                System.out.println(player + " has played " + name);
         } else if (message instanceof MoveStudents) {
             handleStudentsMove(message);
         } else if (message instanceof ExtractedCard) {

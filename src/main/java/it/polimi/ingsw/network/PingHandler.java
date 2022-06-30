@@ -8,7 +8,7 @@ import java.util.concurrent.TimeUnit;
  * Class PingHandler send each second a Ping message to the Client
  */
 public class PingHandler implements Runnable{
-    private ClientConnectionHandler clientConnectionHandler;
+    private final ClientConnectionHandler clientConnectionHandler;
 
     /**
      * Constructor

@@ -34,23 +34,23 @@ public class Server {
 
     }
 
-    private int port;
+    private final int port;
 
-    private ServerConnectionHandler serverConnectionHandler;
+    private final ServerConnectionHandler serverConnectionHandler;
 
-    private Queue<String> activePlayers;
+    private final Queue<String> activePlayers;
 
-    private Map<String, ClientConnectionHandler> clientConnectionHandlerMap;
+    private final Map<String, ClientConnectionHandler> clientConnectionHandlerMap;
 
-    private Queue<Integer> attendingLobbies;
+    private final Queue<Integer> attendingLobbies;
 
-    private Map<Integer, String> lobbyGameModeMap;
+    private final Map<Integer, String> lobbyGameModeMap;
 
-    private Map<Integer, Integer> lobbyNumberOfPlayersMap;
+    private final Map<Integer, Integer> lobbyNumberOfPlayersMap;
 
-    private Map<Integer, GameHandler> activeLobbies;
+    private final Map<Integer, GameHandler> activeLobbies;
 
-    private Map<String, Integer> playerLobbyMap;
+    private final Map<String, Integer> playerLobbyMap;
 
     private Integer lobbyId = 0;
 

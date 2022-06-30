@@ -1,5 +1,8 @@
 package it.polimi.ingsw.network.messages.serverMessage;
 
+/**
+ * Enum with all the different type of error
+ */
 public enum ErrorType {
     NICKNAME_ALREADY_TAKEN,
     LOBBY_ERROR,

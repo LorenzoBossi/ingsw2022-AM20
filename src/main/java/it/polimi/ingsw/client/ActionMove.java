@@ -10,7 +10,7 @@ public enum ActionMove {
     SELECT_CLOUD("sc"),
     END_TURN("et");
 
-    private String abbreviation;
+    private final String abbreviation;
 
     ActionMove(String abbreviation) {
         this.abbreviation = abbreviation;

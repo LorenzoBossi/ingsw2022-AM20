@@ -5,7 +5,6 @@ import it.polimi.ingsw.network.messages.clientMessage.GetLobbies;
 import it.polimi.ingsw.network.messages.clientMessage.JoinLobby;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -78,14 +77,15 @@ public class LobbyController implements GUIController {
      */
     public void join(ActionEvent e) {
         String choice = lobbies.getSelectionModel().getSelectedItem();
-        int lobbyId = Integer.parseInt(choice.substring(0, 1));
-        int numberOfPlayer = Integer.parseInt(choice.substring(22, 23));
+        String lobby = choice.substring(0, 3);
+        lobby = lobby.replace(" ", "");
+
+        int lobbyId = Integer.parseInt(lobby);
+
         if(choice.contains("experts"))
             gui.setGameMode("experts");
         else
             gui.setGameMode("beginners");
-
-        System.out.println(lobbyId + "   " + numberOfPlayer);
 
         joinButton.setDisable(true);
         createButton.setDisable(true);

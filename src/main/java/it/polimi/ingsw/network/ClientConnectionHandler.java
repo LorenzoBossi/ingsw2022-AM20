@@ -1,21 +1,18 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.network.messages.clientMessage.ClientMessage;
-import it.polimi.ingsw.network.messages.clientMessage.Pong;
 import it.polimi.ingsw.network.messages.serverMessage.ServerMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
-
 /**
  * Class ClientConnectionHandler handles the connection between the server and the client
  */
 public class ClientConnectionHandler implements Runnable {
-    private Server server;
-    private Socket socket;
+    private final Server server;
+    private final Socket socket;
     private String nickname;
 
     private ObjectInputStream inputStream;
@@ -98,7 +95,6 @@ public class ClientConnectionHandler implements Runnable {
         } catch (IOException e) {
             System.err.println("GameError during sending message to client");
             closeConnection();
-            e.printStackTrace();
         }
     }
 

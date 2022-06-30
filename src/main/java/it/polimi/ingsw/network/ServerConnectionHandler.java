@@ -11,10 +11,10 @@ import java.util.concurrent.Executors;
  */
 public class ServerConnectionHandler implements Runnable {
     private ServerSocket serverSocket;
-    private int serverPort;
-    private Server server;
+    private final int serverPort;
+    private final Server server;
     private boolean stop = false;
-    private ExecutorService executorService = Executors.newCachedThreadPool();
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     /**
      * Constructor

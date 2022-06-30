@@ -21,15 +21,14 @@ import java.util.concurrent.Executors;
  * Class ServerConnection handles the connection between Client and Server
  */
 public class ServerConnection implements Runnable {
-    private String serverIp;
-    private int serverPort;
+    private final String serverIp;
+    private final int serverPort;
 
     private ObjectOutputStream outputStream;
     private ObjectInputStream inputStream;
-    private ExecutorService executorService = Executors.newCachedThreadPool();
-    private BlockingQueue<ServerMessage> queue = new ArrayBlockingQueue<>(1000);
+    private final BlockingQueue<ServerMessage> queue = new ArrayBlockingQueue<>(1000);
 
-    private ServerMessageHandler messageHandler;
+    private final ServerMessageHandler messageHandler;
 
     private boolean status = true;
     private Socket socket;
