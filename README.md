@@ -1,63 +1,69 @@
 # Prova Finale Ingegneria del Software 2022
 ![alt text](src/main/resources/Images/Eriantys-Header.jpg)
 
-La prova finale di ingegneria del software consiste nell'implementazione 
-di un applicazione distribuita del gioco da tavolo [Eriantys](https://www.craniocreations.it/prodotto/eriantys/), 
-attraverso il pattern Model View Controller (MVC). 
+The final project of the course "ingegneria del software" required to develope a distributed application 
+of the board game [Eriantys](https://www.craniocreations.it/prodotto/eriantys/),
+using the Model View Controller pattern (MVC).
+
 ## Gruppo AM20
 
 - ###   10656496    Simone Airaghi ([@SimoneAiraghi](https://github.com/SimoneAiraghi))<br>simone1.airaghi@mail.polimi.it
 - ###   10706985    Matteo Boido ([@MatteoBoido](https://github.com/MatteoBoido))<br>matteo.boido@mail.polimi.it
 - ###   10673045    Lorenzo Bossi ([@LorenzoBossi](https://github.com/LorenzoBossi))<br>lorenzo1.bossi@mail.polimi.it
 
-## Esecuzione
-Questo progetto richiede java 17 o superiore per essere eseguito.
-Abbiamo creato un unico programma che si può comportare da client o da server in base ai parametri ricevuti.
-Il jar è scaricabile qui: [Jar](https://github.com/LorenzoBossi/..).
-Dopo avere scaricato il jar e aver verificato la propria versione di java, si può eseguire seguendo le istruzioni sottostanti.
+## Jar execution
+The project requires java 17 or higher to be executed correctly.
+
+We created a single program which can behave like a server or client according to the given parameters.
+The final jar file can be found here: [Jar](https://github.com/LorenzoBossi/deliveries/jar).
+
+After downloading the jar and verifying the installed java version, it can be executed by following the instructions below.
+
 
 ### Client
 
 #### GUI
 
-Di default l'esecuzione del jar fa partire un client (GUI).
-Può essere eseguito attraverso il seguente comando:
+The execution of the jar starts a client (GUI) by default.
+It can be done using the following command.
 ```
 java -jar AM20-Eriantys.jar
 ```
-Dopo di che verrà richiesto di inserire indirizzo e porta del server a cui collegarsi dall'interfaccia grafica.
+Then the user interface will allows the user to select ip and port of the server to connect to. 
+
 
 #### CLI
-É possibile utilizzare il client da linea di comando (CLI) aggiungendo 
-il parametro --cli, oppure la versione ridotta -c.
+You can start a client with a command line interface(CLI) by adding the 
+parameter --cli, or the shorter version -c.
+
 ```
 java -jar AM20-Eriantys.jar --cli
 ```
 ```
 java -jar AM20-Eriantys.jar -c
 ```
+In order to select the ip and port of the server you can add the parameters --ip and --port.
+Otherwise, the client will try to connect to the default server at : (localhost,26000).
 
-Per specificare l'indirizzo e la porta del serve a cui collegarsi è possibile utilizzare i parametri --ip e --port.
-Se non si specifica il server l'applicazione cercherà di collegarsi a quello di default: (localhost,26000).
 ```
 java -jar AM20-Eriantys.jar --cli --ip 129.168.10.5 --port 23456
 ```
-Al posto di --ip e --port si possono usare le abbreviazioni -i e -p.
+Instead of --ip and --port, is possible to use -i and -p.
 ```
 java -jar AM20-Eriantys.jar -c -i 129.168.10.5 -p 23456
 ```
 ### Server
-Per utilizzare il jar come server è necessario aggiungere 
-il parametro --server, oppure -s.
+In order to use the jar as a server is necessary to add the parameter --server, or -s.
+
 ```
 java -jar AM20-Eriantys.jar --server
 ```
 ```
 java -jar AM20-Eriantys.jar -s
 ```
-Di default il server partirà sulla porta 26000.
-Se si vuole utilizzare una porta differente basta aggiungere 
-un ulteriore parametro (--port o -p ), seguito dal numero di porta scelto.
+The server will be listening on port 26000 by default.
+To use a different port you can the parameter --port or -p, followed by the chosen port.
+
 ```
 java -jar AM20-Eriantys.jar --server --port 23456
 ```
