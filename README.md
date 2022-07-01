@@ -15,7 +15,8 @@ using the Model View Controller pattern (MVC).
 The project requires java 17 or higher to be executed correctly.
 
 We created a single program which can behave like a server or client according to the given parameters.
-The final jar file can be found here: [Jar](https://github.com/LorenzoBossi/deliveries/jar).
+The final jar file can be found here: [Jar](https://github.com/LorenzoBossi/ingsw2022-AM20/tree/master/deliveries/jar).
+
 
 After downloading the jar and verifying the installed java version, it can be executed by following the instructions below.
 
