@@ -22,11 +22,18 @@ public class Vassal extends CharacterCard {
     @Override
     public void activateEffect(Game game) {
         IslandsManager archipelago = game.getArchipelago();
+        int numberOfIsland = archipelago.getNumberOfIslands();
         int motherNaturePosition = archipelago.getMotherNature();
-        Island isl = archipelago.getIsland(motherNaturePosition);
         Island island = game.getCurrPlayer().getPlayerChoice().getSelectedIsland();
+        int selectedIslandId = archipelago.getPositionByIsland(island);
 
         game.updateInfluence(island);
+
+        if(numberOfIsland != archipelago.getNumberOfIslands()) {
+            if(motherNaturePosition > selectedIslandId)
+                motherNaturePosition--;
+        }
+        Island isl = archipelago.getIsland(motherNaturePosition);
         archipelago.moveMotherNatureOnIsland(isl);
 
         endActivation(game.getCurrPlayer().getNickname());

@@ -150,6 +150,9 @@ public class PianificationController implements GUIController {
      * Sends the ChosenAssistant message to the server
      */
     public void playAssistant() {
+        if(group.getSelectedToggle() == null) {
+            return;
+        }
         String choice = (String) group.getSelectedToggle().getUserData();
         AssistantName name = AssistantName.valueOf(choice.toUpperCase());
 
