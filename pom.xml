@@ -100,36 +100,6 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>3.0.0-M6</version>
         </plugin>
-        <!--
-                <plugin>
-                  <artifactId>maven-jar-plugin</artifactId>
-                  <version>3.0.2</version>
-                  <configuration>
-                  <archive>
-                    <manifest>
-                      <mainClass>it.polimi.ingsw.Eriantys</mainClass>
-                    </manifest>
-                  </archive>
-                </configuration>
-                </plugin>
-        -->
-        <!--
-                <plugin>
-                  <groupId>org.apache.maven.plugins</groupId>
-                  <artifactId>maven-jar-plugin</artifactId>
-                  <configuration>
-                    <archive>
-                      <manifest>
-                        <addClasspath>true</addClasspath>
-                        <mainClass>it.polimi.ingsw.Eriantys</mainClass>
-                      </manifest>
-                      <manifestEntries>
-                        <Class-Path>.</Class-Path>
-                      </manifestEntries>
-                    </archive>
-                  </configuration>
-                </plugin>
-        -->
         <plugin>
           <artifactId>maven-install-plugin</artifactId>
           <version>2.5.2</version>
@@ -196,39 +166,6 @@
           <mainClass>it.polimi.ingsw.Eriantys</mainClass>
         </configuration>
       </plugin>
-      <!--
-              <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-              <artifactId>maven-shade-plugin</artifactId>
-              <version>3.2.4</version>
-              <executions>
-              <execution>
-                <id>${project.artifactId}-Eriantys</id>
-                <phase>package</phase>
-                <goals>
-                  <goal>shade</goal>
-                </goals>
-                <configuration>
-                  <finalName>${project.artifactId}-Eriantys</finalName>
-                  <transformers>
-                    <transformer
-                            implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                      <mainClass>it.polimi.ingsw.Eriantys</mainClass>
-                    </transformer>
-                  </transformers>
-                  <filters>
-                    <filter>
-                      <artifact>*:*</artifact>
-                      <excludes>
-                        <exclude>module-info.class</exclude>
-                      </excludes>
-                    </filter>
-                  </filters>
-                </configuration>
-              </execution>
-              </executions>
-              </plugin>
-      -->
 
 
       <plugin>
