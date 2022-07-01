@@ -1,7 +1,7 @@
 # Prova Finale Ingegneria del Software 2022
 ![alt text](src/main/resources/Images/Eriantys-Header.jpg)
 
-The final project of the course "ingegneria del software" required to develope a distributed application 
+The final project of the course "Ingegneria del Software" required to develope a distributed application 
 of the board game [Eriantys](https://www.craniocreations.it/prodotto/eriantys/),
 using the Model View Controller pattern (MVC).
 
@@ -33,7 +33,7 @@ Then the user interface will allows the user to select ip and port of the server
 
 
 #### CLI
-You can start a client with a command line interface(CLI) by adding the 
+You can start a client with a command line interface (CLI) by adding the 
 parameter --cli, or the shorter version -c.
 
 ```
@@ -62,7 +62,7 @@ java -jar AM20-Eriantys.jar --server
 java -jar AM20-Eriantys.jar -s
 ```
 The server will be listening on port 26000 by default.
-To use a different port you can the parameter --port or -p, followed by the chosen port.
+To use a different port you can add the parameter --port or -p, followed by the chosen port.
 
 ```
 java -jar AM20-Eriantys.jar --server --port 23456
@@ -74,18 +74,18 @@ java -jar AM20-Eriantys.jar --server -p 23456
 
 ## Advancements
 
-| Functionality    |                       State                        |
-|:-----------------|:--------------------------------------------------:|
-| Basic rules      | 🟢 |
-| Complete rules   | 🟢 |
-| Socket           | 🟢 |
-| GUI              | 🟢 |
-| CLI              | 🟢 |
-| 12 Characters    | 🟢 |
-| 4 Players games  | 🔴  |
-| Multiple games   | 🟢 |
-| Persistence      | 🔴  |
-| Resilience       | 🔴  |
+| Functionality   |                       State                        |
+|:----------------|:--------------------------------------------------:|
+| Basic rules     | 🟢 |
+| Complete rules  | 🟢 |
+| Socket          | 🟢 |
+| CLI             | 🟢 |
+| GUI             | 🟢 |
+| 12 Characters   | 🟢 |
+| 4 Players games | 🔴  |
+| Multiple games  | 🟢 |
+| Persistence     | 🔴  |
+| Resilience      | 🔴  |
 
 ## Test coverage
 |Package|Lines|Methods|Classes|

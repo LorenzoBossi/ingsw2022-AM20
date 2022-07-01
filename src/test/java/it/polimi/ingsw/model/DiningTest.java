@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test;
 
 import java.util.*;
 
+/**
+ * This class tests the DiningRoom methods
+ */
 public class DiningTest {
     private DiningRoom diningRoom = new DiningRoom();
 

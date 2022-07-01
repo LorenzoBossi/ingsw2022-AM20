@@ -7,8 +7,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
-
-
+/**
+ * This class tests the PlayerBoard methods
+ */
 public class BoardTest {
     private Game game;
     private PlayerBoard board;

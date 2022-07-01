@@ -21,11 +21,7 @@ public class DiningRoom {
     public void addStudent(Color color) {
         int indexColor = color.ordinal();
         students.set(indexColor, students.get(indexColor) + 1);
-        //if (isAddCoin(students.get(indexColor) + 1))
-        //System.out.println("Coin");
     }
-
-    //Chiedere se serve effetivamente
 
     /**
      * Method addStudent add a student on the dining room
@@ -34,8 +30,6 @@ public class DiningRoom {
      */
     public void addStudent(int indexColor) {
         students.set(indexColor, students.get(indexColor) + 1);
-        //if (isAddCoin(students.get(indexColor) + 1))
-        //System.out.println("Coin");
     }
 
     /**

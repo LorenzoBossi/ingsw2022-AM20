@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.*;
 
 
-
+/**
+ * This class tests the Player methods
+ */
 public class PlayerTest {
     private Player player = new Player("matteo");
 

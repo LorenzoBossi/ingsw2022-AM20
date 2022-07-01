@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model;
 
-
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -11,6 +9,9 @@ import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This class tests the ProfessorManager methods
+ */
 public class ProfessorManagerTest {
     ProfessorManager professorManager;
 

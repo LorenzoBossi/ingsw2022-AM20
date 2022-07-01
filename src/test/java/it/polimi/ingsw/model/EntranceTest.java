@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.*;
 
-
+/**
+ * This class tests the Entrance methods
+ */
 public class EntranceTest {
     private Entrance entrance = new Entrance();
 

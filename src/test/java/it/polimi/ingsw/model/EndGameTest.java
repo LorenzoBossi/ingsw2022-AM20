@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * This class tests the EndGame methods
+ */
 public class EndGameTest {
     private Game game;
     private PlayerBoard board;
